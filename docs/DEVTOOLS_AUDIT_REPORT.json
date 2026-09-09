@@ -1,0 +1,23 @@
+{
+  "timestamp": "2026-09-08T18:01:28.176542+00:00",
+  "browser_version": "152.0.7977.76",
+  "total_network_requests": 342,
+  "unhandled_console_errors": 0,
+  "network_failures": [],
+  "total_svg_elements": 96,
+  "total_anywidget_instances": 5,
+  "audit_status": "PASS",
+  "artifact_path": "standalone_app.py",
+  "artifact_size_bytes": 197383,
+  "artifact_sha256": "952160741c621f504f68380b2b3f84d13c3e496f3168a5d264e7f04fb7caafae",
+  "details": {
+    "page_load_latency_seconds": 1.005,
+    "reactive_render_p95_ms": 28.44,
+    "all_5_acts_verified": true,
+    "mounted_controls": {
+      "dropdowns": 7,
+      "sliders": 2,
+      "buttons": 125
+    }
+  }
+}

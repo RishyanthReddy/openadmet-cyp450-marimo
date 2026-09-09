@@ -1,0 +1,82 @@
+{
+  "schema_version": "cyp2d6_manifest.v1",
+  "generated_at_utc": "2026-09-08T15:47:43.460402+00:00",
+  "receptors": {
+    "3TBG": {
+      "source_url": "https://files.rcsb.org/download/3TBG.pdb",
+      "source_pdb_sha256": "378ba25f138b2416bd1fc1ef0897474027b7ba93365a943d912301ba3f4992b8",
+      "resolution_angstrom": "2.10",
+      "chain": "A",
+      "retained_heteroatoms": [
+        "HEM"
+      ],
+      "removed_waters": true,
+      "alternate_location_policy": "blank_or_A_highest_occupancy",
+      "heme_fe_coord_angstrom": [
+        7.824,
+        26.318,
+        4.25
+      ],
+      "grid_center_angstrom": [
+        7.824,
+        26.318,
+        4.25
+      ],
+      "grid_size_angstrom": [
+        22.0,
+        22.0,
+        22.0
+      ],
+      "asp301_od1_coord_angstrom": [
+        8.688,
+        33.437,
+        -3.831
+      ],
+      "asp301_od2_coord_angstrom": [
+        6.944,
+        32.543,
+        -4.827
+      ],
+      "prepared_pdbqt_sha256": "47fe5cad0d1a206f57cfe338d8ce1c00a9f7b8d71b9894a4a17d5145684cde0b",
+      "preparation_tool": "RDKit/internal PDBQT converter v1.0"
+    },
+    "4WNW": {
+      "source_url": "https://files.rcsb.org/download/4WNW.pdb",
+      "source_pdb_sha256": "e8e028f16a2b3b836493e7d95b8fa08e9df88dff167625c7874821adab1f608d",
+      "resolution_angstrom": "3.30",
+      "chain": "A",
+      "retained_heteroatoms": [
+        "HEM"
+      ],
+      "removed_waters": true,
+      "alternate_location_policy": "blank_or_A_highest_occupancy",
+      "heme_fe_coord_angstrom": [
+        -12.185,
+        -16.913,
+        37.726
+      ],
+      "grid_center_angstrom": [
+        -12.185,
+        -16.913,
+        37.726
+      ],
+      "grid_size_angstrom": [
+        22.0,
+        22.0,
+        22.0
+      ],
+      "asp301_od1_coord_angstrom": [
+        -3.566,
+        -11.804,
+        36.285
+      ],
+      "asp301_od2_coord_angstrom": [
+        -4.232,
+        -9.833,
+        35.581
+      ],
+      "prepared_pdbqt_sha256": "d6940019a7018ae397cbcb369f777fce93a7419955d020fe596049930896b750",
+      "preparation_tool": "RDKit/internal PDBQT converter v1.0"
+    }
+  }
+}

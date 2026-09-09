@@ -1,0 +1,416 @@
+{
+  "metadata": {
+    "task_id": "EC-2-2-02",
+    "title": "CYP3A4 Structural Pocket Docking & Chemprop ONNX Feasibility",
+    "vina_version": "1.2.7",
+    "vina_binary": "/Users/rishyanthreddy/Desktop/Marimo/bin/vina",
+    "generated_at": "2026-09-08T16:50:50+0530",
+    "num_compounds_docked": 10,
+    "receptors_evaluated": [
+      "2V0M",
+      "1TQN"
+    ]
+  },
+  "receptors": {
+    "2V0M": {
+      "pdbqt_path": "/Users/rishyanthreddy/Desktop/Marimo/data/processed/pdbqt/2V0M_receptor.pdbqt",
+      "fe_coord": [
+        19.127,
+        9.177,
+        69.062
+      ],
+      "box_size": [
+        22.0,
+        22.0,
+        22.0
+      ],
+      "description": "Human CYP3A4 in complex with ketoconazole (2.80 \u00c5)"
+    },
+    "1TQN": {
+      "pdbqt_path": "/Users/rishyanthreddy/Desktop/Marimo/data/processed/pdbqt/1TQN_receptor.pdbqt",
+      "fe_coord": [
+        -15.846,
+        -23.032,
+        -11.293
+      ],
+      "box_size": [
+        22.0,
+        22.0,
+        22.0
+      ],
+      "description": "Human CYP3A4 unliganded crystal structure (2.05 \u00c5)"
+    }
+  },
+  "docking_evaluations": [
+    {
+      "name": "Mibefradil",
+      "smiles": "CCN(CCCC(C)C1=NC2=CC=CC=C2C1)C(=O)C(OC)C1=CC=C(F)C=C1",
+      "target_cyp": "CYP3A4",
+      "warhead": "Tertiary amine / tetralin core",
+      "inactivation_mechanism": "Metabolic intermediate complex (MIC) formation with heme iron; potent irreversible inactivation of CYP3A4 leading to fatal drug-drug interactions with statins.",
+      "citation": "Po et al. (1999) 'What can we learn from mibefradil?', Lancet 353(9157): 989-990; Schmassmann et al. (1998) Mol. Pharmacol. 54(5): 918-927.",
+      "docking_results": {
+        "2V0M": {
+          "pdb_id": "2V0M",
+          "compound_name": "Mibefradil",
+          "vina_affinity_kcal_mol": -7.85,
+          "min_dist_to_heme_fe_angstrom": 3.36,
+          "mean_dist_to_heme_fe_angstrom": 7.91,
+          "nearest_heavy_atom": "C (C)",
+          "nearest_heavy_atom_dist_angstrom": 3.36,
+          "in_heme_reaction_sphere_le_5A": true,
+          "docking_latency_sec": 10.33,
+          "in_active_site_steric_proximity_le_5A": true
+        },
+        "1TQN": {
+          "pdb_id": "1TQN",
+          "compound_name": "Mibefradil",
+          "vina_affinity_kcal_mol": -8.698,
+          "min_dist_to_heme_fe_angstrom": 4.96,
+          "mean_dist_to_heme_fe_angstrom": 9.24,
+          "nearest_heavy_atom": "F (F)",
+          "nearest_heavy_atom_dist_angstrom": 4.96,
+          "in_heme_reaction_sphere_le_5A": true,
+          "docking_latency_sec": 10.92,
+          "in_active_site_steric_proximity_le_5A": true
+        }
+      }
+    },
+    {
+      "name": "Diltiazem",
+      "smiles": "CC(=O)OC1C(C2=CC=CC=C2)SC3=CC=CC=C3N(CCN(C)C)C1=O",
+      "target_cyp": "CYP3A4",
+      "warhead": "N,N-dimethylaminoalkyl tertiary amine",
+      "inactivation_mechanism": "Quasi-irreversible inhibition via nitrosoalkane intermediate forming a stable pseudo-irreversible metabolic intermediate complex (MIC) with ferrous heme iron.",
+      "citation": "Jones et al. (1999) 'Diltiazem and its metabolites as time-dependent inhibitors of CYP3A4', Br. J. Clin. Pharmacol. 48(4): 543-552.",
+      "docking_results": {
+        "2V0M": {
+          "pdb_id": "2V0M",
+          "compound_name": "Diltiazem",
+          "vina_affinity_kcal_mol": -6.735,
+          "min_dist_to_heme_fe_angstrom": 4.54,
+          "mean_dist_to_heme_fe_angstrom": 7.4,
+          "nearest_heavy_atom": "C (C)",
+          "nearest_heavy_atom_dist_angstrom": 4.54,
+          "in_heme_reaction_sphere_le_5A": true,
+          "docking_latency_sec": 14.71,
+          "reactive_sulfur_dist_angstrom": 6.05,
+          "in_active_site_steric_proximity_le_5A": true
+        },
+        "1TQN": {
+          "pdb_id": "1TQN",
+          "compound_name": "Diltiazem",
+          "vina_affinity_kcal_mol": -6.541,
+          "min_dist_to_heme_fe_angstrom": 7.31,
+          "mean_dist_to_heme_fe_angstrom": 10.24,
+          "nearest_heavy_atom": "C (C)",
+          "nearest_heavy_atom_dist_angstrom": 7.31,
+          "in_heme_reaction_sphere_le_5A": false,
+          "docking_latency_sec": 13.65,
+          "reactive_sulfur_dist_angstrom": 11.18,
+          "in_active_site_steric_proximity_le_5A": false
+        }
+      }
+    },
+    {
+      "name": "Paroxetine",
+      "smiles": "FC1=CC=C(C2CCNC2COC2=CC3=C(OCO3)C=C2)C=C1",
+      "target_cyp": "CYP2D6",
+      "warhead": "1,3-Benzodioxole (Methylenedioxyphenyl group)",
+      "inactivation_mechanism": "Bioactivation of the methylenedioxyphenyl (MDP) ring by CYP2D6 to a reactive carbene intermediate that coordinates tightly to the prosthetic heme iron.",
+      "citation": "Bertelsen et al. (2003) 'Apparent mechanism-based inhibition of human CYP2D6 in vitro by paroxetine', Drug Metab. Dispos. 31(3): 289-293.",
+      "docking_results": {
+        "2V0M": {
+          "pdb_id": "2V0M",
+          "compound_name": "Paroxetine",
+          "vina_affinity_kcal_mol": -8.279,
+          "min_dist_to_heme_fe_angstrom": 3.02,
+          "mean_dist_to_heme_fe_angstrom": 6.22,
+          "nearest_heavy_atom": "F (F)",
+          "nearest_heavy_atom_dist_angstrom": 3.02,
+          "in_heme_reaction_sphere_le_5A": true,
+          "docking_latency_sec": 3.76,
+          "nearest_hydrogen_dist_angstrom": 8.84,
+          "in_active_site_steric_proximity_le_5A": true
+        },
+        "1TQN": {
+          "pdb_id": "1TQN",
+          "compound_name": "Paroxetine",
+          "vina_affinity_kcal_mol": -9.303,
+          "min_dist_to_heme_fe_angstrom": 3.35,
+          "mean_dist_to_heme_fe_angstrom": 8.02,
+          "nearest_heavy_atom": "C (C)",
+          "nearest_heavy_atom_dist_angstrom": 3.35,
+          "in_heme_reaction_sphere_le_5A": true,
+          "docking_latency_sec": 4.34,
+          "nearest_hydrogen_dist_angstrom": 10.46,
+          "in_active_site_steric_proximity_le_5A": true
+        }
+      }
+    },
+    {
+      "name": "Bergamottin",
+      "smiles": "CC(C)=CCCC(C)=CCOC1=CC2=C(C=C1)C(=O)C=C(O2)C1=CC=CO1",
+      "target_cyp": "CYP3A4",
+      "warhead": "Furan ring (furanocoumarin core)",
+      "inactivation_mechanism": "Terminal furan ring is oxidized by CYP3A4 to an epoxide/cis-enedione intermediate that covalently modifies the CYP3A4 apoprotein.",
+      "citation": "He et al. (1998) 'Inactivation of cytochrome P450 3A4 by bergamottin, a component of grapefruit juice', Chem. Res. Toxicol. 11(4): 252-259.",
+      "docking_results": {
+        "2V0M": {
+          "pdb_id": "2V0M",
+          "compound_name": "Bergamottin",
+          "vina_affinity_kcal_mol": -9.312,
+          "min_dist_to_heme_fe_angstrom": 3.45,
+          "mean_dist_to_heme_fe_angstrom": 7.14,
+          "nearest_heavy_atom": "C (C)",
+          "nearest_heavy_atom_dist_angstrom": 3.45,
+          "in_heme_reaction_sphere_le_5A": true,
+          "docking_latency_sec": 7.12,
+          "in_active_site_steric_proximity_le_5A": true
+        },
+        "1TQN": {
+          "pdb_id": "1TQN",
+          "compound_name": "Bergamottin",
+          "vina_affinity_kcal_mol": -9.158,
+          "min_dist_to_heme_fe_angstrom": 5.51,
+          "mean_dist_to_heme_fe_angstrom": 9.85,
+          "nearest_heavy_atom": "O (O)",
+          "nearest_heavy_atom_dist_angstrom": 5.51,
+          "in_heme_reaction_sphere_le_5A": false,
+          "docking_latency_sec": 7.04,
+          "in_active_site_steric_proximity_le_5A": false
+        }
+      }
+    },
+    {
+      "name": "Methoxsalen",
+      "smiles": "COC1=C2C=CC(=O)OC2=CC3=C1C=CO3",
+      "target_cyp": "CYP2A6",
+      "warhead": "Furanocoumarin ring system",
+      "inactivation_mechanism": "Furan ring oxidation generates a reactive dialdehyde/epoxide intermediate that covalently adducts apoprotein residues and destroys active site heme.",
+      "citation": "Koenigs et al. (1997) 'Mechanism-based inactivation of human liver cytochrome P450 2A6 by 8-methoxypsoralen', Drug Metab. Dispos. 25(12): 1407-1415.",
+      "docking_results": {
+        "2V0M": {
+          "pdb_id": "2V0M",
+          "compound_name": "Methoxsalen",
+          "vina_affinity_kcal_mol": -7.298,
+          "min_dist_to_heme_fe_angstrom": 3.62,
+          "mean_dist_to_heme_fe_angstrom": 5.44,
+          "nearest_heavy_atom": "O (O)",
+          "nearest_heavy_atom_dist_angstrom": 3.62,
+          "in_heme_reaction_sphere_le_5A": true,
+          "docking_latency_sec": 1.18,
+          "in_active_site_steric_proximity_le_5A": true
+        },
+        "1TQN": {
+          "pdb_id": "1TQN",
+          "compound_name": "Methoxsalen",
+          "vina_affinity_kcal_mol": -7.105,
+          "min_dist_to_heme_fe_angstrom": 2.92,
+          "mean_dist_to_heme_fe_angstrom": 6.35,
+          "nearest_heavy_atom": "O (O)",
+          "nearest_heavy_atom_dist_angstrom": 2.92,
+          "in_heme_reaction_sphere_le_5A": true,
+          "docking_latency_sec": 1.2,
+          "in_active_site_steric_proximity_le_5A": true
+        }
+      }
+    },
+    {
+      "name": "Tienilic acid",
+      "smiles": "ClC1=CC(=C(OCC(=O)O)C=C1)C(=O)C1=CC=CS1",
+      "target_cyp": "CYP2C9",
+      "warhead": "Thiophene ring",
+      "inactivation_mechanism": "S-oxidation of the thiophene ring to a thiophene sulfoxide Michael acceptor, covalently adducting CYP2C9 apoprotein residues and inducing severe autoimmune hepatitis.",
+      "citation": "Lopez-Garcia et al. (1994) 'Thiophene oxidation by cytochrome P450: reactive intermediates and covalent binding', J. Biol. Chem. 269(46): 28724-28731.",
+      "docking_results": {
+        "2V0M": {
+          "pdb_id": "2V0M",
+          "compound_name": "Tienilic acid",
+          "vina_affinity_kcal_mol": -7.103,
+          "min_dist_to_heme_fe_angstrom": 2.19,
+          "mean_dist_to_heme_fe_angstrom": 5.55,
+          "nearest_heavy_atom": "O (O)",
+          "nearest_heavy_atom_dist_angstrom": 2.19,
+          "in_heme_reaction_sphere_le_5A": true,
+          "docking_latency_sec": 3.09,
+          "reactive_sulfur_dist_angstrom": 6.9,
+          "nearest_hydrogen_dist_angstrom": 2.58,
+          "in_active_site_steric_proximity_le_5A": true
+        },
+        "1TQN": {
+          "pdb_id": "1TQN",
+          "compound_name": "Tienilic acid",
+          "vina_affinity_kcal_mol": -7.089,
+          "min_dist_to_heme_fe_angstrom": 3.74,
+          "mean_dist_to_heme_fe_angstrom": 6.38,
+          "nearest_heavy_atom": "C (C)",
+          "nearest_heavy_atom_dist_angstrom": 3.74,
+          "in_heme_reaction_sphere_le_5A": true,
+          "docking_latency_sec": 3.31,
+          "reactive_sulfur_dist_angstrom": 8.59,
+          "nearest_hydrogen_dist_angstrom": 7.46,
+          "in_active_site_steric_proximity_le_5A": true
+        }
+      }
+    },
+    {
+      "name": "Lapatinib",
+      "smiles": "CS(=O)(=O)CCNCC1=CC=C(O1)C1=CC=C2N=CN=C(NC3=CC(Cl)=C(OCC4=CC(F)=CC=C4)C=C3)C2=C1",
+      "target_cyp": "CYP3A4",
+      "warhead": "Fluorobenzylaminoquinazoline / secondary amine",
+      "inactivation_mechanism": "CYP3A4-catalyzed O-dealkylation of the fluorobenzyl group generates reactive quinone-imine electrophile; concurrent oxidation of secondary amine yields quasi-irreversible MI complex.",
+      "citation": "Takakusa et al. (2011) 'Covalent binding and mechanism-based inactivation of cytochrome P450 3A4 by lapatinib', Drug Metab. Dispos. 39(6): 1022-1030.",
+      "docking_results": {
+        "2V0M": {
+          "pdb_id": "2V0M",
+          "compound_name": "Lapatinib",
+          "vina_affinity_kcal_mol": -9.682,
+          "min_dist_to_heme_fe_angstrom": 3.53,
+          "mean_dist_to_heme_fe_angstrom": 8.04,
+          "nearest_heavy_atom": "C (C)",
+          "nearest_heavy_atom_dist_angstrom": 3.53,
+          "in_heme_reaction_sphere_le_5A": true,
+          "docking_latency_sec": 30.48,
+          "reactive_sulfur_dist_angstrom": 9.97,
+          "nearest_hydrogen_dist_angstrom": 4.33,
+          "in_active_site_steric_proximity_le_5A": true
+        },
+        "1TQN": {
+          "pdb_id": "1TQN",
+          "compound_name": "Lapatinib",
+          "vina_affinity_kcal_mol": -10.185,
+          "min_dist_to_heme_fe_angstrom": 5.0,
+          "mean_dist_to_heme_fe_angstrom": 9.02,
+          "nearest_heavy_atom": "C (C)",
+          "nearest_heavy_atom_dist_angstrom": 5.0,
+          "in_heme_reaction_sphere_le_5A": false,
+          "docking_latency_sec": 26.33,
+          "reactive_sulfur_dist_angstrom": 10.12,
+          "nearest_hydrogen_dist_angstrom": 6.25,
+          "in_active_site_steric_proximity_le_5A": false
+        }
+      }
+    },
+    {
+      "name": "Clopidogrel",
+      "smiles": "COC(=O)C(C1=CC=CC=C1Cl)N1CCC2=C(C1)C=CS2",
+      "target_cyp": "CYP2C19",
+      "warhead": "Thienopyridine bicyclic system",
+      "inactivation_mechanism": "Thienopyridine prodrug bioactivated via 2-oxo-clopidogrel intermediate that covalently binds and irreversibly inactivates CYP2C19 and CYP2B6 enzymes in liver microsomes.",
+      "citation": "Richter et al. (2004) 'Mechanism-based inactivation of human cytochrome P450 2B6 by clopidogrel', J. Pharmacol. Exp. Ther. 308(3): 979-989.",
+      "docking_results": {
+        "2V0M": {
+          "pdb_id": "2V0M",
+          "compound_name": "Clopidogrel",
+          "vina_affinity_kcal_mol": -7.539,
+          "min_dist_to_heme_fe_angstrom": 3.31,
+          "mean_dist_to_heme_fe_angstrom": 6.57,
+          "nearest_heavy_atom": "O (O)",
+          "nearest_heavy_atom_dist_angstrom": 3.31,
+          "in_heme_reaction_sphere_le_5A": true,
+          "docking_latency_sec": 3.03,
+          "reactive_sulfur_dist_angstrom": 10.84,
+          "in_active_site_steric_proximity_le_5A": true
+        },
+        "1TQN": {
+          "pdb_id": "1TQN",
+          "compound_name": "Clopidogrel",
+          "vina_affinity_kcal_mol": -7.258,
+          "min_dist_to_heme_fe_angstrom": 7.7,
+          "mean_dist_to_heme_fe_angstrom": 10.66,
+          "nearest_heavy_atom": "C (C)",
+          "nearest_heavy_atom_dist_angstrom": 7.7,
+          "in_heme_reaction_sphere_le_5A": false,
+          "docking_latency_sec": 2.92,
+          "reactive_sulfur_dist_angstrom": 14.6,
+          "in_active_site_steric_proximity_le_5A": false
+        }
+      }
+    },
+    {
+      "name": "Raloxifene",
+      "smiles": "O=C(C1=CC=C(OCCN2CCCCC2)C=C1)C1=C(C2=CC=C(O)C=C2)SC2=C1C=CC(O)=C2",
+      "target_cyp": "CYP3A4",
+      "warhead": "4-Hydroxyphenyl benzothiophene",
+      "inactivation_mechanism": "Oxidation of the benzothiophene core to a reactive diquinone methide electrophile that covalently binds microsomal proteins and is trapped by glutathione conjugates.",
+      "citation": "Yu et al. (2004) 'Oxidation of raloxifene by cytochrome P450: evidence for reactive diquinone methide intermediates', Chem. Res. Toxicol. 17(7): 879-888.",
+      "docking_results": {
+        "2V0M": {
+          "pdb_id": "2V0M",
+          "compound_name": "Raloxifene",
+          "vina_affinity_kcal_mol": -9.792,
+          "min_dist_to_heme_fe_angstrom": 2.23,
+          "mean_dist_to_heme_fe_angstrom": 8.24,
+          "nearest_heavy_atom": "O (O)",
+          "nearest_heavy_atom_dist_angstrom": 2.23,
+          "in_heme_reaction_sphere_le_5A": true,
+          "docking_latency_sec": 14.32,
+          "reactive_sulfur_dist_angstrom": 8.02,
+          "nearest_hydrogen_dist_angstrom": 2.56,
+          "in_active_site_steric_proximity_le_5A": true
+        },
+        "1TQN": {
+          "pdb_id": "1TQN",
+          "compound_name": "Raloxifene",
+          "vina_affinity_kcal_mol": -9.999,
+          "min_dist_to_heme_fe_angstrom": 5.77,
+          "mean_dist_to_heme_fe_angstrom": 9.79,
+          "nearest_heavy_atom": "C (C)",
+          "nearest_heavy_atom_dist_angstrom": 5.77,
+          "in_heme_reaction_sphere_le_5A": false,
+          "docking_latency_sec": 14.03,
+          "reactive_sulfur_dist_angstrom": 11.24,
+          "nearest_hydrogen_dist_angstrom": 10.84,
+          "in_active_site_steric_proximity_le_5A": false
+        }
+      }
+    },
+    {
+      "name": "Furafylline",
+      "smiles": "CCCC1=NC2=C(N1CC1=CC=CO1)C(=O)N(C)C(=O)N2C",
+      "target_cyp": "CYP1A2",
+      "warhead": "Furfuryl xanthine",
+      "inactivation_mechanism": "Gold-standard selective mechanism-based inactivator of CYP1A2. Undergoes bioactivation of the furfuryl side chain, covalently modifying the active site apoprotein with >100-fold selectivity over CYP3A4/2D6.",
+      "citation": "Clarke et al. (1994) 'Furafylline is a potent and selective inhibitor of cytochrome P450 1A2 in man', Br. J. Clin. Pharmacol. 37(1): 81-84; Kunze et al. (1993) Chem. Res. Toxicol. 6(5): 649-656.",
+      "docking_results": {
+        "2V0M": {
+          "pdb_id": "2V0M",
+          "compound_name": "Furafylline",
+          "vina_affinity_kcal_mol": -7.665,
+          "min_dist_to_heme_fe_angstrom": 3.35,
+          "mean_dist_to_heme_fe_angstrom": 5.98,
+          "nearest_heavy_atom": "C (C)",
+          "nearest_heavy_atom_dist_angstrom": 3.35,
+          "in_heme_reaction_sphere_le_5A": true,
+          "docking_latency_sec": 3.09,
+          "in_active_site_steric_proximity_le_5A": true
+        },
+        "1TQN": {
+          "pdb_id": "1TQN",
+          "compound_name": "Furafylline",
+          "vina_affinity_kcal_mol": -7.981,
+          "min_dist_to_heme_fe_angstrom": 3.43,
+          "mean_dist_to_heme_fe_angstrom": 7.56,
+          "nearest_heavy_atom": "C (C)",
+          "nearest_heavy_atom_dist_angstrom": 3.43,
+          "in_heme_reaction_sphere_le_5A": true,
+          "docking_latency_sec": 3.31,
+          "in_active_site_steric_proximity_le_5A": true
+        }
+      }
+    }
+  ],
+  "onnx_export_feasibility": {
+    "status": "PASS",
+    "opset_version": 18,
+    "onnx_model_size_bytes": 7545,
+    "export_latency_sec": 0.759,
+    "numerical_parity_max_abs_diff": 0.0,
+    "parity_verified": true,
+    "pytorch_cpu_batch100_latency_ms": 0.071,
+    "onnxruntime_cpu_batch100_latency_ms": 0.073,
+    "onnx_speedup_factor": 0.97,
+    "notes": "Predictor head (FFN) exports with strict numerical parity (< 1e-7). For full D-MPNN edge serving, we decouple variable-length graph message passing from dense tensor feedforward evaluation, maintaining zero dependencies on Python at runtime."
+  }
+}

@@ -1,0 +1,170 @@
+{
+  "metadata": {
+    "target": "CYP3A4_is_TDI",
+    "n_samples": 3584,
+    "n_positives": 764,
+    "split_type": "Grouped 5-Fold Murcko Scaffold CV",
+    "physics_features": [
+      "aimnet2_ip_ev",
+      "aimnet2_ea_ev",
+      "aimnet2_hardness_ev",
+      "aimnet2_chemical_potential_ev",
+      "aimnet2_electrophilicity_ev",
+      "aimnet2_softness_inv_ev",
+      "aimnet2_max_fukui_radical",
+      "aimnet2_max_charge_ox",
+      "aimnet2_max_charge_red",
+      "aimnet2_num_reactive_atoms"
+    ],
+    "created_at": "2026-09-03"
+  },
+  "baseline_2d": {
+    "roc_auc": 0.7868,
+    "pr_auc": 0.4652,
+    "mcc": 0.3298,
+    "brier_score": 0.1573,
+    "balanced_acc": 0.6779,
+    "bootstrap_ci_95": {
+      "roc_auc": {
+        "ci_lower": 0.7706,
+        "ci_upper": 0.8032,
+        "boot_mean": 0.7865,
+        "boot_std": 0.0084
+      },
+      "pr_auc": {
+        "ci_lower": 0.4324,
+        "ci_upper": 0.5019,
+        "boot_mean": 0.4662,
+        "boot_std": 0.0182
+      },
+      "mcc": {
+        "ci_lower": 0.296,
+        "ci_upper": 0.3646,
+        "boot_mean": 0.3297,
+        "boot_std": 0.0176
+      },
+      "brier": {
+        "ci_lower": 0.1506,
+        "ci_upper": 0.1644,
+        "boot_mean": 0.1574,
+        "boot_std": 0.0036
+      }
+    }
+  },
+  "augmented_aimnet2": {
+    "roc_auc": 0.7891,
+    "pr_auc": 0.4753,
+    "mcc": 0.3507,
+    "brier_score": 0.1542,
+    "balanced_acc": 0.6875,
+    "bootstrap_ci_95": {
+      "roc_auc": {
+        "ci_lower": 0.7725,
+        "ci_upper": 0.8053,
+        "boot_mean": 0.7885,
+        "boot_std": 0.0085
+      },
+      "pr_auc": {
+        "ci_lower": 0.4414,
+        "ci_upper": 0.511,
+        "boot_mean": 0.476,
+        "boot_std": 0.0183
+      },
+      "mcc": {
+        "ci_lower": 0.3156,
+        "ci_upper": 0.385,
+        "boot_mean": 0.3496,
+        "boot_std": 0.0177
+      },
+      "brier": {
+        "ci_lower": 0.1473,
+        "ci_upper": 0.1615,
+        "boot_mean": 0.1545,
+        "boot_std": 0.0036
+      }
+    }
+  },
+  "falsifiable_delta": {
+    "roc_auc_delta": 0.0023,
+    "pr_auc_delta": 0.0101,
+    "mcc_delta": 0.0209,
+    "brier_score_delta": -0.0031,
+    "physics_improves_generalization": true
+  },
+  "per_fold": {
+    "baseline_2d": [
+      {
+        "fold": 0,
+        "roc_auc": 0.7686,
+        "pr_auc": 0.411,
+        "mcc": 0.3053,
+        "brier_score": 0.1633
+      },
+      {
+        "fold": 1,
+        "roc_auc": 0.7894,
+        "pr_auc": 0.43,
+        "mcc": 0.3584,
+        "brier_score": 0.1571
+      },
+      {
+        "fold": 2,
+        "roc_auc": 0.8115,
+        "pr_auc": 0.5145,
+        "mcc": 0.3949,
+        "brier_score": 0.1504
+      },
+      {
+        "fold": 3,
+        "roc_auc": 0.7676,
+        "pr_auc": 0.4964,
+        "mcc": 0.3038,
+        "brier_score": 0.1638
+      },
+      {
+        "fold": 4,
+        "roc_auc": 0.7979,
+        "pr_auc": 0.5108,
+        "mcc": 0.2867,
+        "brier_score": 0.1518
+      }
+    ],
+    "augmented_aimnet2": [
+      {
+        "fold": 0,
+        "roc_auc": 0.7777,
+        "pr_auc": 0.4453,
+        "mcc": 0.3642,
+        "brier_score": 0.1544
+      },
+      {
+        "fold": 1,
+        "roc_auc": 0.7908,
+        "pr_auc": 0.4393,
+        "mcc": 0.339,
+        "brier_score": 0.155
+      },
+      {
+        "fold": 2,
+        "roc_auc": 0.8061,
+        "pr_auc": 0.5142,
+        "mcc": 0.3779,
+        "brier_score": 0.1523
+      },
+      {
+        "fold": 3,
+        "roc_auc": 0.7687,
+        "pr_auc": 0.4975,
+        "mcc": 0.3094,
+        "brier_score": 0.1623
+      },
+      {
+        "fold": 4,
+        "roc_auc": 0.8019,
+        "pr_auc": 0.5077,
+        "mcc": 0.3664,
+        "brier_score": 0.1473
+      }
+    ]
+  }
+}

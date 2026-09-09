@@ -1,0 +1,48 @@
+{
+  "version": "1",
+  "metadata": {
+    "marimo_version": "0.24.0",
+    "script_metadata_hash": "f00257ed8e7829038cd6e4fcd66e9563"
+  },
+  "cells": [
+    {
+      "id": "Hbol",
+      "code_hash": "1d0db38904205bec4d6f6f6a1f6cec3e",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "MJUe",
+      "code_hash": "24872ff666c05fcb9e34ac1d694a1ea1",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "vblA",
+      "code_hash": "20b423da7d99a498fee120cdc481a66b",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<div style='display: flex;flex: 1;flex-direction: column;justify-content: flex-start;align-items: normal;flex-wrap: nowrap;gap: 0.5rem'><span class=\"markdown prose dark:prose-invert contents\"><h1 id=\"phase-0-technical-spike-molabmarimoio-runtime-verification\">Phase 0 Technical Spike: molab.marimo.io Runtime Verification</h1>\n<blockquote>\n<span class=\"paragraph\"><strong>Gate 4 Acceptance Criteria:</strong> Pinned <code>marimo==0.24.0</code> compatibility, sandboxed anywidget rendering, and pure CPU execution.</span>\n</blockquote></span><marimo-ui-element object-id='vblA-0' random-id='015701be-5a0c-7a10-faf0-0b0f83aa2a2b'><marimo-anywidget data-initial-value='{&quot;model_id&quot;:&quot;01770fb4a8e54920aa9491a4f47d1f0e&quot;}' data-label='null' data-model-id='&quot;01770fb4a8e54920aa9491a4f47d1f0e&quot;'></marimo-anywidget></marimo-ui-element></div>"
+          }
+        }
+      ],
+      "console": []
+    }
+  ]
+}

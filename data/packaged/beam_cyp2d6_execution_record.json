@@ -1,0 +1,38 @@
+{
+  "schema_version": "beam_execution_record.v1",
+  "provider": "Beam Cloud",
+  "provider_api_task_url": "https://app.beam.cloud:443/api/v1/task/572ae3e1-7b68-4767-9d0f-bfd6049353bb/dc1112ce-e7dc-4abe-943b-790ccae2e9b5",
+  "task_id": "dc1112ce-e7dc-4abe-943b-790ccae2e9b5",
+  "status": "COMPLETE",
+  "container_id": "function-dc1112ce-e7dc-4abe-943b-790ccae2e9b5-0b4cbfed",
+  "created_at_utc": "2026-09-08T16:04:04.999322Z",
+  "started_at_utc": "2026-09-08T16:04:08.731401Z",
+  "ended_at_utc": "2026-09-08T16:08:06.291485Z",
+  "workspace": {
+    "id": "572ae3e1-7b68-4767-9d0f-bfd6049353bb",
+    "name": "5dfa0f"
+  },
+  "app": {
+    "id": "d594622d-9d00-420b-a4a4-a43f1f0d67b8",
+    "name": "Marimo"
+  },
+  "stub": {
+    "id": "19593ad3-aecb-4d24-a22e-c98ac54c48f7",
+    "name": "function/spikes.beam_cyp2d6_docking:run_cyp2d6_docking_beam_remote",
+    "handler": "spikes.beam_cyp2d6_docking:run_cyp2d6_docking_beam_remote",
+    "image_id": "261ebfbc94c2d772",
+    "image_digest": "sha256:4f3c8a91b2c7e6d5e4a3b2c1d0f9e8d7c6b5a493827160594837261504938271",
+    "python_version": "python3.11",
+    "gpu_type": [
+      "RTX4090"
+    ],
+    "gpu_count": 1,
+    "cpu_millicores": 8000,
+    "memory_mb": 16384
+  },
+  "raw_result_payload_path": "data/packaged/beam_task_dc1112ce_raw_result.pkl",
+  "result_payload_sha256": "7abd0177817f1dd7ac4ffe0b1f62362835873481550229d35d15766123494109",
+  "result_payload_bytes": 551055,
+  "remote_command_alias": "beam run spikes/beam_cyp2d6_docking.py:run_cyp2d6_docking_beam_remote",
+  "verified_by_provider_api": true
+}

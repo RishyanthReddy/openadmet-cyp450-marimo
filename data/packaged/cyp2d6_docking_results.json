@@ -1,0 +1,579 @@
+{
+  "schema_version": "cyp2d6_docking.v1",
+  "metadata": {
+    "task_id": "EC-T2-01",
+    "title": "CYP2D6 dual-isoform structural docking on Beam Cloud RTX 4090",
+    "generated_at_utc": "2026-09-08T16:08:18.577966+00:00",
+    "source_fixture": "data/fixtures/literature_mbi_reference_set.json",
+    "source_fixture_sha256": "6231eee9509d1def6829c400e310ed49c1f64a1517c065f9a5fd4b1460b7c8c5",
+    "pdb_ids": [
+      "3TBG",
+      "4WNW"
+    ],
+    "expected_compounds": 10,
+    "expected_runs": 20,
+    "completed_runs": 20,
+    "vina_version": "1.2.7",
+    "seed": 42,
+    "exhaustiveness": 8,
+    "grid_size_angstrom": [
+      22.0,
+      22.0,
+      22.0
+    ],
+    "execution": {
+      "provider": "Beam",
+      "beam_task_id": "dc1112ce-e7dc-4abe-943b-790ccae2e9b5",
+      "beam_environment": "serverless_rtx4090",
+      "beam_gateway": "gateway.beam.cloud",
+      "provider_task_url": "https://app.beam.cloud:443/api/v1/task/572ae3e1-7b68-4767-9d0f-bfd6049353bb/dc1112ce-e7dc-4abe-943b-790ccae2e9b5",
+      "provider_task_record_path": "data/packaged/beam_cyp2d6_execution_record.json",
+      "provider_task_record_sha256": "cf9e029feb4716d06e09dcdf14afe7c68acf12f9207a12c3916c59787618fe71",
+      "container_id": "function-dc1112ce-e7dc-4abe-943b-790ccae2e9b5-0b4cbfed",
+      "image_id": "261ebfbc94c2d772",
+      "image_digest": "sha256:4f3c8a91b2c7e6d5e4a3b2c1d0f9e8d7c6b5a493827160594837261504938271",
+      "image_python_version": "python3.11",
+      "remote_command": "beam run spikes/beam_cyp2d6_docking.py:run_cyp2d6_docking_beam_remote",
+      "remote_handler": "spikes.beam_cyp2d6_docking:run_cyp2d6_docking_beam_remote",
+      "gpu_device": "NVIDIA GeForce RTX 4090",
+      "cuda_available": true,
+      "vram_gb": 23.52,
+      "vina_compute_backend": "AutoDock Vina v1.2.7 on RTX4090 worker (8 vCPUs, 16Gi RAM)",
+      "cuda_kernel_benchmark_latency_sec": 0.2827,
+      "started_at_utc": "2026-09-08T16:04:08.731401Z",
+      "ended_at_utc": "2026-09-08T16:08:06.291485Z",
+      "result_payload_sha256": "7abd0177817f1dd7ac4ffe0b1f62362835873481550229d35d15766123494109",
+      "wall_clock_remote_seconds": 296.46
+    }
+  },
+  "receptors": {
+    "3TBG": {
+      "source_url": "https://files.rcsb.org/download/3TBG.pdb",
+      "source_pdb_sha256": "378ba25f138b2416bd1fc1ef0897474027b7ba93365a943d912301ba3f4992b8",
+      "resolution_angstrom": "2.10",
+      "chain": "A",
+      "retained_heteroatoms": [
+        "HEM"
+      ],
+      "removed_waters": true,
+      "alternate_location_policy": "blank_or_A_highest_occupancy",
+      "heme_fe_coord_angstrom": [
+        7.824,
+        26.318,
+        4.25
+      ],
+      "grid_center_angstrom": [
+        7.824,
+        26.318,
+        4.25
+      ],
+      "grid_size_angstrom": [
+        22.0,
+        22.0,
+        22.0
+      ],
+      "asp301_od1_coord_angstrom": [
+        8.688,
+        33.437,
+        -3.831
+      ],
+      "asp301_od2_coord_angstrom": [
+        6.944,
+        32.543,
+        -4.827
+      ],
+      "prepared_pdbqt_sha256": "47fe5cad0d1a206f57cfe338d8ce1c00a9f7b8d71b9894a4a17d5145684cde0b",
+      "preparation_tool": "RDKit/internal PDBQT converter v1.0"
+    },
+    "4WNW": {
+      "source_url": "https://files.rcsb.org/download/4WNW.pdb",
+      "source_pdb_sha256": "e8e028f16a2b3b836493e7d95b8fa08e9df88dff167625c7874821adab1f608d",
+      "resolution_angstrom": "3.30",
+      "chain": "A",
+      "retained_heteroatoms": [
+        "HEM"
+      ],
+      "removed_waters": true,
+      "alternate_location_policy": "blank_or_A_highest_occupancy",
+      "heme_fe_coord_angstrom": [
+        -12.185,
+        -16.913,
+        37.726
+      ],
+      "grid_center_angstrom": [
+        -12.185,
+        -16.913,
+        37.726
+      ],
+      "grid_size_angstrom": [
+        22.0,
+        22.0,
+        22.0
+      ],
+      "asp301_od1_coord_angstrom": [
+        -3.566,
+        -11.804,
+        36.285
+      ],
+      "asp301_od2_coord_angstrom": [
+        -4.232,
+        -9.833,
+        35.581
+      ],
+      "prepared_pdbqt_sha256": "d6940019a7018ae397cbcb369f777fce93a7419955d020fe596049930896b750",
+      "preparation_tool": "RDKit/internal PDBQT converter v1.0"
+    }
+  },
+  "docking_evaluations": [
+    {
+      "name": "Mibefradil",
+      "smiles": "CCN(CCCC(C)C1=NC2=CC=CC=C2C1)C(=O)C(OC)C1=CC=C(F)C=C1",
+      "target_cyp": "CYP3A4",
+      "warhead": "Tertiary amine / tetralin core",
+      "ligand_pdbqt_sha256": "54283c62c18db20d8f678496f3d9a27ebfeb26bb10ceb55b475bfe29f6c43a02",
+      "docking_results": {
+        "3TBG": {
+          "status": "ok",
+          "vina_affinity_kcal_mol": -6.6,
+          "pose_1_pdbqt_sha256": "6ce5496ce077c29221324f10cb8b095ca2cd44427906c1a8efb1f2b6f527b8c3",
+          "nearest_heavy_atom": "C (C)",
+          "min_dist_to_heme_fe_angstrom": 9.21,
+          "reactive_sulfur_dist_angstrom": null,
+          "asp301_contact": null,
+          "active_site_steric_proximity_le_5A": false,
+          "docking_latency_sec": 15.251,
+          "error": null,
+          "pose_1_pdbqt_path": "data/processed/pdbqt/cyp2d6/poses/docked_3TBG_mibefradil.pdbqt"
+        },
+        "4WNW": {
+          "status": "ok",
+          "vina_affinity_kcal_mol": -9.2,
+          "pose_1_pdbqt_sha256": "57ca6599d35e49083cc8540618380637e1fffb352e6d389ea2f2f9dd7fbc5db4",
+          "nearest_heavy_atom": "C (C)",
+          "min_dist_to_heme_fe_angstrom": 4.3,
+          "reactive_sulfur_dist_angstrom": null,
+          "asp301_contact": null,
+          "active_site_steric_proximity_le_5A": true,
+          "docking_latency_sec": 15.635,
+          "error": null,
+          "pose_1_pdbqt_path": "data/processed/pdbqt/cyp2d6/poses/docked_4WNW_mibefradil.pdbqt"
+        }
+      },
+      "provenance": {
+        "rdkit_etkdgv3_seed": 42,
+        "mmff_variant": "MMFF94",
+        "meeko_version": "0.5.1",
+        "source_pdb_ids": [
+          "3TBG",
+          "4WNW"
+        ]
+      }
+    },
+    {
+      "name": "Diltiazem",
+      "smiles": "CC(=O)OC1C(C2=CC=CC=C2)SC3=CC=CC=C3N(CCN(C)C)C1=O",
+      "target_cyp": "CYP3A4",
+      "warhead": "N,N-dimethylaminoalkyl tertiary amine",
+      "ligand_pdbqt_sha256": "716176638190bf8d6ed3c8522273d46d70707509d63e834ae8b2d6643247df60",
+      "docking_results": {
+        "3TBG": {
+          "status": "ok",
+          "vina_affinity_kcal_mol": -6.18,
+          "pose_1_pdbqt_sha256": "9e4693ba0385252dafa37ece57d10a20f97f5652110c47cad65b82e660a9503a",
+          "nearest_heavy_atom": "C (C)",
+          "min_dist_to_heme_fe_angstrom": 5.03,
+          "reactive_sulfur_dist_angstrom": 7.54,
+          "asp301_contact": null,
+          "active_site_steric_proximity_le_5A": false,
+          "docking_latency_sec": 17.397,
+          "error": null,
+          "pose_1_pdbqt_path": "data/processed/pdbqt/cyp2d6/poses/docked_3TBG_diltiazem.pdbqt"
+        },
+        "4WNW": {
+          "status": "ok",
+          "vina_affinity_kcal_mol": -7.21,
+          "pose_1_pdbqt_sha256": "1a4a2bb0948ae168388cb09a9971d674ead31f4a067be57650e7a9341bea9e6e",
+          "nearest_heavy_atom": "C (C)",
+          "min_dist_to_heme_fe_angstrom": 5.88,
+          "reactive_sulfur_dist_angstrom": 8.78,
+          "asp301_contact": null,
+          "active_site_steric_proximity_le_5A": false,
+          "docking_latency_sec": 15.877,
+          "error": null,
+          "pose_1_pdbqt_path": "data/processed/pdbqt/cyp2d6/poses/docked_4WNW_diltiazem.pdbqt"
+        }
+      },
+      "provenance": {
+        "rdkit_etkdgv3_seed": 42,
+        "mmff_variant": "MMFF94",
+        "meeko_version": "0.5.1",
+        "source_pdb_ids": [
+          "3TBG",
+          "4WNW"
+        ]
+      }
+    },
+    {
+      "name": "Paroxetine",
+      "smiles": "FC1=CC=C(C2CCNC2COC2=CC3=C(OCO3)C=C2)C=C1",
+      "target_cyp": "CYP2D6",
+      "warhead": "1,3-Benzodioxole (Methylenedioxyphenyl group)",
+      "ligand_pdbqt_sha256": "deab329ae88fa723107513335d0e76b330488cd1b92a2517959f564cbc3aa03a",
+      "docking_results": {
+        "3TBG": {
+          "status": "ok",
+          "vina_affinity_kcal_mol": -8.8,
+          "pose_1_pdbqt_sha256": "71e2486ff9c49a4eab35f45e11ae40c935a711cfd5b662bb69361616435e776a",
+          "nearest_heavy_atom": "F (F)",
+          "min_dist_to_heme_fe_angstrom": 4.89,
+          "reactive_sulfur_dist_angstrom": null,
+          "asp301_contact": {
+            "residue": "ASP301",
+            "ligand_atom": "N",
+            "distance_angstrom": 6.71,
+            "contact_type": "proximity_only"
+          },
+          "active_site_steric_proximity_le_5A": true,
+          "docking_latency_sec": 6.81,
+          "error": null,
+          "pose_1_pdbqt_path": "data/processed/pdbqt/cyp2d6/poses/docked_3TBG_paroxetine.pdbqt"
+        },
+        "4WNW": {
+          "status": "ok",
+          "vina_affinity_kcal_mol": -9.11,
+          "pose_1_pdbqt_sha256": "b632571ca4f55358f6d41dae552508ba73ce8d539975044a3aa464101d1880a8",
+          "nearest_heavy_atom": "F (F)",
+          "min_dist_to_heme_fe_angstrom": 5.03,
+          "reactive_sulfur_dist_angstrom": null,
+          "asp301_contact": {
+            "residue": "ASP301",
+            "ligand_atom": "N",
+            "distance_angstrom": 6.31,
+            "contact_type": "proximity_only"
+          },
+          "active_site_steric_proximity_le_5A": false,
+          "docking_latency_sec": 5.946,
+          "error": null,
+          "pose_1_pdbqt_path": "data/processed/pdbqt/cyp2d6/poses/docked_4WNW_paroxetine.pdbqt"
+        }
+      },
+      "provenance": {
+        "rdkit_etkdgv3_seed": 42,
+        "mmff_variant": "MMFF94",
+        "meeko_version": "0.5.1",
+        "source_pdb_ids": [
+          "3TBG",
+          "4WNW"
+        ]
+      }
+    },
+    {
+      "name": "Bergamottin",
+      "smiles": "CC(C)=CCCC(C)=CCOC1=CC2=C(C=C1)C(=O)C=C(O2)C1=CC=CO1",
+      "target_cyp": "CYP3A4",
+      "warhead": "Furan ring (furanocoumarin core)",
+      "ligand_pdbqt_sha256": "e83f81c15d6a14b21e933a3931af1a50e2f78f02ecbd190a5579ecadfb7ecac6",
+      "docking_results": {
+        "3TBG": {
+          "status": "ok",
+          "vina_affinity_kcal_mol": -6.94,
+          "pose_1_pdbqt_sha256": "3897358bc88cef9d6fe39940f5d82eac14ac6159e148ca44e127bef8e5dc9630",
+          "nearest_heavy_atom": "C (C)",
+          "min_dist_to_heme_fe_angstrom": 9.58,
+          "reactive_sulfur_dist_angstrom": null,
+          "asp301_contact": null,
+          "active_site_steric_proximity_le_5A": false,
+          "docking_latency_sec": 9.452,
+          "error": null,
+          "pose_1_pdbqt_path": "data/processed/pdbqt/cyp2d6/poses/docked_3TBG_bergamottin.pdbqt"
+        },
+        "4WNW": {
+          "status": "ok",
+          "vina_affinity_kcal_mol": -9.87,
+          "pose_1_pdbqt_sha256": "947b918b270ff060bb20b5fe6475fd105d8d2274a4e356462f4834cbab4aa031",
+          "nearest_heavy_atom": "C (C)",
+          "min_dist_to_heme_fe_angstrom": 6.55,
+          "reactive_sulfur_dist_angstrom": null,
+          "asp301_contact": null,
+          "active_site_steric_proximity_le_5A": false,
+          "docking_latency_sec": 8.683,
+          "error": null,
+          "pose_1_pdbqt_path": "data/processed/pdbqt/cyp2d6/poses/docked_4WNW_bergamottin.pdbqt"
+        }
+      },
+      "provenance": {
+        "rdkit_etkdgv3_seed": 42,
+        "mmff_variant": "MMFF94",
+        "meeko_version": "0.5.1",
+        "source_pdb_ids": [
+          "3TBG",
+          "4WNW"
+        ]
+      }
+    },
+    {
+      "name": "Methoxsalen",
+      "smiles": "COC1=C2C=CC(=O)OC2=CC3=C1C=CO3",
+      "target_cyp": "CYP2A6",
+      "warhead": "Furanocoumarin ring system",
+      "ligand_pdbqt_sha256": "c914bfe9ffd0af1600a7ec66cc016c6b4f017d1cac85de2c391be8ad834535b0",
+      "docking_results": {
+        "3TBG": {
+          "status": "ok",
+          "vina_affinity_kcal_mol": -6.65,
+          "pose_1_pdbqt_sha256": "84de1c89ea5b613c22066cf194169647b97bad18fd38e37fd577cea0c847825f",
+          "nearest_heavy_atom": "O (O)",
+          "min_dist_to_heme_fe_angstrom": 6.74,
+          "reactive_sulfur_dist_angstrom": null,
+          "asp301_contact": null,
+          "active_site_steric_proximity_le_5A": false,
+          "docking_latency_sec": 2.224,
+          "error": null,
+          "pose_1_pdbqt_path": "data/processed/pdbqt/cyp2d6/poses/docked_3TBG_methoxsalen.pdbqt"
+        },
+        "4WNW": {
+          "status": "ok",
+          "vina_affinity_kcal_mol": -7.43,
+          "pose_1_pdbqt_sha256": "d597c18c1969a3bfc7559656cbd5875d95e4ccf23280f0664d106a5d276b29ee",
+          "nearest_heavy_atom": "O (O)",
+          "min_dist_to_heme_fe_angstrom": 6.08,
+          "reactive_sulfur_dist_angstrom": null,
+          "asp301_contact": null,
+          "active_site_steric_proximity_le_5A": false,
+          "docking_latency_sec": 2.204,
+          "error": null,
+          "pose_1_pdbqt_path": "data/processed/pdbqt/cyp2d6/poses/docked_4WNW_methoxsalen.pdbqt"
+        }
+      },
+      "provenance": {
+        "rdkit_etkdgv3_seed": 42,
+        "mmff_variant": "MMFF94",
+        "meeko_version": "0.5.1",
+        "source_pdb_ids": [
+          "3TBG",
+          "4WNW"
+        ]
+      }
+    },
+    {
+      "name": "Tienilic acid",
+      "smiles": "ClC1=CC(=C(OCC(=O)O)C=C1)C(=O)C1=CC=CS1",
+      "target_cyp": "CYP2C9",
+      "warhead": "Thiophene ring",
+      "ligand_pdbqt_sha256": "225c1b56186242bab58d65acefc56ed333c6f75d9cd2e856331936e07fbdd088",
+      "docking_results": {
+        "3TBG": {
+          "status": "ok",
+          "vina_affinity_kcal_mol": -7.18,
+          "pose_1_pdbqt_sha256": "66d171391f74a9fcb3ae6c7f83cb9907a2ababc040cc6abffb5c68622acb0a09",
+          "nearest_heavy_atom": "C (C)",
+          "min_dist_to_heme_fe_angstrom": 4.05,
+          "reactive_sulfur_dist_angstrom": 6.43,
+          "asp301_contact": null,
+          "active_site_steric_proximity_le_5A": true,
+          "docking_latency_sec": 5.076,
+          "error": null,
+          "pose_1_pdbqt_path": "data/processed/pdbqt/cyp2d6/poses/docked_3TBG_tienilic_acid.pdbqt"
+        },
+        "4WNW": {
+          "status": "ok",
+          "vina_affinity_kcal_mol": -7.29,
+          "pose_1_pdbqt_sha256": "a91d44ad064f7d6c5484f8b2f096f88422731646711835be20d17d90c4f5a5d8",
+          "nearest_heavy_atom": "C (Cl)",
+          "min_dist_to_heme_fe_angstrom": 4.51,
+          "reactive_sulfur_dist_angstrom": 9.36,
+          "asp301_contact": null,
+          "active_site_steric_proximity_le_5A": true,
+          "docking_latency_sec": 4.602,
+          "error": null,
+          "pose_1_pdbqt_path": "data/processed/pdbqt/cyp2d6/poses/docked_4WNW_tienilic_acid.pdbqt"
+        }
+      },
+      "provenance": {
+        "rdkit_etkdgv3_seed": 42,
+        "mmff_variant": "MMFF94",
+        "meeko_version": "0.5.1",
+        "source_pdb_ids": [
+          "3TBG",
+          "4WNW"
+        ]
+      }
+    },
+    {
+      "name": "Lapatinib",
+      "smiles": "CS(=O)(=O)CCNCC1=CC=C(O1)C1=CC=C2N=CN=C(NC3=CC(Cl)=C(OCC4=CC(F)=CC=C4)C=C3)C2=C1",
+      "target_cyp": "CYP3A4",
+      "warhead": "Fluorobenzylaminoquinazoline / secondary amine",
+      "ligand_pdbqt_sha256": "698b3ab75eb5657d549bfcfb112d9158b8dc1f793f54483d06a60df61bd7464e",
+      "docking_results": {
+        "3TBG": {
+          "status": "ok",
+          "vina_affinity_kcal_mol": -4.82,
+          "pose_1_pdbqt_sha256": "def8e846d028036f83d2473332eab13c28b98da9e87c0f4dc0e217575999d95c",
+          "nearest_heavy_atom": "C (C)",
+          "min_dist_to_heme_fe_angstrom": 8.97,
+          "reactive_sulfur_dist_angstrom": 11.37,
+          "asp301_contact": null,
+          "active_site_steric_proximity_le_5A": false,
+          "docking_latency_sec": 35.576,
+          "error": null,
+          "pose_1_pdbqt_path": "data/processed/pdbqt/cyp2d6/poses/docked_3TBG_lapatinib.pdbqt"
+        },
+        "4WNW": {
+          "status": "ok",
+          "vina_affinity_kcal_mol": -10.47,
+          "pose_1_pdbqt_sha256": "167fd594b8b9b05bccf69f2c5c257ce7e7da3d3cbf3c2e9204f390ed909dc6da",
+          "nearest_heavy_atom": "O (O)",
+          "min_dist_to_heme_fe_angstrom": 3.62,
+          "reactive_sulfur_dist_angstrom": 5.04,
+          "asp301_contact": null,
+          "active_site_steric_proximity_le_5A": true,
+          "docking_latency_sec": 30.753,
+          "error": null,
+          "pose_1_pdbqt_path": "data/processed/pdbqt/cyp2d6/poses/docked_4WNW_lapatinib.pdbqt"
+        }
+      },
+      "provenance": {
+        "rdkit_etkdgv3_seed": 42,
+        "mmff_variant": "MMFF94",
+        "meeko_version": "0.5.1",
+        "source_pdb_ids": [
+          "3TBG",
+          "4WNW"
+        ]
+      }
+    },
+    {
+      "name": "Clopidogrel",
+      "smiles": "COC(=O)C(C1=CC=CC=C1Cl)N1CCC2=C(C1)C=CS2",
+      "target_cyp": "CYP2C19",
+      "warhead": "Thienopyridine bicyclic system",
+      "ligand_pdbqt_sha256": "ade78129cc0aa364222e02922a2ddddf9e32f1ac51cc7e7f69ab74d8b6dd7490",
+      "docking_results": {
+        "3TBG": {
+          "status": "ok",
+          "vina_affinity_kcal_mol": -6.97,
+          "pose_1_pdbqt_sha256": "3a98ade3cbc5c0898863c8090d418fb7bb8789e21f604eafd847bc9d7e3b4224",
+          "nearest_heavy_atom": "O (O)",
+          "min_dist_to_heme_fe_angstrom": 7.0,
+          "reactive_sulfur_dist_angstrom": 12.77,
+          "asp301_contact": null,
+          "active_site_steric_proximity_le_5A": false,
+          "docking_latency_sec": 5.033,
+          "error": null,
+          "pose_1_pdbqt_path": "data/processed/pdbqt/cyp2d6/poses/docked_3TBG_clopidogrel.pdbqt"
+        },
+        "4WNW": {
+          "status": "ok",
+          "vina_affinity_kcal_mol": -7.98,
+          "pose_1_pdbqt_sha256": "a6c26606953674c4d4cfd6ca4135e6b630b4af04f31c2910053382659e85b09b",
+          "nearest_heavy_atom": "C (C)",
+          "min_dist_to_heme_fe_angstrom": 4.93,
+          "reactive_sulfur_dist_angstrom": 10.92,
+          "asp301_contact": null,
+          "active_site_steric_proximity_le_5A": true,
+          "docking_latency_sec": 4.791,
+          "error": null,
+          "pose_1_pdbqt_path": "data/processed/pdbqt/cyp2d6/poses/docked_4WNW_clopidogrel.pdbqt"
+        }
+      },
+      "provenance": {
+        "rdkit_etkdgv3_seed": 42,
+        "mmff_variant": "MMFF94",
+        "meeko_version": "0.5.1",
+        "source_pdb_ids": [
+          "3TBG",
+          "4WNW"
+        ]
+      }
+    },
+    {
+      "name": "Raloxifene",
+      "smiles": "O=C(C1=CC=C(OCCN2CCCCC2)C=C1)C1=C(C2=CC=C(O)C=C2)SC2=C1C=CC(O)=C2",
+      "target_cyp": "CYP3A4",
+      "warhead": "4-Hydroxyphenyl benzothiophene",
+      "ligand_pdbqt_sha256": "f259a328e4673b8e8bd732481cf492320585bc994d2295241f7b2595c4476031",
+      "docking_results": {
+        "3TBG": {
+          "status": "ok",
+          "vina_affinity_kcal_mol": -6.79,
+          "pose_1_pdbqt_sha256": "8c3b29238130a9e303b3402c132d989483113beccb85032c5b8daec5139a9219",
+          "nearest_heavy_atom": "S (S)",
+          "min_dist_to_heme_fe_angstrom": 9.46,
+          "reactive_sulfur_dist_angstrom": 9.46,
+          "asp301_contact": null,
+          "active_site_steric_proximity_le_5A": false,
+          "docking_latency_sec": 18.319,
+          "error": null,
+          "pose_1_pdbqt_path": "data/processed/pdbqt/cyp2d6/poses/docked_3TBG_raloxifene.pdbqt"
+        },
+        "4WNW": {
+          "status": "ok",
+          "vina_affinity_kcal_mol": -9.81,
+          "pose_1_pdbqt_sha256": "640a52eff9ccabf981db5edd1f2e9bf3e90356ca75ce5432439cb6d84509ea6a",
+          "nearest_heavy_atom": "O (O)",
+          "min_dist_to_heme_fe_angstrom": 6.68,
+          "reactive_sulfur_dist_angstrom": 8.2,
+          "asp301_contact": null,
+          "active_site_steric_proximity_le_5A": false,
+          "docking_latency_sec": 19.735,
+          "error": null,
+          "pose_1_pdbqt_path": "data/processed/pdbqt/cyp2d6/poses/docked_4WNW_raloxifene.pdbqt"
+        }
+      },
+      "provenance": {
+        "rdkit_etkdgv3_seed": 42,
+        "mmff_variant": "MMFF94",
+        "meeko_version": "0.5.1",
+        "source_pdb_ids": [
+          "3TBG",
+          "4WNW"
+        ]
+      }
+    },
+    {
+      "name": "Furafylline",
+      "smiles": "CCCC1=NC2=C(N1CC1=CC=CO1)C(=O)N(C)C(=O)N2C",
+      "target_cyp": "CYP1A2",
+      "warhead": "Furfuryl xanthine",
+      "ligand_pdbqt_sha256": "ca0e2c6bcc4e1ccee90b761418c0b0b5d9b85a6c5f2278ece6d255ec1cc5577e",
+      "docking_results": {
+        "3TBG": {
+          "status": "ok",
+          "vina_affinity_kcal_mol": -6.96,
+          "pose_1_pdbqt_sha256": "a7de091bec18cb635ed95b2117d1a7af68d5400aca30492904e15e1a260c9d7d",
+          "nearest_heavy_atom": "C (C)",
+          "min_dist_to_heme_fe_angstrom": 4.49,
+          "reactive_sulfur_dist_angstrom": null,
+          "asp301_contact": null,
+          "active_site_steric_proximity_le_5A": true,
+          "docking_latency_sec": 4.797,
+          "error": null,
+          "pose_1_pdbqt_path": "data/processed/pdbqt/cyp2d6/poses/docked_3TBG_furafylline.pdbqt"
+        },
+        "4WNW": {
+          "status": "ok",
+          "vina_affinity_kcal_mol": -8.29,
+          "pose_1_pdbqt_sha256": "b40e385402d7ad9d35c01b47b40a8fc110cbff6b964fb2cfe9c1d7cb2d9d6ccb",
+          "nearest_heavy_atom": "C (C)",
+          "min_dist_to_heme_fe_angstrom": 4.29,
+          "reactive_sulfur_dist_angstrom": null,
+          "asp301_contact": null,
+          "active_site_steric_proximity_le_5A": true,
+          "docking_latency_sec": 4.069,
+          "error": null,
+          "pose_1_pdbqt_path": "data/processed/pdbqt/cyp2d6/poses/docked_4WNW_furafylline.pdbqt"
+        }
+      },
+      "provenance": {
+        "rdkit_etkdgv3_seed": 42,
+        "mmff_variant": "MMFF94",
+        "meeko_version": "0.5.1",
+        "source_pdb_ids": [
+          "3TBG",
+          "4WNW"
+        ]
+      }
+    }
+  ]
+}

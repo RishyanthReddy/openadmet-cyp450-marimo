@@ -1,0 +1,33 @@
+# Environment & Secrets
+.env
+*.env
+.env.*
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# Cloud / Beam artifacts
+.beam/
+
+# Large local raw caches (if needed)
+*.parquet.tmp
+
+# Logs and local session artifacts
+debug.log
+*.log
+:memory:.ses

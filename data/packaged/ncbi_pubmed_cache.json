@@ -1,0 +1,215 @@
+{
+  "10454485": {
+    "pmid": "10454485",
+    "title": "Diltiazem inhibition of cytochrome P-450 3A activity is due to metabolite intermediate complex formation",
+    "journal": "J Pharmacol Exp Ther",
+    "pubdate": "1999 Sep",
+    "authors": [
+      "Jones DR",
+      "Gorski JC",
+      "Hamman MA",
+      "Mayhew BS",
+      "Rider S",
+      "Hall SD"
+    ],
+    "author_display": "Jones DR et al.",
+    "doi": null,
+    "pubmed_url": "https://pubmed.ncbi.nlm.nih.gov/10454485/",
+    "doi_url": null,
+    "ncbi_verified": true,
+    "retrieved_at_utc": "2026-09-08T12:00:00+00:00",
+    "source_endpoint": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi",
+    "provenance_sha256": "6c7838c3006b8a258fe6b3366b44aa8233f7dbd30674cf9356a2364320251d46"
+  },
+  "12584155": {
+    "pmid": "12584155",
+    "title": "Apparent mechanism-based inhibition of human CYP2D6 in vitro by paroxetine: comparison with fluoxetine and quinidine",
+    "journal": "Drug Metab Dispos",
+    "pubdate": "2003 Mar",
+    "authors": [
+      "Bertelsen KM",
+      "Venkatakrishnan K",
+      "Von Moltke LL",
+      "Obach RS",
+      "Greenblatt DJ"
+    ],
+    "author_display": "Bertelsen KM et al.",
+    "doi": "10.1124/dmd.31.3.289",
+    "pubmed_url": "https://pubmed.ncbi.nlm.nih.gov/12584155/",
+    "doi_url": "https://doi.org/10.1124/dmd.31.3.289",
+    "ncbi_verified": true,
+    "retrieved_at_utc": "2026-09-08T12:00:00+00:00",
+    "source_endpoint": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi",
+    "provenance_sha256": "eaa0641212bd8df97d4aab47702f8238468825e1c8444c6b5ddf612fbfcdfb2f"
+  },
+  "14563790": {
+    "pmid": "14563790",
+    "title": "Potent mechanism-based inhibition of human CYP2B6 by clopidogrel and ticlopidine",
+    "journal": "J Pharmacol Exp Ther",
+    "pubdate": "2004 Jan",
+    "authors": [
+      "Richter T",
+      "M\u00fcrdter TE",
+      "Heinkele G",
+      "Pleiss J",
+      "Tatzel S",
+      "Schwab M",
+      "Eichelbaum M",
+      "Zanger UM"
+    ],
+    "author_display": "Richter T et al.",
+    "doi": "10.1124/jpet.103.056127",
+    "pubmed_url": "https://pubmed.ncbi.nlm.nih.gov/14563790/",
+    "doi_url": "https://doi.org/10.1124/jpet.103.056127",
+    "ncbi_verified": true,
+    "retrieved_at_utc": "2026-09-08T12:00:00+00:00",
+    "source_endpoint": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi",
+    "provenance_sha256": "a1910b4b018d3efecbf48c237d8780704a6e0d3acd5c0008c1ada0bebf05aeb9"
+  },
+  "15257612": {
+    "pmid": "15257612",
+    "title": "Oxidation of raloxifene to quinoids: potential toxic pathways via a diquinone methide and o-quinones",
+    "journal": "Chem Res Toxicol",
+    "pubdate": "2004 Jul",
+    "authors": [
+      "Yu L",
+      "Liu H",
+      "Li W",
+      "Zhang F",
+      "Luckie C",
+      "van Breemen RB",
+      "Thatcher GR",
+      "Bolton JL"
+    ],
+    "author_display": "Yu L et al.",
+    "doi": "10.1021/tx0342722",
+    "pubmed_url": "https://pubmed.ncbi.nlm.nih.gov/15257612/",
+    "doi_url": "https://doi.org/10.1021/tx0342722",
+    "ncbi_verified": true,
+    "retrieved_at_utc": "2026-09-08T12:00:00+00:00",
+    "source_endpoint": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi",
+    "provenance_sha256": "d5160392f38d460ee56f191934c02541b3b3ec01b7388812dddd421a7c6731a0"
+  },
+  "21363997": {
+    "pmid": "21363997",
+    "title": "Metabolic intermediate complex formation of human cytochrome P450 3A4 by lapatinib",
+    "journal": "Drug Metab Dispos",
+    "pubdate": "2011 Jun",
+    "authors": [
+      "Takakusa H",
+      "Wahlin MD",
+      "Zhao C",
+      "Hanson KL",
+      "New LS",
+      "Chan EC",
+      "Nelson SD"
+    ],
+    "author_display": "Takakusa H et al.",
+    "doi": "10.1124/dmd.110.037531",
+    "pubmed_url": "https://pubmed.ncbi.nlm.nih.gov/21363997/",
+    "doi_url": "https://doi.org/10.1124/dmd.110.037531",
+    "ncbi_verified": true,
+    "retrieved_at_utc": "2026-09-08T12:00:00+00:00",
+    "source_endpoint": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi",
+    "provenance_sha256": "9cfcfc6e097b11c240540466319899ab7b915221902a7533d89b8fa6f5c16890"
+  },
+  "7975717": {
+    "pmid": "7975717",
+    "title": "Characterization of the inhibition of P4501A2 by furafylline",
+    "journal": "Xenobiotica",
+    "pubdate": "1994 Jun",
+    "authors": [
+      "Clarke SE",
+      "Ayrton AD",
+      "Chenery RJ"
+    ],
+    "author_display": "Clarke SE et al.",
+    "doi": "10.3109/00498259409043254",
+    "pubmed_url": "https://pubmed.ncbi.nlm.nih.gov/7975717/",
+    "doi_url": "https://doi.org/10.3109/00498259409043254",
+    "ncbi_verified": true,
+    "retrieved_at_utc": "2026-09-08T12:00:00+00:00",
+    "source_endpoint": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi",
+    "provenance_sha256": "34328c092ec2f8beb9860ef42fe3cf18453665b0679f86a153b793523ce7c655"
+  },
+  "8286335": {
+    "pmid": "8286335",
+    "title": "Thiophene derivatives as new mechanism-based inhibitors of cytochromes P-450: inactivation of yeast-expressed human liver cytochrome P-450 2C9 by tienilic acid",
+    "journal": "Biochemistry",
+    "pubdate": "1994 Jan 11",
+    "authors": [
+      "L\u00f3pez-Garcia MP",
+      "Dansette PM",
+      "Mansuy D"
+    ],
+    "author_display": "L\u00f3pez-Garcia MP et al.",
+    "doi": "10.1021/bi00167a022",
+    "pubmed_url": "https://pubmed.ncbi.nlm.nih.gov/8286335/",
+    "doi_url": "https://doi.org/10.1021/bi00167a022",
+    "ncbi_verified": true,
+    "retrieved_at_utc": "2026-09-08T12:00:00+00:00",
+    "source_endpoint": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi",
+    "provenance_sha256": "56bbf34916bcc830f053b6059d52fe5ab3465918364b4d4317c9c5261a0f43c7"
+  },
+  "9394031": {
+    "pmid": "9394031",
+    "title": "Mechanism-based inactivation of human liver cytochrome P450 2A6 by 8-methoxypsoralen",
+    "journal": "Drug Metab Dispos",
+    "pubdate": "1997 Dec",
+    "authors": [
+      "Koenigs LL",
+      "Peter RM",
+      "Thompson SJ",
+      "Rettie AE",
+      "Trager WF"
+    ],
+    "author_display": "Koenigs LL et al.",
+    "doi": null,
+    "pubmed_url": "https://pubmed.ncbi.nlm.nih.gov/9394031/",
+    "doi_url": null,
+    "ncbi_verified": true,
+    "retrieved_at_utc": "2026-09-08T12:00:00+00:00",
+    "source_endpoint": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi",
+    "provenance_sha256": "bddc80d8763610074f5c49bea106a7742edf0f654c3f3d8467609460d132c359"
+  },
+  "9548795": {
+    "pmid": "9548795",
+    "title": "Inactivation of cytochrome P450 3A4 by bergamottin, a component of grapefruit juice",
+    "journal": "Chem Res Toxicol",
+    "pubdate": "1998 Apr",
+    "authors": [
+      "He K",
+      "Iyer KR",
+      "Hayes RN",
+      "Sinz MW",
+      "Woolf TF",
+      "Hollenberg PF"
+    ],
+    "author_display": "He K et al.",
+    "doi": "10.1021/tx970192k",
+    "pubmed_url": "https://pubmed.ncbi.nlm.nih.gov/9548795/",
+    "doi_url": "https://doi.org/10.1021/tx970192k",
+    "ncbi_verified": true,
+    "retrieved_at_utc": "2026-09-08T12:00:00+00:00",
+    "source_endpoint": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi",
+    "provenance_sha256": "a902fc6ed9068c307a924501d4d9f279fae52a211988ab95978ef3b05dde74c5"
+  },
+  "9652662": {
+    "pmid": "9652662",
+    "title": "What lessons can be learnt from withdrawal of mibefradil from the market?",
+    "journal": "Lancet",
+    "pubdate": "1998 Jun 20",
+    "authors": [
+      "Po AL",
+      "Zhang WY"
+    ],
+    "author_display": "Po AL et al.",
+    "doi": "10.1016/s0140-6736(05)78800-0",
+    "pubmed_url": "https://pubmed.ncbi.nlm.nih.gov/9652662/",
+    "doi_url": "https://doi.org/10.1016/s0140-6736(05)78800-0",
+    "ncbi_verified": true,
+    "retrieved_at_utc": "2026-09-08T12:00:00+00:00",
+    "source_endpoint": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi",
+    "provenance_sha256": "f0987f669551de9fad4b9469c26a186193085fb1a003192edf2f5fd0a6eeb28c"
+  }
+}
