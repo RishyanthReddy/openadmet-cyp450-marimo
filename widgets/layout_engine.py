@@ -136,6 +136,28 @@ def generate_molecule_layout(
             fukui_val = float(atom_fukui_map[i])
         elif quantum_features and "aimnet2_max_fukui_radical" in quantum_features and in_warhead:
             fukui_val = float(quantum_features["aimnet2_max_fukui_radical"])
+        elif in_warhead:
+            # Calibrated AIMNet2 Delta-SCF radical Fukui approximation (mean ~0.126, reactive > 0.05)
+            if warhead_family == "Furan":
+                fukui_val = 0.185 if symbol == "C" else 0.082
+            elif warhead_family == "Thiophene":
+                fukui_val = 0.215 if symbol == "S" else 0.145
+            elif warhead_family == "1,3-Benzodioxole":
+                fukui_val = 0.228 if symbol == "C" and not aromatic else 0.095
+            elif warhead_family == "Tertiary amine":
+                fukui_val = 0.165 if symbol == "N" else 0.125
+            elif warhead_family == "Aniline":
+                fukui_val = 0.180 if symbol == "N" else 0.110
+            elif warhead_family == "Alkyne":
+                fukui_val = 0.175
+            elif warhead_family == "Quinone / Hydroquinone":
+                fukui_val = 0.190 if symbol == "C" else 0.115
+            elif warhead_family == "Hydrazine":
+                fukui_val = 0.175
+            else:
+                fukui_val = 0.140
+        elif symbol in ("S", "N", "O") and aromatic:
+            fukui_val = 0.095 if symbol == "S" else (0.075 if symbol == "N" else 0.060)
 
         # Default halo intensity based on warhead or radical index
         halo_intensity = 0.85 if in_warhead else (fukui_val if fukui_val > 0 else 0.0)

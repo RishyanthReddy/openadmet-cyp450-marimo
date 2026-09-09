@@ -223,10 +223,13 @@ def __(load_literature_mbi_reference_set, mo):
 
 @app.cell
 def __(mbi_options, mo):
-    # Act 1 Interactive Selectors
+    # Act 1 Shared Selection State for Literature MBIs
+    get_selected_mbi, set_selected_mbi = mo.state("Raloxifene")
+
     mbi_dropdown = mo.ui.dropdown(
         options=list(mbi_options.keys()),
         value="Raloxifene",
+        on_change=set_selected_mbi,
         label="Select a Literature Mechanism-Based Inactivator to Inspect:",
     )
     custom_smiles_input = mo.ui.text(
@@ -234,11 +237,11 @@ def __(mbi_options, mo):
         placeholder="Paste custom candidate SMILES (e.g. c1ccccc1, macrocycle, invalid syntax)...",
         label="Or test custom candidate SMILES (Defensive Fuzzing & QA):",
     )
-    return custom_smiles_input, mbi_dropdown
+    return custom_smiles_input, get_selected_mbi, mbi_dropdown, set_selected_mbi
 
 
 @app.cell
-def __(mbi_entries, mo):
+def __(mbi_entries, mo, normalize_single_table_value, set_selected_mbi):
     # Act 1 Reference Table of All 10 MBIs with Single Selection
     table_rows = [
         {
@@ -258,10 +261,16 @@ def __(mbi_entries, mo):
         (index for index, row in enumerate(table_rows) if row["Compound"] == "Raloxifene"),
         0,
     )
+
+    def _on_table_select(val):
+        row = normalize_single_table_value(val)
+        if row and row.get("Compound"):
+            set_selected_mbi(row["Compound"])
+
     mbi_summary_table = mo.ui.table(
         data=table_rows,
         selection="single",
-        initial_selection=[default_mbi_index],
+        on_change=_on_table_select,
         hidden_columns=["SMILES"],
         label="Table 1.1: Curated Reference Set of 10 Documented Literature Cytochrome P450 Mechanism-Based Inactivators",
     )
@@ -275,17 +284,14 @@ def __(mbi_entries, mo):
 
 
 @app.cell
-def __(mbi_dropdown, mbi_entries, mbi_summary_table, normalize_single_table_value):
-    selected_row = normalize_single_table_value(mbi_summary_table.value)
-    selected_name = (
-        selected_row.get("Compound")
-        or mbi_dropdown.value
-        or "Raloxifene"
-    )
+def __(get_selected_mbi, mbi_dropdown, mbi_entries, mbi_summary_table, normalize_single_table_value):
+    _tbl_row = normalize_single_table_value(mbi_summary_table.value)
+    selected_name = get_selected_mbi() or mbi_dropdown.value or (_tbl_row.get("Compound") if _tbl_row else None) or "Raloxifene"
     selected_entry = next(
         (entry for entry in mbi_entries if entry.get("name") == selected_name),
         mbi_entries[0] if mbi_entries else {},
     )
+    selected_row = _tbl_row if (_tbl_row and _tbl_row.get("Compound") == selected_name) else {"Compound": selected_name}
     return selected_entry, selected_name, selected_row
 
 
@@ -334,7 +340,7 @@ def __(
                 kind="success",
             )
 
-        card_md = mo.md(
+        card_md = mo.Html(
             f"""
             <div style="padding: 16px; border: 1px solid #e2e8f0; border-radius: 10px; background: #ffffff; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
               <h3 style="margin: 0 0 8px 0; color: #0f172a; font-size: 16px;">Custom Candidate Structure Evaluation</h3>
@@ -406,7 +412,7 @@ def __(
             else (_doi or "N/A (Print Era Citation)")
         )
 
-        card_md = mo.md(
+        card_md = mo.Html(
             f"""
             <div style="padding: 16px; border: 1px solid #e2e8f0; border-radius: 10px; background: #ffffff; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
               <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f1f5f9; padding-bottom: 8px; margin-bottom: 12px;">
@@ -962,14 +968,15 @@ def __(act3_metric_radio, aug_data, mo):
 
 
 @app.cell
-def __(dock_data, mo):
+def __(dock_data, mo, selected_name):
     # Act 3 Macromolecular 3D Docking Explorer (CYP3A4 PDB 2V0M vs 1TQN)
     evals = dock_data.get("docking_evaluations", [])
     compound_names = [e["name"] for e in evals] if evals else ["Raloxifene"]
+    _default_name = selected_name if selected_name in compound_names else (compound_names[0] if compound_names else "Raloxifene")
 
     dock_dropdown = mo.ui.dropdown(
         options=compound_names,
-        value="Raloxifene",
+        value=_default_name,
         label="Select Inactivator to Inspect 3D Active-Site Docking Pose:",
     )
 
@@ -977,9 +984,9 @@ def __(dock_data, mo):
 
 
 @app.cell
-def __(dock_dropdown, evals, mo, selected_name):
+def __(dock_dropdown, evals, mo):
     # Act 3 Reactive Docking Card
-    _sel_name = selected_name or dock_dropdown.value or "Raloxifene"
+    _sel_name = dock_dropdown.value or "Raloxifene"
     _target_eval = next((e for e in evals if e["name"] == _sel_name), None)
 
     if _target_eval:
@@ -993,7 +1000,7 @@ def __(dock_dropdown, evals, mo, selected_name):
         _dist_2v0m, _aff_2v0m = 2.24, -9.79
         _dist_1tqn, _aff_1tqn = 5.73, -9.97
 
-    _docking_inspection_md = mo.md(
+    _docking_inspection_md = mo.Html(
         f"""
         <div style="margin-top: 16px; padding: 16px; border: 1px solid #e2e8f0; border-radius: 10px; background: #ffffff; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
           <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f1f5f9; padding-bottom: 8px; margin-bottom: 12px;">
@@ -1027,8 +1034,8 @@ def __(dock_dropdown, evals, mo, selected_name):
             <div style="padding: 12px; background: #f8fafc; border-radius: 8px; border-left: 4px solid #6366f1;">
               <strong style="color: #4338ca;">Enzymology & Radical Coupling</strong><br>
               <p style="margin: 4px 0 0 0; font-size: 12px; line-height: 1.4; color: #334155;">
-                In the substrate-bound 2V0M structure, the inactivating warhead enters the active-site cavity (all 10 reference inactivators place heavy atoms within ≤ 4.54 Å of Heme Fe, with 9 of 10 ≤ 3.62 Å).
-                For Raloxifene (MODEL 1 top pose), the nearest heavy atom (phenolic oxygen) docks at <strong>2.23 Å from Heme Fe</strong>, while the benzothiophene sulfur is positioned at <strong>8.02 Å</strong>; this geometric proximity provides an active-site steric contact proxy consistent with initial active-site accommodation.
+                In the substrate-bound 2V0M structure, the inactivating warhead enters the active-site cavity (all 10 reference inactivators place heavy atoms within ≤ 4.54 Å of Heme Fe, with 9 of 10 ≤ 3.62 Å; canonical Raloxifene benchmark docks at <strong>2.23 Å</strong> from Heme Fe).
+                For {_sel_name} (MODEL 1 top pose), the nearest heavy atom docks at <strong>{_dist_2v0m:.2f} Å from Heme Fe</strong> (Vina affinity: <strong>{_aff_2v0m:.2f} kcal/mol</strong>), providing geometric proximity consistent with active-site accommodation.
               </p>
             </div>
           </div>
@@ -1038,7 +1045,7 @@ def __(dock_dropdown, evals, mo, selected_name):
 
     act3_docking_section = mo.vstack([
         mo.md("### 2. Macromolecular 3D Enzymology: AutoDock Vina v1.2.7 Docking in CYP3A4"),
-        mo.md(
+        mo.Html(
             """
             <div style="padding: 10px 14px; background: #f8fafc; border-left: 4px solid #3b82f6; font-size: 12px; color: #475569; margin-bottom: 12px; border-radius: 4px; line-height: 1.5;">
               <strong>Cross-Isoform Structural Modeling Note:</strong> While our 10 curated documented literature MBIs span diverse cytochrome P450 isoforms (CYP1A2, 2A6, 2C9, 2C19, 2D6, and 3A4), the CYP3A4 substrate-bound crystal structure (PDB: 2V0M, 2.80 Å) serves as our prototypical macromolecular steric model to assess whether bulky inactivating warheads physically enter the catalytic heme cavity versus unliganded resting-state steric occlusion (PDB: 1TQN, 2.05 Å).
@@ -1172,7 +1179,7 @@ def __(
 
     _grid_cols = "1fr 1fr 1.2fr" if (_show_3tbg and _show_4wnw) else "1.2fr 1.2fr"
 
-    _cyp2d6_inspection_md = mo.md(
+    _cyp2d6_inspection_md = mo.Html(
         f"""
         <div style="margin-top: 16px; padding: 16px; border: 1px solid #e2e8f0; border-radius: 10px; background: #ffffff; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
           <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f1f5f9; padding-bottom: 8px; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
@@ -1204,7 +1211,7 @@ def __(
 
     act3_cyp2d6_section = mo.vstack([
         mo.md("### 3. Dual-Isoform Enzymology: AutoDock Vina Docking in Human CYP2D6"),
-        mo.md(
+        mo.Html(
             """
             <div style="padding: 10px 14px; background: #faf5ff; border-left: 4px solid #a855f7; font-size: 12px; color: #581c87; margin-bottom: 12px; border-radius: 4px; line-height: 1.5;">
               <strong>Cross-Isoform Structural Scope & Beam Cloud RTX 4090 Validation:</strong> Human CYP2D6 is responsible for the hepatic clearance of ~25% of clinical therapeutics, featuring a canonical electrostatic anchor residue (<strong>Asp301</strong>). Docking evaluations were performed across both substrate-bound (PDB 3TBG, 2.10 Å) and unliganded resting-state (PDB 4WNW, 3.30 Å) crystallographic conformations on remote <strong>Beam Cloud NVIDIA GeForce RTX 4090 GPU workers</strong> (Task: <code>dc1112ce-e7dc-4abe-943b-790ccae2e9b5</code>). Vina scores are empirical scoring functions, providing geometric proximity proxies rather than experimental free energies or covalent inactivation constants ($k_{inact}/K_I$).
