@@ -76,11 +76,14 @@ def get_inlined_layout_engine_body() -> str:
     if start_marker in raw:
         raw = raw[raw.index(start_marker):]
     raw = re.sub(r'"""[\s\S]*?"""', '', raw)
-    lines = [
-        "    " + l.rstrip()
-        for l in raw.splitlines()
-        if l.strip() and not l.strip().startswith("#")
-    ]
+    tokens = list(tokenize.tokenize(io.BytesIO(raw.encode("utf-8")).readline))
+    comment_spans = {tok.start[0]: tok.start[1] for tok in tokens if tok.type == tokenize.COMMENT}
+    lines = []
+    for idx, line in enumerate(raw.splitlines(), start=1):
+        if idx in comment_spans:
+            line = line[:comment_spans[idx]].rstrip()
+        if line.strip():
+            lines.append("    " + line.rstrip())
     return "\n".join(lines)
 
 
@@ -205,17 +208,22 @@ def generate_standalone_app(output_path: Path = BASE_DIR / "standalone_app.py") 
 
     import tokenize
     tokens = list(tokenize.tokenize(io.BytesIO(remaining_cells.encode("utf-8")).readline))
-    comment_lines = set()
+    comment_spans = {}
     for tok in tokens:
         if tok.type == tokenize.COMMENT:
-            comment_lines.add(tok.start[0])
+            comment_spans[tok.start[0]] = tok.start[1]
 
     lines = remaining_cells.splitlines()
     filtered_lines = []
     for idx, line in enumerate(lines, start=1):
-        if idx in comment_lines and line.strip().startswith("#"):
-            continue
-        filtered_lines.append(line.rstrip())
+        if idx in comment_spans:
+            col_start = comment_spans[idx]
+            code_part = line[:col_start].rstrip()
+            if not code_part.strip():
+                continue
+            filtered_lines.append(code_part)
+        else:
+            filtered_lines.append(line.rstrip())
 
     remaining_cells = "\n".join(filtered_lines)
 
@@ -423,6 +431,8 @@ def __():
         global DATASET_PROVENANCE_STATUS
         return DATASET_PROVENANCE_STATUS
 
+    PARQUET_GITHUB_URL = "https://raw.githubusercontent.com/RishyanthReddy/openadmet-cyp450-marimo/main/data/packaged/cyp_tdi_curated.parquet"
+
     def load_curated_dataset(max_retries: int = 3) -> pd.DataFrame:
         global DATASET_PROVENANCE_STATUS
         if PARQUET_PRIMARY_PATH.exists():
@@ -439,6 +449,26 @@ def __():
                 except Exception:
                     if attempt < max_retries:
                         time.sleep(0.05 * attempt)
+        try:
+            import urllib.request
+            req = urllib.request.Request(
+                PARQUET_GITHUB_URL,
+                headers={{"User-Agent": "OpenADMET-Marimo-Cloud-Fetcher"}}
+            )
+            with urllib.request.urlopen(req, timeout=6.0) as resp:
+                if resp.status == 200:
+                    streamed = resp.read()
+                    if hashlib.sha256(streamed).hexdigest() == PARQUET_EXPECTED_SHA256:
+                        try:
+                            PARQUET_PRIMARY_PATH.parent.mkdir(parents=True, exist_ok=True)
+                            PARQUET_PRIMARY_PATH.write_bytes(streamed)
+                        except Exception:
+                            pass
+                        df = pd.read_parquet(io.BytesIO(streamed))
+                        DATASET_PROVENANCE_STATUS = "PRIMARY_PARQUET_VERIFIED"
+                        return df
+        except Exception:
+            pass
         DATASET_PROVENANCE_STATUS = "EMBEDDED_OFFLINE_FALLBACK"
         return load_fallback_dataset()
 

@@ -180,14 +180,10 @@ def load_curated_dataset(max_retries: int = 3) -> pd.DataFrame:
                     DATASET_PROVENANCE_STATUS = "PRIMARY_PARQUET_VERIFIED"
                     return df
                 else:
-                    print(f"[Warning] SHA256 mismatch ({computed_sha[:12]}... != {PARQUET_EXPECTED_SHA256[:12]}...). Falling back to embedded sample.", file=sys.stderr)
                     break
-            except Exception as err:
-                print(f"[Warning] Attempt {attempt}/{max_retries} failed loading {PARQUET_PRIMARY_PATH}: {err}.", file=sys.stderr)
+            except Exception:
                 if attempt < max_retries:
                     time.sleep(0.05 * attempt)
-                else:
-                    print(f"[Warning] All {max_retries} attempts failed. Falling back to embedded sample.", file=sys.stderr)
 
     DATASET_PROVENANCE_STATUS = "EMBEDDED_OFFLINE_FALLBACK"
     return load_fallback_dataset()

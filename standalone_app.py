@@ -169,6 +169,8 @@ def __():
         global DATASET_PROVENANCE_STATUS
         return DATASET_PROVENANCE_STATUS
 
+    PARQUET_GITHUB_URL = "https://raw.githubusercontent.com/RishyanthReddy/openadmet-cyp450-marimo/main/data/packaged/cyp_tdi_curated.parquet"
+
     def load_curated_dataset(max_retries: int = 3) -> pd.DataFrame:
         global DATASET_PROVENANCE_STATUS
         if PARQUET_PRIMARY_PATH.exists():
@@ -185,21 +187,41 @@ def __():
                 except Exception:
                     if attempt < max_retries:
                         time.sleep(0.05 * attempt)
+        try:
+            import urllib.request
+            req = urllib.request.Request(
+                PARQUET_GITHUB_URL,
+                headers={"User-Agent": "OpenADMET-Marimo-Cloud-Fetcher"}
+            )
+            with urllib.request.urlopen(req, timeout=6.0) as resp:
+                if resp.status == 200:
+                    streamed = resp.read()
+                    if hashlib.sha256(streamed).hexdigest() == PARQUET_EXPECTED_SHA256:
+                        try:
+                            PARQUET_PRIMARY_PATH.parent.mkdir(parents=True, exist_ok=True)
+                            PARQUET_PRIMARY_PATH.write_bytes(streamed)
+                        except Exception:
+                            pass
+                        df = pd.read_parquet(io.BytesIO(streamed))
+                        DATASET_PROVENANCE_STATUS = "PRIMARY_PARQUET_VERIFIED"
+                        return df
+        except Exception:
+            pass
         DATASET_PROVENANCE_STATUS = "EMBEDDED_OFFLINE_FALLBACK"
         return load_fallback_dataset()
 
     # --- Inlined Layout Engine (Dynamically Sourced from widgets/layout_engine.py) ---
     ELEMENT_COLORS = {
-        "C": "#94a3b8",   # Slate carbon
-        "N": "#3b82f6",   # Blue nitrogen
-        "O": "#ef4444",   # Red oxygen
-        "S": "#eab308",   # Yellow sulfur
-        "F": "#10b981",   # Emerald fluorine
-        "Cl": "#22c55e",  # Green chlorine
-        "Br": "#a855f7",  # Purple bromine
-        "I": "#7c3aed",   # Violet iodine
-        "P": "#f97316",   # Orange phosphorus
-        "Fe": "#ea580c",  # Rust orange iron
+        "C": "#94a3b8",
+        "N": "#3b82f6",
+        "O": "#ef4444",
+        "S": "#eab308",
+        "F": "#10b981",
+        "Cl": "#22c55e",
+        "Br": "#a855f7",
+        "I": "#7c3aed",
+        "P": "#f97316",
+        "Fe": "#ea580c",
     }
     WARHEAD_SMARTS = {
         "Furan": ("o1cccc1", "#f97316", "Furan ring oxidizes to reactive enedione / epoxide"),
@@ -247,7 +269,7 @@ def __():
         canvas_width = span_x * scale + 2 * padding
         canvas_height = span_y * scale + 2 * padding
         warhead_matches = []
-        atom_warhead_map = {}  # atom_idx -> (name, color, desc)
+        atom_warhead_map = {}
         for name, (sub_mol, color, desc) in _COMPILED_WARHEADS.items():
             if sub_mol is None:
                 continue
