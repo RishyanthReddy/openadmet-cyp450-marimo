@@ -12,8 +12,8 @@
 - [x] **Competition Title and Track:** Bring Cheminformatics to Life — molab Notebook Competition #3 (OpenADMET x marimo).
 - [ ] **Entrant / Team Lead:** Rishyanth Reddy (and team co-authors as designated at submission time).
 - [ ] **Contact Email:** Authorized submitter email.
-- [x] **Repository URL:** Public GitHub repository for OpenADMET.
-- [x] **Hosted Molab URL:** `https://molab.marimo.io/?entry=https://gist.githubusercontent.com/RishyanthReddy/3ee85971e676e6a770d3bb2886f81792/raw/standalone_app.py` (staged directly from the immutable public Gist revision).
+- [x] **Repository URL:** `https://github.com/RishyanthReddy/openadmet-cyp450-marimo`
+- [x] **Hosted Molab URL:** `https://molab.marimo.io/github/RishyanthReddy/openadmet-cyp450-marimo/blob/main/standalone_app.py` (WASM interactive: `https://molab.marimo.io/github/RishyanthReddy/openadmet-cyp450-marimo/blob/main/standalone_app.py/wasm`).
 - [x] **Public Gist URL & Commit Revision:** `https://gist.github.com/RishyanthReddy/3ee85971e676e6a770d3bb2886f81792` (Revision: `2c5a40622f785d4b24c405d3ee7e7c81f4a5ea3d`).
 - [ ] **Video URL / File:** YouTube / Vimeo / MP4 link (measured duration strictly <= 300s, planned 285s).
 - [x] **Notebook Description:** Self-contained reactive marimo application predicting Cytochrome P450 (CYP3A4 and CYP2D6) bioactivation, time-dependent inhibition, and mechanism-based inactivation risks using AIMNet2 quantum delta-SCF reactivity descriptors, cross-isoform docking proxies, matched molecular pair activity cliffs, and finite-sample distribution-free TxConformal risk control. Cold boots offline in < 10 seconds with zero runtime GPU or network dependencies.

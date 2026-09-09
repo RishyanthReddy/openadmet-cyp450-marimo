@@ -66,7 +66,8 @@ To stage the verified artifact for competition judges and Molab hosting:
 
 ### Step 3: Open in Hosted Molab Environment
 Navigate in a clean incognito browser window to:  
-[https://molab.marimo.io/?entry=https://gist.githubusercontent.com/RishyanthReddy/3ee85971e676e6a770d3bb2886f81792/raw/standalone_app.py](https://molab.marimo.io/?entry=https://gist.githubusercontent.com/RishyanthReddy/3ee85971e676e6a770d3bb2886f81792/raw/standalone_app.py)
+- **Hosted Molab Direct Link:** [https://molab.marimo.io/github/RishyanthReddy/openadmet-cyp450-marimo/blob/main/standalone_app.py](https://molab.marimo.io/github/RishyanthReddy/openadmet-cyp450-marimo/blob/main/standalone_app.py)
+- **Interactive WASM Preview:** [https://molab.marimo.io/github/RishyanthReddy/openadmet-cyp450-marimo/blob/main/standalone_app.py/wasm](https://molab.marimo.io/github/RishyanthReddy/openadmet-cyp450-marimo/blob/main/standalone_app.py/wasm)
 
 ### Step 4: Verify Clean-Browser Interactive Acceptance Gates
 1. **Act 1:** Click Table 1.1 rows (`Raloxifene`, `Lapatinib`, `Paroxetine`) -> assert `BioactivationTracer` updates smoothly.
