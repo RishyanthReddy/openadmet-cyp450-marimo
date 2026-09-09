@@ -1258,9 +1258,9 @@ def __(
             """
         )
         act1_viewer = mo.vstack([
-            mo.hstack([mbi_dropdown, custom_smiles_input], justify="start", gap=16),
+            mo.hstack([mbi_dropdown, custom_smiles_input], justify="start", gap=1),
             fuzz_callout,
-            mo.hstack([widget_ui, card_md], justify="start", gap=16),
+            mo.hstack([widget_ui, card_md], justify="start", gap=1),
         ])
         dist_info = ("Custom", "Custom Candidate", f"Custom SMILES: {_escaped_smi}")
         dock_comp = None
@@ -1349,8 +1349,8 @@ def __(
         )
 
         act1_viewer = mo.vstack([
-            mo.hstack([mbi_dropdown, custom_smiles_input], justify="start", gap=16),
-            mo.hstack([widget_ui, card_md], justify="start", gap=16),
+            mo.hstack([mbi_dropdown, custom_smiles_input], justify="start", gap=1),
+            mo.hstack([widget_ui, card_md], justify="start", gap=1),
         ])
 
     return act1_viewer, card_md, dist_info, dock_comp, docking_ablation, entry, ncbi_client, ncbi_record, widget, widget_ui
@@ -1405,7 +1405,7 @@ def __(mo):
         label="Select Evaluation Metric:",
     )
 
-    act2_controls = mo.hstack([model_dropdown, metric_radio], justify="start", gap=20)
+    act2_controls = mo.hstack([model_dropdown, metric_radio], justify="start", gap=1.25)
     return act2_controls, metric_radio, model_dropdown
 
 @app.cell
@@ -1480,7 +1480,8 @@ def __(dmpnn_data, ecfp_data, metric_radio, model_dropdown, mo):
                 bordered=True,
             ),
         ],
-        gap=12,
+        widths="equal",
+        gap=0.75,
     )
 
     card_comparison_md = mo.vstack([
@@ -1809,7 +1810,8 @@ def __(act3_metric_radio, aug_data, mo):
                 bordered=True,
             ),
         ],
-        gap=12,
+        widths="equal",
+        gap=0.75,
     )
 
     act3_card_comparison_md = mo.vstack([
@@ -2251,7 +2253,7 @@ def __(BioactivationTracer, mmp_dropdown, mmp_options, mo):
                     mo.md("<div style='text-align: center; font-weight: 600; color: #16a34a;'>✅ Redesigned Safe Analog (TDI = Negative)</div>"),
                     _ui_inact,
                 ]),
-            ], justify="center", gap=24),
+            ], justify="center", gap=1.5),
             _cliff_card,
         ])
     else:
@@ -2330,7 +2332,7 @@ def __(BioactivationTracer, mo, oof_cases, oof_dropdown):
         mo.md("""### 3. Out-of-Fold Model Error Diagnosis (Honest Cross-Validation)
 *Examines real out-of-fold diagnostic failure modes across Grouped Scaffold 5-Fold CV, including **False Negative (Dangerous Escape)** cases like Resorcinol auto-oxidation and **False Positive (False Alarm)** cases where steric shields protect against bioactivation.*"""),
         oof_dropdown,
-        mo.hstack([_widget_ui, _oof_card], justify="start", gap=16),
+        mo.hstack([_widget_ui, _oof_card], justify="start", gap=1),
     ])
 
     return (act4_oof_section,)
@@ -2486,7 +2488,7 @@ def __(alpha_slider, conformal_fdr_select, csv, io, mo, tx_data):
             mo.stat(
                 value=f"{_benchmark_mean_fdp:.2%}",
                 label="Empirical FDP",
-                caption=f"α={_nearest_alpha:.2f} · 250 Monte Carlo runs · N=703; lower is better",
+                caption=f"α={_nearest_alpha:.2f} · 250 MC runs · N=703",
                 direction="decrease",
                 target_direction="decrease",
                 bordered=True,
@@ -2494,7 +2496,7 @@ def __(alpha_slider, conformal_fdr_select, csv, io, mo, tx_data):
             mo.stat(
                 value=f"{_stats.get('mean_selection_size', 30.0):.1f}",
                 label="Mean selected candidates",
-                caption="250-run diagnostic utility; not a quality guarantee",
+                caption="250-run diagnostic utility",
                 direction="increase",
                 target_direction="increase",
                 bordered=True,
@@ -2502,16 +2504,18 @@ def __(alpha_slider, conformal_fdr_select, csv, io, mo, tx_data):
             mo.stat(
                 value=f"{_target_alpha:.2f}",
                 label="Active nominal α",
-                caption="Slider range 0.05–0.20; Table 5.1 and export recompute from this state",
+                caption="Slider range 0.05–0.20",
                 direction=None,
                 target_direction="increase",
                 bordered=True,
             ),
         ],
-        gap=12,
+        widths="equal",
+        gap=0.75,
     )
 
     conformal_card = mo.vstack([
+        act5_kpis,
         mo.md(
             f"""
 <div style="padding: 16px; border: 1px solid #e2e8f0; border-radius: 10px; background: #ffffff; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-top: 12px; margin-bottom: 12px;">
@@ -2551,7 +2555,6 @@ def __(alpha_slider, conformal_fdr_select, csv, io, mo, tx_data):
 </div>
             """
         ),
-        act5_kpis,
     ])
 
     return (
