@@ -1073,33 +1073,32 @@ def __(get_dataset_provenance_status, load_curated_dataset, mo):
 def __(load_literature_mbi_reference_set, mo):
     act1_intro = mo.md(
         """
-        ## Act 1: What TDI Is — and What It Is Not
+## Act 1: What TDI Is — and What It Is Not
 
-        In preclinical drug discovery, **Time-Dependent Inhibition (TDI)** of Cytochrome P450 enzymes (principally **CYP3A4** and **CYP2D6**) represents one of the most hazardous liabilities leading to clinical trial terminations, adverse drug-drug interactions (DDIs), and FDA black-box warnings.
+In preclinical drug discovery, **Time-Dependent Inhibition (TDI)** of Cytochrome P450 enzymes (principally **CYP3A4** and **CYP2D6**) represents one of the most hazardous liabilities leading to clinical trial terminations, adverse drug-drug interactions (DDIs), and FDA black-box warnings.
 
-        ### 1. The Preincubation Shift Assay Reality
-        In high-throughput screening, TDI is measured via an in vitro preincubation assay:
-        - The test compound is incubated with human liver microsomes (HLM) in the presence or absence of **NADPH** for 30 minutes before the addition of a probe substrate (e.g., midazolam for CYP3A4, dextromethorphan for CYP2D6).
-        - If the $IC_{50}$ decreases after preincubation (typically $\\ge 1.5\\times - 2.0\\times$ shift, corresponding to a $\\Delta pIC_{50} \\ge 0.3$), the compound is scored as a **Time-Dependent Inhibitor ($1$)**.
+### 1. The Preincubation Shift Assay Reality
+In high-throughput screening, TDI is measured via an in vitro preincubation assay:
+- The test compound is incubated with human liver microsomes (HLM) in the presence or absence of **NADPH** for 30 minutes before the addition of a probe substrate (e.g., midazolam for CYP3A4, dextromethorphan for CYP2D6).
+- If the $IC_{50}$ decreases after preincubation (typically $\\ge 1.5\\times - 2.0\\times$ shift, corresponding to a $\\Delta pIC_{50} \\ge 0.3$), the compound is scored as a **Time-Dependent Inhibitor ($1$)**.
 
-        ### 2. The Critical Distinction: TDI Observation vs. Irreversible MBI Mechanism
-        > [!IMPORTANT]
-        > **Not all TDI is irreversible Mechanism-Based Inactivation (MBI).**
-        > An observed preincubation shift can arise from:
-        > 1. **Slow-binding reversible inhibition** (non-covalent tight binding or metabolite intermediate complexation that eventually dissociates).
-        > 2. **Quasi-irreversible metabolic intermediate complexation (MIC)** (e.g. nitrosoalkane coordination to the heme iron).
-        > 3. **True irreversible covalent MBI ("Suicide Inactivation")**: The enzyme's catalytic ferryl-oxo intermediate ($[Fe=O]^{3+}$) oxidizes the drug into a hyper-reactive electrophile (quinone methide, thiophene sulfoxide, radical, or ketene) that alkylates the heme porphyrin ring or active-site amino acids (Cys442, Thr309), permanently destroying the enzyme.
+### 2. The Critical Distinction: TDI Observation vs. Irreversible MBI Mechanism
+> ⚠️ **Important Distinction: Not all TDI is irreversible Mechanism-Based Inactivation (MBI).**
+> An observed preincubation shift can arise from:
+> 1. **Slow-binding reversible inhibition** (non-covalent tight binding or metabolite intermediate complexation that eventually dissociates).
+> 2. **Quasi-irreversible metabolic intermediate complexation (MIC)** (e.g. nitrosoalkane coordination to the heme iron).
+> 3. **True irreversible covalent MBI ("Suicide Inactivation")**: The enzyme's catalytic ferryl-oxo intermediate ($[Fe=O]^{3+}$) oxidizes the drug into a hyper-reactive electrophile (quinone methide, thiophene sulfoxide, radical, or ketene) that alkylates the heme porphyrin ring or active-site amino acids (Cys442, Thr309), permanently destroying the enzyme.
 
-        When true MBI occurs in vivo, enzyme recovery requires de novo protein synthesis (taking days to weeks). If a co-administered therapeutic relies on that CYP isoform for clearance, it accumulates to lethal systemic concentrations.
-        """
+When true MBI occurs in vivo, enzyme recovery requires de novo protein synthesis (taking days to weeks). If a co-administered therapeutic relies on that CYP isoform for clearance, it accumulates to lethal systemic concentrations.
+"""
     )
 
     act1_protocol_content = mo.md(
         r"""
-        **Assay setup.** Incubate the test compound with human liver microsomes (HLM) for 30 minutes in matched wells with and without NADPH. Add the CYP probe substrate after preincubation: midazolam for CYP3A4 or dextromethorphan for CYP2D6.
+**Assay setup.** Incubate the test compound with human liver microsomes (HLM) for 30 minutes in matched wells with and without NADPH. Add the CYP probe substrate after preincubation: midazolam for CYP3A4 or dextromethorphan for CYP2D6.
 
-        **Interpretation.** A preincubation IC50 shift of approximately 1.5–2.0x (ΔpIC50 ≥ 0.3) is a TDI observation. It is not, by itself, proof of a covalent MBI mechanism. Slow reversible binding, metabolic-intermediate complexation, and true irreversible inactivation remain mechanistically distinct explanations.
-        """
+**Interpretation.** A preincubation IC50 shift of approximately 1.5–2.0x (ΔpIC50 ≥ 0.3) is a TDI observation. It is not, by itself, proof of a covalent MBI mechanism. Slow reversible binding, metabolic-intermediate complexation, and true irreversible inactivation remain mechanistically distinct explanations.
+"""
     )
     act1_protocol = mo.accordion(
         {
@@ -1348,16 +1347,16 @@ def __(
 
 ## Act 2: The Bathtub Audit — Chemical Leakage & The Reality of Scaffold Shift
 
-        In published computational ADMET benchmarks, naive **random splitting** is frequently the default. However, when compounds sharing an identical **Bemis-Murcko molecular core scaffold** appear in both the training and test folds, 2D tabular models (e.g. LightGBM or Random Forest on ECFP4 fingerprints) achieve high apparent scores simply by **memorizing the scaffold-level label**.
+In published computational ADMET benchmarks, naive **random splitting** is frequently the default. However, when compounds sharing an identical **Bemis-Murcko molecular core scaffold** appear in both the training and test folds, 2D tabular models (e.g. LightGBM or Random Forest on ECFP4 fingerprints) achieve high apparent scores simply by **memorizing the scaffold-level label**.
 
-        When deployed in real prospective medicinal chemistry, the model is tasked with predicting **entirely novel scaffolds**, where this memorization completely collapses—an empirical trap we term the **"Bathtub Effect"**.
+When deployed in real prospective medicinal chemistry, the model is tasked with predicting **entirely novel scaffolds**, where this memorization completely collapses—an empirical trap we term the **"Bathtub Effect"**.
 
-        ### 1. Leak-Proof Cluster-Stratified Murcko Scaffold Splitting
-        To expose the true generalization barrier, we developed a multi-objective cluster-stratified splitting engine:
-        - Clusters molecules by **Bemis-Murcko framework** (5,367 unique scaffolds across 6,145 compounds).
-        - Enforces **strict zero-leakage**: exactly **0 shared scaffolds** and **0 shared parent InChIKeys** between any train and validation/test fold pairs.
-        - Preserves balanced fold sizes (1,208–1,275 molecules) and identical target class balance (~21% TDI positive).
-        """
+### 1. Leak-Proof Cluster-Stratified Murcko Scaffold Splitting
+To expose the true generalization barrier, we developed a multi-objective cluster-stratified splitting engine:
+- Clusters molecules by **Bemis-Murcko framework** (5,367 unique scaffolds across 6,145 compounds).
+- Enforces **strict zero-leakage**: exactly **0 shared scaffolds** and **0 shared parent InChIKeys** between any train and validation/test fold pairs.
+- Preserves balanced fold sizes (1,208–1,275 molecules) and identical target class balance (~21% TDI positive).
+"""
     )
 
     ecfp_data = load_ecfp_baseline_results()
@@ -1664,20 +1663,20 @@ def __(
 
 ## Act 3: Physics-Grounded Quantum Reactivity & Active-Site Enzymology
 
-        Does adding **quantum electronic reactivity features** provide new predictive information beyond 2D molecular topologies?
+Does adding **quantum electronic reactivity features** provide new predictive information beyond 2D molecular topologies?
 
-        ### 1. The Biophysical Hypothesis
-        Cytochrome P450 bioactivation is chemically catalyzed by the high-valent ferryl-oxo iron intermediate:
-        $$\\text{P450 } [Fe=O]^{3+} \\quad (\\text{Compound I})$$
-        Compound I is an ultra-potent one-electron oxidant ($E^\\circ \\approx +1.2\\text{ V}$). It initiates inactivation by abstracting an electron or hydrogen atom from the substrate, generating an initial **radical cation or neutral radical intermediate**.
+### 1. The Biophysical Hypothesis
+Cytochrome P450 bioactivation is chemically catalyzed by the high-valent ferryl-oxo iron intermediate:
+$$\\text{P450 } [Fe=O]^{3+} \\quad (\\text{Compound I})$$
+Compound I is an ultra-potent one-electron oxidant ($E^\\circ \\approx +1.2\\text{ V}$). It initiates inactivation by abstracting an electron or hydrogen atom from the substrate, generating an initial **radical cation or neutral radical intermediate**.
 
-        Because standard 2D topological fingerprints (ECFP4) only count local atomic path connectivity, they are blind to global electronic charge reorganization and radical localization. To provide explicit physical inductive bias, we extracted **10 AIMNet2-NSE $\\Delta\\text{SCF}$ descriptors** via neural spin-equilibrium density calculations on an NVIDIA GeForce RTX 4090:
-        - **$IP_v$ (Vertical Ionization Potential, eV):** The energy required for Compound I to pull an electron from the neutral ground state ($E_{cat} - E_{neut}$).
-        - **$EA_v$ (Vertical Electron Affinity, eV):** Propensity to accept radical electron density.
-        - **$\\eta$ (Chemical Hardness, eV):** $\\eta = (IP_v - EA_v)/2$; resistance to electron charge transfer.
-        - **$\\omega$ (Condensed Electrophilicity Index):** $\\omega = \\mu^2 / (2\\eta)$; absolute drive for covalent adduction.
-        - **$f_k^0$ (Radical Fukui Index):** Atomic-level spatial distribution of radical susceptibility.
-        """
+Because standard 2D topological fingerprints (ECFP4) only count local atomic path connectivity, they are blind to global electronic charge reorganization and radical localization. To provide explicit physical inductive bias, we extracted **10 AIMNet2-NSE $\\Delta\\text{SCF}$ descriptors** via neural spin-equilibrium density calculations on an NVIDIA GeForce RTX 4090:
+- **$IP_v$ (Vertical Ionization Potential, eV):** The energy required for Compound I to pull an electron from the neutral ground state ($E_{cat} - E_{neut}$).
+- **$EA_v$ (Vertical Electron Affinity, eV):** Propensity to accept radical electron density.
+- **$\\eta$ (Chemical Hardness, eV):** $\\eta = (IP_v - EA_v)/2$; resistance to electron charge transfer.
+- **$\\omega$ (Condensed Electrophilicity Index):** $\\omega = \\mu^2 / (2\\eta)$; absolute drive for covalent adduction.
+- **$f_k^0$ (Radical Fukui Index):** Atomic-level spatial distribution of radical susceptibility.
+"""
     )
 
     aug_data = load_augmented_results()
@@ -2124,16 +2123,16 @@ def __(load_mmp_transformations, mo):
 
 ## Act 4: Medicinal Chemistry Steering — Activity Cliffs, Bioisosteres, & Real Model Errors
 
-        When a high-throughput microsomal assay or predictive model flags a lead candidate for **CYP bioactivation**, discarding the entire chemical series is costly and unnecessary.
+When a high-throughput microsomal assay or predictive model flags a lead candidate for **CYP bioactivation**, discarding the entire chemical series is costly and unnecessary.
 
-        Instead, medicinal chemists employ **Matched Molecular Pairs (MMPs)**: single exocyclic bond substitutions on a conserved core framework that **abrogate reactive intermediate formation** while maintaining target binding affinity and drug-like properties.
+Instead, medicinal chemists employ **Matched Molecular Pairs (MMPs)**: single exocyclic bond substitutions on a conserved core framework that **abrogate reactive intermediate formation** while maintaining target binding affinity and drug-like properties.
 
-        ### 1. Curated Matched Molecular Pair (MMP) Label Shifts
-        Using RDKit's algorithmic single-cut fragmentation engine (`rdMMPA`), we screened 5,081 isoform endpoints and extracted **34 unique matched molecular pairs** (25 CYP3A4, 9 CYP2D6) exhibiting active-to-inactive ($1 \to 0$) bioactivation label shifts on an identical conserved core:
-        - **Conserved Core:** Core framework contains $\ge 10$ heavy atoms and $\ge 1$ ring system.
-        - **Minimal Chemical Edit:** Exocyclic substituent change is limited to $\le 6$ heavy atoms.
-        - **Observed Assay Shift:** Measured active-to-inactive ($1 \to 0$) target label shift on the identical conserved core in OpenADMET microsomal assay data.
-        """
+### 1. Curated Matched Molecular Pair (MMP) Label Shifts
+Using RDKit's algorithmic single-cut fragmentation engine (`rdMMPA`), we screened 5,081 isoform endpoints and extracted **34 unique matched molecular pairs** (25 CYP3A4, 9 CYP2D6) exhibiting active-to-inactive ($1 \to 0$) bioactivation label shifts on an identical conserved core:
+- **Conserved Core:** Core framework contains $\ge 10$ heavy atoms and $\ge 1$ ring system.
+- **Minimal Chemical Edit:** Exocyclic substituent change is limited to $\le 6$ heavy atoms.
+- **Observed Assay Shift:** Measured active-to-inactive ($1 \to 0$) target label shift on the identical conserved core in OpenADMET microsomal assay data.
+"""
     )
 
     mmp_data = load_mmp_transformations()
@@ -2306,10 +2305,8 @@ def __(BioactivationTracer, mo, oof_cases, oof_dropdown):
     )
 
     act4_oof_section = mo.vstack([
-        mo.md("""
-        ### 3. Out-of-Fold Model Error Diagnosis (Honest Cross-Validation)
-        *Examines real out-of-fold diagnostic failure modes across Grouped Scaffold 5-Fold CV, including **False Negative (Dangerous Escape)** cases like Resorcinol auto-oxidation and **False Positive (False Alarm)** cases where steric shields protect against bioactivation.*
-        """),
+        mo.md("""### 3. Out-of-Fold Model Error Diagnosis (Honest Cross-Validation)
+*Examines real out-of-fold diagnostic failure modes across Grouped Scaffold 5-Fold CV, including **False Negative (Dangerous Escape)** cases like Resorcinol auto-oxidation and **False Positive (False Alarm)** cases where steric shields protect against bioactivation.*"""),
         oof_dropdown,
         mo.hstack([_widget_ui, _oof_card], justify="start", gap=16),
     ])
@@ -2324,25 +2321,25 @@ def __(BASE_DIR, load_txconformal_selection_results, mo):
 
 ## Act 5: TxConformal Candidate Prioritization, Honest Limitations, & DOME Checklist
 
-        In late-stage preclinical hit-to-lead campaigns, testing thousands of synthesized compounds in human liver microsome incubation assays is economically prohibitive. Discovery teams must prioritize a **candidate shortlist**.
+In late-stage preclinical hit-to-lead campaigns, testing thousands of synthesized compounds in human liver microsome incubation assays is economically prohibitive. Discovery teams must prioritize a **candidate shortlist**.
 
-        ### 1. The Risk of Naive Probability Ranking
-        Standard practice simply sorts compounds by predicted model probability ($\hat{p}$) and picks the top $K$. However, under **severe Murcko scaffold shift**, this offers **no statistical error control**—a team can easily advance candidates that turn out to be potent suicide inactivators in vivo.
+### 1. The Risk of Naive Probability Ranking
+Standard practice simply sorts compounds by predicted model probability ($\hat{p}$) and picks the top $K$. However, under **severe Murcko scaffold shift**, this offers **no statistical error control**—a team can easily advance candidates that turn out to be potent suicide inactivators in vivo.
 
-        ### 2. Empirical Candidate Prioritization: Weighted Conformal Selection
-        To prioritize candidate leads under distribution shift, we implemented **TxConformal** (Jin, Huang, Diamant et al., *bioRxiv / ICLR 2026*):
+### 2. Empirical Candidate Prioritization: Weighted Conformal Selection
+To prioritize candidate leads under distribution shift, we implemented **TxConformal** (Jin, Huang, Diamant et al., *bioRxiv / ICLR 2026*):
 
-        * Estimates covariate shift between calibration and test chemical space using a domain discriminator to compute likelihood ratio weights:
+* Estimates covariate shift between calibration and test chemical space using a domain discriminator to compute likelihood ratio weights:
 
-        $$w(x) = \frac{p_{\text{test}}(x)}{p_{\text{cal}}(x)}$$
+$$w(x) = \frac{p_{\text{test}}(x)}{p_{\text{cal}}(x)}$$
 
-        * Computes shift-adjusted conformal p-values for candidate compounds ($H_0$: molecule is a TDI bioactivation liability).
-        * Employs a weighted Benjamini-Hochberg step-up selection procedure targeting nominal False Discovery Rate (FDR) control:
+* Computes shift-adjusted conformal p-values for candidate compounds ($H_0$: molecule is a TDI bioactivation liability).
+* Employs a weighted Benjamini-Hochberg step-up selection procedure targeting nominal False Discovery Rate (FDR) control:
 
-        $$\text{Target Screening Threshold: } \alpha \in [0.05, 0.20] \quad (\text{Standard Screening Default: } \alpha \le 0.10)$$
+$$\text{Target Screening Threshold: } \alpha \in [0.05, 0.20] \quad (\text{Standard Screening Default: } \alpha \le 0.10)$$
 
-        *(Note on statistical assumptions: Finite-sample theoretical bounds require exact exchangeability and well-calibrated density ratios. On empirical chemical benchmarks, we evaluate realized False Discovery Proportion (FDP) across 250-run Monte Carlo screening pools).*
-        """
+*(Note on statistical assumptions: Finite-sample theoretical bounds require exact exchangeability and well-calibrated density ratios. On empirical chemical benchmarks, we evaluate realized False Discovery Proportion (FDP) across 250-run Monte Carlo screening pools).*
+"""
     )
 
     tx_data = load_txconformal_selection_results()
@@ -2608,30 +2605,29 @@ def __(
 @app.cell
 def __(mo):
     act5_limitations_md = mo.md(
-        """
-        ---
-        ### 4. Honest Scientific Limitations
+        r"""
+---
+### 4. Honest Scientific Limitations
 
-        > [!NOTE]
-        > **Critical Preclinical Nuances:**
-        > 1. **Binary TDI vs. Kinetic $k_{\\text{inact}} / K_I$ Potency:** High-throughput screening measures a binary preincubation IC50 shift ratio ($\\ge 1.5 - 2.0$), not the continuous maximum inactivation rate ($k_{\\text{inact}}$) or dissociation constant ($K_I$). Compounds flagged as positive may have modest inactivation kinetics that are clinically manageable at low human therapeutic doses.
-        > 2. **In Vitro Microsomes vs. Whole-Body In Vivo Clearance:** Human liver microsomes (HLM) contain membrane-bound Cytochromes and UGTs, but lack cytosolic sulfotransferases and phase II conjugating enzymes. A compound with a vulnerable warhead in microsomes may be rapidly and safely conjugated in hepatocytes in vivo.
-        > 3. **Conformal Coverage-Efficiency Trade-Off:** Conformal prediction calibrates candidate selection under exchangeability and density-ratio estimation assumptions; under extreme out-of-distribution shifts (Tanimoto $< 0.30$), conformal p-values inflate and candidate sets appropriately shrink, reflecting statistical caution.
+> 💡 **Critical Preclinical Nuances:**
+> 1. **Binary TDI vs. Kinetic $k_{\text{inact}} / K_I$ Potency:** High-throughput screening measures a binary preincubation IC50 shift ratio ($\ge 1.5 - 2.0$), not the continuous maximum inactivation rate ($k_{\text{inact}}$) or dissociation constant ($K_I$). Compounds flagged as positive may have modest inactivation kinetics that are clinically manageable at low human therapeutic doses.
+> 2. **In Vitro Microsomes vs. Whole-Body In Vivo Clearance:** Human liver microsomes (HLM) contain membrane-bound Cytochromes and UGTs, but lack cytosolic sulfotransferases and phase II conjugating enzymes. A compound with a vulnerable warhead in microsomes may be rapidly and safely conjugated in hepatocytes in vivo.
+> 3. **Conformal Coverage-Efficiency Trade-Off:** Conformal prediction calibrates candidate selection under exchangeability and density-ratio estimation assumptions; under extreme out-of-distribution shifts (Tanimoto $< 0.30$), conformal p-values inflate and candidate sets appropriately shrink, reflecting statistical caution.
 
-        ---
-        ### 5. DOME Recommendations Compliance (Machine Learning in Life Sciences)
-        """
+---
+### 5. DOME Recommendations Compliance (Machine Learning in Life Sciences)
+"""
     )
 
     dome_content = mo.md(
         """
-        | DOME axis | Implementation in OpenADMET Cytochrome P450 Platform |
-        | :--- | :--- |
-        | **Data (D)** | 6,145 compounds curated with dual-SMILES policy. Strict missingness masks (3,584 3A4, 1,497 2D6). Zero target leakage verified programmatically. Murcko scaffold clustering with 0 parent InChIKey overlap across folds. |
-        | **Optimization (O)** | Tree-based GBDT tuned via stratified CV; Chemprop v2 D-MPNN optimized on Apple Silicon GPU (MPS) using Adam with Noam learning rate scheduling and early stopping. |
-        | **Model (M)** | 2D ECFP4 tabular baselines, continuous message-passing graph neural networks (D-MPNN), AIMNet2-NSE ΔSCF quantum electronic descriptors, and AutoDock Vina v1.2.7 macromolecular docking. |
-        | **Evaluation (E)** | Strict Grouped Murcko Scaffold 5-Fold CV + 60/20/20 holdout. 1000-resample bootstrap 95% confidence intervals across PR-AUC, MCC, ROC-AUC, and Brier scores. Empirical FDR evaluated under covariate shift via weighted conformal selection. |
-        """
+| DOME axis | Implementation in OpenADMET Cytochrome P450 Platform |
+| :--- | :--- |
+| **Data (D)** | 6,145 compounds curated with dual-SMILES policy. Strict missingness masks (3,584 3A4, 1,497 2D6). Zero target leakage verified programmatically. Murcko scaffold clustering with 0 parent InChIKey overlap across folds. |
+| **Optimization (O)** | Tree-based GBDT tuned via stratified CV; Chemprop v2 D-MPNN optimized on Apple Silicon GPU (MPS) using Adam with Noam learning rate scheduling and early stopping. |
+| **Model (M)** | 2D ECFP4 tabular baselines, continuous message-passing graph neural networks (D-MPNN), AIMNet2-NSE ΔSCF quantum electronic descriptors, and AutoDock Vina v1.2.7 macromolecular docking. |
+| **Evaluation (E)** | Strict Grouped Murcko Scaffold 5-Fold CV + 60/20/20 holdout. 1000-resample bootstrap 95% confidence intervals across PR-AUC, MCC, ROC-AUC, and Brier scores. Empirical FDR evaluated under covariate shift via weighted conformal selection. |
+"""
     )
     act5_dome_accordion = mo.accordion(
         {
@@ -2642,16 +2638,16 @@ def __(mo):
 
     act5_citations_md = mo.md(
         """
-        ---
-        ### 6. Primary Data Sources & Methodological Citations
+---
+### 6. Primary Data Sources & Methodological Citations
 
-        1. **OpenADMET Challenge (2024-2025):** Cytochrome P450 Time-Dependent Inhibition and Reversible Inhibition Benchmark Dataset.
-        2. **Octant Bio:** High-throughput Cytochrome P450 reactivity and microsomal stability datasets (*willitfly* and *reactivity* libraries).
-        3. **AIMNet2-NSE:** Zubatyuk et al. (2024) *Accurate neural network potentials for open-shell systems and vertical ionization potentials*.
-        4. **TxConformal:** Jin, Huang, Diamant et al. (2026) *Conformal candidate selection and risk control under covariate shift in therapeutic discovery*, Nature Communications / ICLR.
-        5. **RCSB Protein Data Bank:** CYP3A4 Crystal Structures **2V0M** (Ketoconazole-bound complex, 2.80 Å) and **1TQN** (Unliganded resting state, 2.05 Å).
-        6. **AutoDock Vina v1.2.7:** Eberhardt et al. (2021) *AutoDock Vina 1.2.0: Automating docking calculations for macromolecular complexes*.
-        """
+1. **OpenADMET Challenge (2024-2025):** Cytochrome P450 Time-Dependent Inhibition and Reversible Inhibition Benchmark Dataset.
+2. **Octant Bio:** High-throughput Cytochrome P450 reactivity and microsomal stability datasets (*willitfly* and *reactivity* libraries).
+3. **AIMNet2-NSE:** Zubatyuk et al. (2024) *Accurate neural network potentials for open-shell systems and vertical ionization potentials*.
+4. **TxConformal:** Jin, Huang, Diamant et al. (2026) *Conformal candidate selection and risk control under covariate shift in therapeutic discovery*, Nature Communications / ICLR.
+5. **RCSB Protein Data Bank:** CYP3A4 Crystal Structures **2V0M** (Ketoconazole-bound complex, 2.80 Å) and **1TQN** (Unliganded resting state, 2.05 Å).
+6. **AutoDock Vina v1.2.7:** Eberhardt et al. (2021) *AutoDock Vina 1.2.0: Automating docking calculations for macromolecular complexes*.
+"""
     )
 
     act5_limitations_and_dome = mo.vstack([
