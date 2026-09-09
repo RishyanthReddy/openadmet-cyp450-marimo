@@ -1,6 +1,6 @@
 # OpenADMET: Cytochrome P450 Time-Dependent Inhibition (TDI) Discovery Platform
 
-[![Open in Molab](https://marimo.io/shield.svg)](https://molab.marimo.io/?entrypoint=https://gist.githubusercontent.com/RishyanthReddy/3ee85971e676e6a770d3bb2886f81792/raw/standalone_app.py)
+[![Open in Molab](https://marimo.io/shield.svg)](https://molab.marimo.io/github/RishyanthReddy/openadmet-cyp450-marimo/blob/main/standalone_app.py)
 [![Live App on GitHub Pages](https://img.shields.io/badge/Live_App-GitHub_Pages-22c55e?logo=github)](https://rishyanthreddy.github.io/openadmet-cyp450-marimo/)
 [![Audit Status](https://img.shields.io/badge/Luna_Max_Audit-100%2F100_Tier_3_Sign--Off-blue)](docs/GPT56_LUNA_ROUND23_UI_AUDIT.md)
 [![Tests](https://img.shields.io/badge/pytest-213_passed-brightgreen)](tests/)
@@ -17,8 +17,9 @@
 You do **not** have to install or execute code if you simply want to explore the application! We provide instant zero-install browser access as well as local execution options:
 
 ### 1. Instant Zero-Install Browser Access (Recommended)
-- **[Launch in Molab (marimo.io)](https://molab.marimo.io/?entrypoint=https://gist.githubusercontent.com/RishyanthReddy/3ee85971e676e6a770d3bb2886f81792/raw/standalone_app.py)** — Opens the reactive standalone application in Marimo's hosted cloud engine with full interactivity and zero setup.
-- **[View Live App on GitHub Pages](https://rishyanthreddy.github.io/openadmet-cyp450-marimo/)** — Hosted static/WASM interactive deployment.
+- **[Launch in Molab (marimo.io)](https://molab.marimo.io/github/RishyanthReddy/openadmet-cyp450-marimo/blob/main/standalone_app.py)** — Opens the reactive standalone application in Marimo's cloud workspace with zero setup.
+- **[Launch in Molab WebAssembly (WASM)](https://molab.marimo.io/github/RishyanthReddy/openadmet-cyp450-marimo/blob/main/standalone_app.py/wasm)** — Runs client-side in the browser via Pyodide.
+- **[View Live App on GitHub Pages](https://rishyanthreddy.github.io/openadmet-cyp450-marimo/)** — Hosted pre-rendered interactive deployment.
 - **[View Standalone Gist](https://gist.github.com/RishyanthReddy/3ee85971e676e6a770d3bb2886f81792)** — Versioned single-file release.
 
 ### 2. Run Directly in 1 Line (No Cloning Needed)

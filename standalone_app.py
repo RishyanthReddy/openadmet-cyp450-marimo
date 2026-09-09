@@ -1039,27 +1039,32 @@ def __(get_dataset_provenance_status, load_curated_dataset, mo):
     else:
         _prov_badge = f"""<span style="background: #fefce8; color: #b45309; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; border: 1px solid #fde047; white-space: nowrap;">🟡 Data Source: Embedded Offline Sandbox ({_num_cpds:,}-molecule Fallback Mode)</span>"""
 
-    header_md = mo.md(
+    header_md = mo.Html(
         f"""
-        # OpenADMET: Cytochrome P450 Bioactivation & Conformal Risk Control
-        ### *Bridging Quantum Reactivity ($\\Delta\\text{{SCF}}$), 3D Active-Site Enzymology, and Weighted Conformal Risk Control*
-
-<div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; margin-bottom: 20px;">
-          {_prov_badge}
+<div style="margin-bottom: 24px;">
+<h1 style="font-size: 26px; font-weight: 700; color: #0f172a; margin: 0 0 6px 0; letter-spacing: -0.5px;">
+            OpenADMET: Cytochrome P450 Bioactivation &amp; Conformal Risk Control
+</h1>
+<h3 style="font-size: 15px; font-weight: 500; color: #64748b; margin: 0 0 14px 0; font-style: italic;">
+            Bridging Quantum Reactivity (ΔSCF), 3D Active-Site Enzymology, and Weighted Conformal Risk Control
+</h3>
+<div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;">
+            {_prov_badge}
 <span style="background: #fdf4ff; color: #a21caf; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; border: 1px solid #f5d0fe; white-space: nowrap;">
-            Quantum Physics: AIMNet2-NSE ΔSCF (RTX 4090)
+              Quantum Physics: AIMNet2-NSE ΔSCF (RTX 4090)
 </span>
 <span style="background: #fefce8; color: #a16207; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; border: 1px solid #fef08a; white-space: nowrap;">
-            Macromolecular Docking: CYP3A4 2V0M (Active-Site Steric Proximity)
+              Macromolecular Docking: CYP3A4 2V0M (Active-Site Steric Proximity)
 </span>
 <span style="background: #f0fdf4; color: #15803d; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; border: 1px solid #bbf7d0; white-space: nowrap;">
-            Conformal Selection: Nominal FDR α ≤ 0.10
+              Conformal Selection: Nominal FDR α ≤ 0.10
 </span>
 <span style="background: #f8fafc; color: #475569; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; border: 1px solid #e2e8f0; white-space: nowrap;">
-            Latency: 3.6 ms Cold Load
+              Latency: 3.6 ms Cold Load
 </span>
 </div>
-        ---
+<hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 18px 0;" />
+</div>
         """
     )
     return (header_md,)
@@ -1339,8 +1344,9 @@ def __(
 ):
     act2_intro = mo.md(
         """
-        ---
-        ## Act 2: The Bathtub Audit — Chemical Leakage & The Reality of Scaffold Shift
+<hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 32px 0 24px 0;" />
+
+## Act 2: The Bathtub Audit — Chemical Leakage & The Reality of Scaffold Shift
 
         In published computational ADMET benchmarks, naive **random splitting** is frequently the default. However, when compounds sharing an identical **Bemis-Murcko molecular core scaffold** appear in both the training and test folds, 2D tabular models (e.g. LightGBM or Random Forest on ECFP4 fingerprints) achieve high apparent scores simply by **memorizing the scaffold-level label**.
 
@@ -1654,8 +1660,9 @@ def __(
 ):
     act3_intro = mo.md(
         """
-        ---
-        ## Act 3: Physics-Grounded Quantum Reactivity & Active-Site Enzymology
+<hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 32px 0 24px 0;" />
+
+## Act 3: Physics-Grounded Quantum Reactivity & Active-Site Enzymology
 
         Does adding **quantum electronic reactivity features** provide new predictive information beyond 2D molecular topologies?
 
@@ -2113,8 +2120,9 @@ def __(mo):
 def __(load_mmp_transformations, mo):
     act4_intro = mo.md(
         r"""
-        ---
-        ## Act 4: Medicinal Chemistry Steering — Activity Cliffs, Bioisosteres, & Real Model Errors
+<hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 32px 0 24px 0;" />
+
+## Act 4: Medicinal Chemistry Steering — Activity Cliffs, Bioisosteres, & Real Model Errors
 
         When a high-throughput microsomal assay or predictive model flags a lead candidate for **CYP bioactivation**, discarding the entire chemical series is costly and unnecessary.
 
@@ -2312,8 +2320,9 @@ def __(BioactivationTracer, mo, oof_cases, oof_dropdown):
 def __(BASE_DIR, load_txconformal_selection_results, mo):
     act5_intro = mo.md(
         r"""
-        ---
-        ## Act 5: TxConformal Candidate Prioritization, Honest Limitations, & DOME Checklist
+<hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 32px 0 24px 0;" />
+
+## Act 5: TxConformal Candidate Prioritization, Honest Limitations, & DOME Checklist
 
         In late-stage preclinical hit-to-lead campaigns, testing thousands of synthesized compounds in human liver microsome incubation assays is economically prohibitive. Discovery teams must prioritize a **candidate shortlist**.
 
