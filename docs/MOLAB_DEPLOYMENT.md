@@ -34,3 +34,7 @@ CSV content and filename are now prepared on each alpha change instead of throug
 An unauthenticated HTTP request to the final app returned 200 with its notebook title; this verifies the public page, not the anonymous interactive runtime. The entrant has been asked to check incognito runtime access and download.
 
 Final full suite: **237 passed, zero skips, exit 0 in 44.80s**. A preceding run completed all tests but crashed at interpreter shutdown; the repeat completed cleanly. Five local cold starts for the final artifact: median 3.111s, p95 3.727s, zero external notebook requests and console errors. No paid compute was used.
+
+## Entrant confirmation — October 3, 2026
+
+After receiving instructions to open the final app in a private/incognito window and locate the export button, the entrant confirmed: “yes can access and doenload”. Public interactive access and hosted CSV delivery are therefore verified by the entrant. The earlier download-event limitation describes the automation tool, not an outstanding release check. Final narrated video and competition submission remain outstanding.

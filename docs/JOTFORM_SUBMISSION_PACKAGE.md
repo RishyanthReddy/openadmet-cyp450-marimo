@@ -2,7 +2,7 @@
 
 **Title:** OpenADMET: When Can We Trust a CYP Prediction?
 
-**Status:** Published to molab; hosted rendering and core controls checked. Final access/export checks, narrated video upload, and form submission remain.
+**Status:** Published to molab; hosted rendering and core controls checked. The entrant confirmed private/incognito access and CSV download. Narrated video upload and form submission remain.
 
 ## Description to paste
 

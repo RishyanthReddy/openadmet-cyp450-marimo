@@ -7,7 +7,7 @@
 - [x] Rebuild the portable notebook and run scientific, widget and responsive checks.
 - [x] Publish the revised source and redeploy on molab.
 - [x] Verify revised hosted rendering, alpha control and generated CSV link.
-- [ ] Entrant check requested: anonymous interactive access and hosted CSV file delivery (tool cannot capture download; unauthenticated page HTTP 200 verified).
+- [x] Entrant confirmed private/incognito access and successful hosted CSV download on October 3, 2026.
 - [x] Prepare a concise video script around the worked example.
 - [ ] Entrant: record/narrate the video, verify its sharing link, and approve final submission.
 
