@@ -5,8 +5,9 @@
 - [x] Add a worked example and a short statement of the findings.
 - [x] Collapse secondary tables, docking and methods without hiding essential caveats.
 - [x] Rebuild the portable notebook and run scientific, widget and responsive checks.
-- [ ] Publish the revised source and redeploy on molab.
-- [ ] Verify hosted controls, CSV download and public access.
+- [x] Publish the revised source and redeploy on molab.
+- [x] Verify revised hosted rendering, alpha control and generated CSV link.
+- [ ] Entrant check requested: anonymous interactive access and hosted CSV file delivery (tool cannot capture download; unauthenticated page HTTP 200 verified).
 - [x] Prepare a concise video script around the worked example.
 - [ ] Entrant: record/narrate the video, verify its sharing link, and approve final submission.
 

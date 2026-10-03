@@ -40,3 +40,9 @@ Literature viewers use a 1:2 molecule/evidence split and top alignment so the te
 ## Release verification
 
 User authorized deployment. Final full suite with browser checks: **237 passed in 45.75 seconds**, zero skips. Current notebook SHA-256: `9a93ab962af66ed0004b1070cb7a6e730f3a29ddc2ea50c26518bd14e4bff50d`. Saved-credential literal scan found no matches; .env is not tracked. Hosted verification follows publication.
+
+## Revised narrative release — October 3
+
+237 tests passed, zero skips, in 47.75s (`RUN_BROWSER_TESTS=1 GENERATE_DEVTOOLS_REPORT=1`). Strict marimo checks passed. The revised notebook is 188,571 bytes, SHA-256 `e5a2d0010142774720a3a2dbbf5a93541168be0c4be81c643aa2d642dbec04c5`. Five local cold starts: median 3.515s, p95 4.381s; zero external notebook requests and console errors. Accordion tests open the relevant panels; widget checks assert five mounted molecule viewers instead of depending on decorative SVG counts.
+
+Final export revision: 188,575 bytes; SHA-256 `92fcfff16fa893e30abc7dfed49bedfc940729ea48f35f7e0fef8aaf8dbded65`. Full browser-enabled suite passed 237 tests with exit 0 in 44.80s. Local cold-start timings and hosted limits are in MOLAB_DEPLOYMENT.md.

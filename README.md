@@ -2,7 +2,7 @@
 
 An interactive marimo notebook about CYP3A4/CYP2D6 time-dependent inhibition: explore molecular alerts, audit model evaluation, examine electronic-descriptor and docking evidence, and select a candidate shortlist.
 
-The submission notebook is **standalone_app.py**. [Open the live molab app](https://molab.marimo.io/notebooks/nb_fhAT4HqfpJRRthfvvYWsmo/app) or [open its notebook](https://molab.marimo.io/notebooks/nb_fhAT4HqfpJRRthfvvYWsmo). The hosted app uses the embedded 100-molecule portable sample. See [deployment checks](docs/MOLAB_DEPLOYMENT.md) for verification and remaining submission work.
+The submission notebook is **standalone_app.py**. [Open the live molab app](https://molab.marimo.io/notebooks/nb_cwmWFFrjMKyWzjSj7iuriG/app) or [open its notebook](https://molab.marimo.io/notebooks/nb_cwmWFFrjMKyWzjSj7iuriG). The hosted app uses the embedded 100-molecule portable sample. See [deployment checks](docs/MOLAB_DEPLOYMENT.md) for verification and remaining submission work.
 
 ## Run the submission candidate
 

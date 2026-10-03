@@ -1,7 +1,7 @@
 {
   "execution_scope": "local headless Chrome, standalone notebook",
   "reactivity_measurement": "5 keyboard alpha updates, waiting for the updated candidate-table label; maximum observed latency",
-  "timestamp": "2026-10-03T14:30:27.588596+00:00",
+  "timestamp": "2026-10-03T16:54:02.355329+00:00",
   "browser_version": "155.0.8059.26",
   "total_network_requests": 250,
   "unhandled_console_errors": 0,
@@ -10,11 +10,11 @@
   "total_anywidget_instances": 5,
   "audit_status": "PASS",
   "artifact_path": "standalone_app.py",
-  "artifact_size_bytes": 188571,
-  "artifact_sha256": "e5a2d0010142774720a3a2dbbf5a93541168be0c4be81c643aa2d642dbec04c5",
+  "artifact_size_bytes": 188575,
+  "artifact_sha256": "92fcfff16fa893e30abc7dfed49bedfc940729ea48f35f7e0fef8aaf8dbded65",
   "details": {
-    "page_load_latency_seconds": 1.032,
-    "reactive_render_p95_ms": 122.07,
+    "page_load_latency_seconds": 1.039,
+    "reactive_render_p95_ms": 131.74,
     "all_5_acts_verified": true,
     "mounted_controls": {
       "dropdowns": 4,

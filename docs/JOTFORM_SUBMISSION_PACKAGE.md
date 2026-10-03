@@ -13,9 +13,9 @@ When is a CYP prediction worth trusting? This notebook follows that question fro
 ## Required remaining fields
 
 - Entrant/team names and contact email: confirm with entrant.
-- Published source revision: `2036788de21c8ab5b44611277c74d02deda4e562` on `codex/submission-readiness`.
-- Live app: https://molab.marimo.io/notebooks/nb_fhAT4HqfpJRRthfvvYWsmo/app
-- Notebook: https://molab.marimo.io/notebooks/nb_fhAT4HqfpJRRthfvvYWsmo
+- Published source revision: `718eee2e0a48d19e961d63fa4ea87d507ad00536` on `codex/submission-readiness`.
+- Live app: https://molab.marimo.io/notebooks/nb_cwmWFFrjMKyWzjSj7iuriG/app
+- Notebook: https://molab.marimo.io/notebooks/nb_cwmWFFrjMKyWzjSj7iuriG
 - Video: planned 4:45 walkthrough; upload the final narrated video to the venue accepted by the form (the reviewed form requested a Google Drive link). Confirm anonymous viewing access.
 - Dataset title and attribution: OpenADMET CYP Challenge data; include the source and challenge tutorial references from the notebook.
 - License: no repository LICENSE file exists; do not claim an MIT license until one has been chosen and added.

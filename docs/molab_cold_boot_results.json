@@ -2,15 +2,15 @@
   "execution_scope": "local headless Chrome; hosted molab unverified",
   "python_executable": "/tmp/marimo-submission-env/bin/python",
   "marimo_version": "0.25.0",
-  "artifact_sha256": "e5a2d0010142774720a3a2dbbf5a93541168be0c4be81c643aa2d642dbec04c5",
+  "artifact_sha256": "92fcfff16fa893e30abc7dfed49bedfc940729ea48f35f7e0fef8aaf8dbded65",
   "gist_revision": "local-submission-candidate",
   "measured_runs_count": 5,
   "runs": [
     {
-      "process_start_utc": "2026-10-03T14:29:53.341339+00:00",
-      "first_page_ms": 978.06,
-      "marimo_ready_ms": 4496.13,
-      "act1_table_ready_ms": 4532.99,
+      "process_start_utc": "2026-10-03T14:36:02.818070+00:00",
+      "first_page_ms": 749.45,
+      "marimo_ready_ms": 2985.59,
+      "act1_table_ready_ms": 3018.45,
       "external_requests": [],
       "gpu_initialization_detected": false,
       "console_errors": [],
@@ -18,10 +18,10 @@
       "run": 1
     },
     {
-      "process_start_utc": "2026-10-03T14:29:58.591884+00:00",
-      "first_page_ms": 1024.16,
-      "marimo_ready_ms": 3758.1,
-      "act1_table_ready_ms": 3773.5,
+      "process_start_utc": "2026-10-03T14:36:06.497850+00:00",
+      "first_page_ms": 800.48,
+      "marimo_ready_ms": 3071.17,
+      "act1_table_ready_ms": 3080.78,
       "external_requests": [],
       "gpu_initialization_detected": false,
       "console_errors": [],
@@ -29,10 +29,10 @@
       "run": 2
     },
     {
-      "process_start_utc": "2026-10-03T14:30:03.115168+00:00",
-      "first_page_ms": 792.16,
-      "marimo_ready_ms": 3492.17,
-      "act1_table_ready_ms": 3499.71,
+      "process_start_utc": "2026-10-03T14:36:10.276280+00:00",
+      "first_page_ms": 921.99,
+      "marimo_ready_ms": 3835.43,
+      "act1_table_ready_ms": 3877.89,
       "external_requests": [],
       "gpu_initialization_detected": false,
       "console_errors": [],
@@ -40,10 +40,10 @@
       "run": 3
     },
     {
-      "process_start_utc": "2026-10-03T14:30:07.337715+00:00",
-      "first_page_ms": 798.53,
-      "marimo_ready_ms": 3494.91,
-      "act1_table_ready_ms": 3503.09,
+      "process_start_utc": "2026-10-03T14:36:14.895925+00:00",
+      "first_page_ms": 797.22,
+      "marimo_ready_ms": 3087.82,
+      "act1_table_ready_ms": 3125.0,
       "external_requests": [],
       "gpu_initialization_detected": false,
       "console_errors": [],
@@ -51,10 +51,10 @@
       "run": 4
     },
     {
-      "process_start_utc": "2026-10-03T14:30:11.579487+00:00",
-      "first_page_ms": 841.54,
-      "marimo_ready_ms": 3507.52,
-      "act1_table_ready_ms": 3515.26,
+      "process_start_utc": "2026-10-03T14:36:18.722119+00:00",
+      "first_page_ms": 796.83,
+      "marimo_ready_ms": 3070.04,
+      "act1_table_ready_ms": 3111.03,
       "external_requests": [],
       "gpu_initialization_detected": false,
       "console_errors": [],
@@ -63,10 +63,10 @@
     }
   ],
   "statistics": {
-    "min_seconds": 3.5,
-    "max_seconds": 4.533,
-    "median_seconds": 3.515,
-    "p95_seconds": 4.381
+    "min_seconds": 3.018,
+    "max_seconds": 3.878,
+    "median_seconds": 3.111,
+    "p95_seconds": 3.727
   },
   "slo": {
     "threshold_seconds": 10.0,
