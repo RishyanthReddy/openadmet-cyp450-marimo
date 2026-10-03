@@ -73,7 +73,7 @@ def test_cyp2d6_section_mounted_in_main_view():
     assert "act3_cyp2d6_section" in code
 
     # In main_view vstack
-    main_view_def = code[code.find("main_view = mo.vstack(["):code.find("return (main_view,)")]
+    main_view_def = code[code.find("main_view = "):code.find("return (main_view,)")]
     assert "act3_docking_section," in main_view_def
     assert "act3_cyp2d6_section," in main_view_def
     # Make sure act3_cyp2d6_section appears directly after act3_docking_section
@@ -94,8 +94,8 @@ def test_cyp2d6_ui_empty_evaluations_fallback_renders_no_numeric_sentinels():
     assert 'min_dist_to_heme_fe_angstrom": 99.9' not in code
 
     # Verify fallback formatting in app.py
-    assert '_vina_3tbg_html = \'<span style="color: #94a3b8; font-weight: 600;">No Evaluation Available</span>\'' in code
-    assert '_fe_dist_3tbg_html = \'<span style="color: #94a3b8; font-weight: 600;">No Evaluation Available</span>\'' in code
+    assert '_vina_3tbg_html = \'<span style="color: #8c968e; font-weight: 600;">No Evaluation Available</span>\'' in code
+    assert '_fe_dist_3tbg_html = \'<span style="color: #8c968e; font-weight: 600;">No Evaluation Available</span>\'' in code
     assert "⚪ No Structural Evaluation Available" in code
     assert "No docking evaluation record is available for the current selection." in code
 

@@ -54,7 +54,7 @@ def test_cold_boot_report_has_five_runs_and_under_ten_seconds():
     
     for r in runs:
         table_s = r.get("act1_table_ready_ms", 99999.0) / 1000.0
-        assert table_s < 10.0, f"Run {r.get(run)} exceeded 10.0s SLA: {table_s:.2f}s"
+        assert table_s < 10.0, f"Run {r.get('run')} exceeded 10.0s SLA: {table_s:.2f}s"
         
     stats = report.get("statistics", {})
     assert stats.get("median_seconds", 999.0) < 10.0
@@ -72,9 +72,9 @@ def test_cold_boot_report_has_no_external_requests_or_gpu():
     assert len(runs) >= 5
     
     for r in runs:
-        assert len(r.get("external_requests", [])) == 0, f"Run {r.get(run)} made external requests: {r[external_requests]}"
-        assert r.get("gpu_initialization_detected") is False, f"Run {r.get(run)} unexpectedly initialized GPU"
-        assert len(r.get("console_errors", [])) == 0, f"Run {r.get(run)} had console errors: {r[console_errors]}"
+        assert len(r.get("external_requests", [])) == 0, f"Run {r.get('run')} made external requests: {r['external_requests']}"
+        assert r.get("gpu_initialization_detected") is False, f"Run {r.get('run')} unexpectedly initialized GPU"
+        assert len(r.get("console_errors", [])) == 0, f"Run {r.get('run')} had console errors: {r['console_errors']}"
 
 
 def test_primary_parquet_sha256_matches_staging_report():

@@ -30,15 +30,16 @@ def test_marimo_check_app():
 def test_act1_content_and_reference_mbis():
     content = APP_PATH.read_text(encoding="utf-8")
 
-    # Verify provenance pill
-    assert "Data Source:" in content
-    assert "Parquet SHA-256 Verified" in content
+    # Verify both dataset provenance labels
+    assert "Full Curated Dataset" in content
+    assert "Portable sample" in content
+    assert "PRIMARY_PARQUET_VERIFIED" in content
 
     # Verify key Act 1 scientific concepts
-    assert "Act 1: What TDI Is — and What It Is Not" in content
-    assert "Preincubation Shift Assay Reality" in content
-    assert "Irreversible MBI Mechanism" in content
-    assert "Suicide Inactivation" in content
+    assert "Act 1: What does the assay actually tell us?" in content
+    assert "Measuring time-dependent inhibition" in content
+    assert "irreversible MBI mechanism" in content
+    assert "irreversible covalent modification" in content
 
     # Verify key literature compounds and docking distances from empirical data
     from models.embedded_assets import (
@@ -56,7 +57,7 @@ def test_act1_content_and_reference_mbis():
     assert round(dock_dict["Tienilic acid"], 2) == 2.19
 
     # Verify NCBI Entrez verification and PubMed linkage
-    assert "NCBI Entrez Verified" in content
+    assert "PubMed record found" in content
     assert "NCBI Verified Title" in content
     assert "NCBI Journal" in content
     assert "https://pubmed.ncbi.nlm.nih.gov/" in content

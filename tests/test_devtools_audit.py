@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 if str(BASE_DIR) not in sys.path:
     sys.path.insert(0, str(BASE_DIR))
 
-APP_PATH = BASE_DIR / "app.py"
+APP_PATH = BASE_DIR / "standalone_app.py"
 MARIMO_VENV_BIN = BASE_DIR / ".venv" / "bin" / "marimo"
 
 
@@ -74,11 +74,7 @@ def live_server():
     except Exception:
         pass
 
-    cmd = (
-        [str(MARIMO_VENV_BIN), "run", str(APP_PATH), "--port", str(PORT), "--headless"]
-        if MARIMO_VENV_BIN.exists()
-        else [sys.executable, "-m", "marimo", "run", str(APP_PATH), "--port", str(PORT), "--headless"]
-    )
+    cmd = [sys.executable, "-m", "marimo", "run", str(APP_PATH), "--port", str(PORT), "--headless"]
     proc = subprocess.Popen(
         cmd,
         cwd=BASE_DIR,
@@ -161,7 +157,7 @@ def browser_audit_results(live_server):
 
             # 4. Step 2: Allow anywidget traitlet initial sync and reactive DAG settle
             try:
-                page.wait_for_selector("text=Act 1: What TDI Is", timeout=15000)
+                page.wait_for_selector("text=Act 1: What does the assay actually tell us?", timeout=15000)
             except Exception:
                 page.wait_for_timeout(3000)
             page.wait_for_timeout(1000)
@@ -169,11 +165,11 @@ def browser_audit_results(live_server):
             # 5. Step 3: Inspect DOM structure
             title = page.title()
             acts_present = {
-                "Act 1: What TDI Is": False,
-                "Act 2: The Bathtub Audit": False,
-                "Act 3: Physics-Grounded Quantum Reactivity": False,
-                "Act 4: Medicinal Chemistry Steering": False,
-                "Act 5: TxConformal Candidate Prioritization": False,
+                "Act 1: What does the assay actually tell us?": False,
+                "Act 2: How much does the split matter?": False,
+                "Act 3: Do electronic descriptors help?": False,
+                "Act 4: What can a small chemical edit change?": False,
+                "Act 5: Which molecules would we test next?": False,
             }
             body_text = page.inner_text("body")
             for act in acts_present:
@@ -189,18 +185,16 @@ def browser_audit_results(live_server):
 
             # 6. Step 4: Measure reactive render latency SLA (p95 < 500ms)
             reactive_latencies = []
-            slider = page.query_selector("[role='slider']")
-            if slider:
-                for _ in range(5):
-                    t_i = time.perf_counter()
-                    slider.evaluate(
-                        "el => { el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true })); }"
-                    )
-                    page.wait_for_timeout(80)
-                    dt = (time.perf_counter() - t_i) * 1000 - 80
-                    reactive_latencies.append(max(dt, 0.5))
-
-            p95_reactive_latency = sorted(reactive_latencies)[-1] if reactive_latencies else 14.8
+            slider = page.get_by_role("slider")
+            assert slider.count() == 1, "Expected the candidate alpha slider"
+            slider.scroll_into_view_if_needed()
+            for _ in range(5):
+                next_alpha = float(slider.get_attribute("aria-valuenow")) + 0.01
+                t_i = time.perf_counter()
+                slider.press("ArrowRight")
+                page.get_by_text(f"Table 5.1: TxConformal Prioritized Candidate Shortlist — N=100 display candidates; nominal α={next_alpha:.2f}", exact=True).wait_for()
+                reactive_latencies.append((time.perf_counter() - t_i) * 1000)
+            p95_reactive_latency = sorted(reactive_latencies)[-1]
 
         finally:
             browser.close()
@@ -228,6 +222,8 @@ def browser_audit_results(live_server):
     # Generate the official audit report JSON file
     REPORT_PATH.parent.mkdir(parents=True, exist_ok=True)
     report_content = {
+        "execution_scope": "local headless Chrome, standalone notebook",
+        "reactivity_measurement": "5 keyboard alpha updates, waiting for the updated candidate-table label; maximum observed latency",
         "timestamp": results["timestamp"],
         "browser_version": results["browser_version"],
         "total_network_requests": results["total_network_requests"],

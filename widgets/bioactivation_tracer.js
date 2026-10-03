@@ -41,7 +41,7 @@ function render({ model, el }) {
 
   const modes = [
     { id: "warheads", label: "Warheads" },
-    { id: "fukui", label: "Fukui Radicals" },
+    { id: "fukui", label: "Illustrative Halos" },
     { id: "clean", label: "Clean 2D" }
   ];
 
@@ -154,7 +154,7 @@ function render({ model, el }) {
       msgSpan.textContent = errMsg;
       warnBox.appendChild(msgSpan);
       
-      svgWrapper.replaceChildren(warnBox);
+      svgWrapper.replaceChildren(warnBox, tooltip);
       badgeEl.className = "bat-badge warn";
       badgeEl.textContent = "⚠️ Invalid / Fallback";
       return;
@@ -169,11 +169,12 @@ function render({ model, el }) {
       badgeEl.title = `Structural alert: ${alertText}`;
     } else {
       badgeEl.className = "bat-badge safe";
-      badgeEl.textContent = "✅ Clean (No Alert)";
+      badgeEl.textContent = "No matched alert";
       badgeEl.title = "No structural bioactivation alerts detected";
     }
 
-    // Clear previous SVG (preserve tooltip)
+    // Restore after invalid input and preserve the tooltip.
+    svgWrapper.replaceChildren(tooltip);
     const existingSvg = svgWrapper.querySelector("svg");
     if (existingSvg) existingSvg.remove();
 
@@ -242,10 +243,10 @@ function render({ model, el }) {
           else if (atom.halo_color === "#eab308") haloGradient = `url(#${instanceId}-halo-yellow)`;
           else if (atom.halo_color === "#ec4899") haloGradient = `url(#${instanceId}-halo-pink)`;
           else if (atom.halo_color === "#06b6d4") haloGradient = `url(#${instanceId}-halo-cyan)`;
-        } else if (currentMode === "fukui" && atom.fukui_radical > 0.05) {
+        } else if (currentMode === "fukui" && atom.reactivity_score > 0.05) {
           showHalo = true;
           haloGradient = `url(#${instanceId}-halo-red)`;
-          radius = 20 + Math.min(atom.fukui_radical * 35, 30);
+          radius = 20 + Math.min(atom.reactivity_score * 35, 30);
         }
 
         if (showHalo) {
@@ -281,7 +282,26 @@ function render({ model, el }) {
       const strokeColor = isWarheadBond ? (a1.halo_color || "#f97316") : defaultStroke;
       const strokeW = isWarheadBond ? "3.2" : "2.2";
 
-      if (bond.order === 1.0 || bond.order === 1.5) {
+      if (bond.direction === "BEGINWEDGE" || bond.direction === "BEGINDASH") {
+        if (bond.direction === "BEGINWEDGE") {
+          const wedge = document.createElementNS(svgNS, "polygon");
+          wedge.setAttribute("points", `${a1.x},${a1.y} ${a2.x + nx * 4},${a2.y + ny * 4} ${a2.x - nx * 4},${a2.y - ny * 4}`);
+          wedge.setAttribute("fill", strokeColor);
+          bondsGroup.appendChild(wedge);
+        } else {
+          for (let step = 1; step <= 7; step++) {
+            const t = step / 8;
+            const hash = document.createElementNS(svgNS, "line");
+            hash.setAttribute("x1", a1.x + dx * t - nx * 4 * t);
+            hash.setAttribute("y1", a1.y + dy * t - ny * 4 * t);
+            hash.setAttribute("x2", a1.x + dx * t + nx * 4 * t);
+            hash.setAttribute("y2", a1.y + dy * t + ny * 4 * t);
+            hash.setAttribute("stroke", strokeColor);
+            hash.setAttribute("stroke-width", "1.5");
+            bondsGroup.appendChild(hash);
+          }
+        }
+      } else if (bond.order === 1.0 || bond.order === 1.5) {
         // Single or Aromatic Bond
         const line = document.createElementNS(svgNS, "line");
         line.setAttribute("x1", a1.x);
@@ -360,7 +380,7 @@ function render({ model, el }) {
         const text = document.createElementNS(svgNS, "text");
         text.setAttribute("class", "bat-atom-label");
         text.setAttribute("fill", atom.element_color || "var(--bat-text-main)");
-        text.textContent = atom.symbol + (atom.charge > 0 ? "+" : atom.charge < 0 ? "-" : "");
+        text.textContent = atom.symbol + (Math.abs(atom.charge) > 1 ? Math.abs(atom.charge) : "") + (atom.charge > 0 ? "+" : atom.charge < 0 ? "-" : "");
         g.appendChild(text);
       }
 
@@ -369,13 +389,14 @@ function render({ model, el }) {
         atom_index: atom.index,
         atom_symbol: atom.symbol,
         formal_charge: atom.charge,
+        stereochemistry: atom.cip_label || "Unassigned / achiral",
         is_aromatic: atom.is_aromatic,
         in_warhead: atom.in_warhead,
         warhead_family: atom.warhead_family || "None",
-        atom_score: atom.fukui_radical > 0 ? atom.fukui_radical : (atom.in_warhead ? atom.halo_intensity : 0.0),
-        score_type: atom.fukui_radical > 0 ? "AIMNet2 Radical Fukui Index (f_k^0)" : (atom.in_warhead ? "Bioactivation Alert Motif" : "Baseline Element"),
-        score_source: atom.fukui_radical > 0 ? "AIMNet2-NSE Delta-SCF on RTX 4090" : (atom.in_warhead ? "RDKit SMARTS Substructure Alert" : "Topological Graph"),
-        normalization: "Unit range [0, 1]",
+        atom_score: atom.reactivity_score || 0,
+        score_type: atom.score_type || "Structural-alert heuristic",
+        score_source: atom.score_source || "Illustrative motif weighting; not a quantum calculation",
+        normalization: atom.score_type === "Supplied radical Fukui index" ? "As supplied; not a probability" : "Illustrative weight; not a probability",
         is_experimental: false,
       };
 
@@ -483,4 +504,3 @@ function render({ model, el }) {
 
 export default { render };
 export { render };
-

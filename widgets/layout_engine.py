@@ -7,7 +7,7 @@ Converts molecular SMILES into clean, normalized JSON dictionaries containing:
   - Bond topology (connectivity, bond orders, stereo tags)
   - Atom property vectors (formal charges, element colors, aromaticity)
   - Mechanism-based inactivation warhead detection (Furan, Thiophene, MDP, etc.)
-  - Quantum reactivity halo annotations (Fukui indices, oxidation charge response)
+  - Explicit provenance for heuristic halos and supplied atom-level quantum values
 """
 
 from __future__ import annotations
@@ -72,8 +72,15 @@ def generate_molecule_layout(
     rdDepictor.Compute2DCoords(mol)
     rdDepictor.NormalizeDepiction(mol)
     conf = mol.GetConformer()
+    Chem.WedgeMolBonds(mol, conf)
 
     num_atoms = mol.GetNumAtoms()
+    if not num_atoms:
+        raise ValueError("Invalid SMILES: empty molecular structure")
+    if atom_fukui_map is not None:
+        for idx, value in atom_fukui_map.items():
+            if not isinstance(idx, int) or not 0 <= idx < num_atoms or not math.isfinite(float(value)):
+                raise ValueError("Invalid atom-level quantum mapping")
     xs_raw = np.zeros(num_atoms, dtype=float)
     ys_raw = np.zeros(num_atoms, dtype=float)
 
@@ -130,34 +137,38 @@ def generate_molecule_layout(
         warhead_family = atom_warhead_map[i][0] if in_warhead else None
         halo_color = atom_warhead_map[i][1] if in_warhead else None
 
-        # Quantum Fukui radical index (if provided)
+        # A molecule-level maximum cannot be assigned to individual atoms.
         fukui_val = 0.0
+        score_source = "Illustrative motif weighting; not a quantum calculation"
+        score_type = "Structural-alert heuristic"
         if atom_fukui_map and i in atom_fukui_map:
             fukui_val = float(atom_fukui_map[i])
-        elif quantum_features and "aimnet2_max_fukui_radical" in quantum_features and in_warhead:
-            fukui_val = float(quantum_features["aimnet2_max_fukui_radical"])
-        elif in_warhead:
-            # Calibrated AIMNet2 Delta-SCF radical Fukui approximation (mean ~0.126, reactive > 0.05)
+            score_source = "Caller-supplied atom-level values; mapping must match this structure"
+            score_type = "Supplied radical Fukui index"
+        heuristic_val = 0.0
+        if in_warhead:
             if warhead_family == "Furan":
-                fukui_val = 0.185 if symbol == "C" else 0.082
+                heuristic_val = 0.185 if symbol == "C" else 0.082
             elif warhead_family == "Thiophene":
-                fukui_val = 0.215 if symbol == "S" else 0.145
+                heuristic_val = 0.215 if symbol == "S" else 0.145
             elif warhead_family == "1,3-Benzodioxole":
-                fukui_val = 0.228 if symbol == "C" and not aromatic else 0.095
+                heuristic_val = 0.228 if symbol == "C" and not aromatic else 0.095
             elif warhead_family == "Tertiary amine":
-                fukui_val = 0.165 if symbol == "N" else 0.125
+                heuristic_val = 0.165 if symbol == "N" else 0.125
             elif warhead_family == "Aniline":
-                fukui_val = 0.180 if symbol == "N" else 0.110
+                heuristic_val = 0.180 if symbol == "N" else 0.110
             elif warhead_family == "Alkyne":
-                fukui_val = 0.175
+                heuristic_val = 0.175
             elif warhead_family == "Quinone / Hydroquinone":
-                fukui_val = 0.190 if symbol == "C" else 0.115
+                heuristic_val = 0.190 if symbol == "C" else 0.115
             elif warhead_family == "Hydrazine":
-                fukui_val = 0.175
+                heuristic_val = 0.175
             else:
-                fukui_val = 0.140
+                heuristic_val = 0.140
         elif symbol in ("S", "N", "O") and aromatic:
-            fukui_val = 0.095 if symbol == "S" else (0.075 if symbol == "N" else 0.060)
+            heuristic_val = 0.095 if symbol == "S" else (0.075 if symbol == "N" else 0.060)
+
+        score = fukui_val if atom_fukui_map and i in atom_fukui_map else heuristic_val
 
         # Default halo intensity based on warhead or radical index
         halo_intensity = 0.85 if in_warhead else (fukui_val if fukui_val > 0 else 0.0)
@@ -168,6 +179,7 @@ def generate_molecule_layout(
             "x": round(float(scaled_xs[i]), 2),
             "y": round(float(scaled_ys[i]), 2),
             "charge": charge,
+            "cip_label": atom.GetProp("_CIPCode") if atom.HasProp("_CIPCode") else None,
             "is_aromatic": aromatic,
             "element_color": ELEMENT_COLORS.get(symbol, "#64748b"),
             "in_warhead": in_warhead,
@@ -175,6 +187,9 @@ def generate_molecule_layout(
             "halo_color": halo_color,
             "halo_intensity": round(halo_intensity, 2),
             "fukui_radical": round(fukui_val, 4),
+            "reactivity_score": round(score, 4),
+            "score_type": score_type,
+            "score_source": score_source,
         })
 
     # 3. Extract Bonds
@@ -206,6 +221,7 @@ def generate_molecule_layout(
             "order": order,
             "is_aromatic": b.GetIsAromatic(),
             "stereo": stereo_type,
+            "direction": str(b.GetBondDir()),
             "in_warhead": in_warhead,
         })
 

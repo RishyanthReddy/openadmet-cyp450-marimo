@@ -1,22 +1,23 @@
 # /// script
-# requires-python = ">=3.10"
+# requires-python = ">=3.11"
 # dependencies = [
-#     "marimo>=0.11.0",
+#     "marimo==0.25.0",
 #     "anywidget>=0.9.0",
 #     "rdkit>=2023.9.0",
 #     "pandas>=2.0.0",
 #     "numpy>=1.24.0",
 #     "pyarrow>=14.0.0",
 #     "traitlets>=5.14.0",
+#     "altair==6.3.0",
 # ]
 # ///
 
 import marimo
 
-__generated_with = "0.11.0"
+__generated_with = "0.25.0"
 app = marimo.App(
     width="full",
-    app_title="OpenADMET: Cytochrome P450 Bioactivation & Conformal Risk Control",
+    app_title="OpenADMET: When Can We Trust a CYP Prediction?",
 )
 
 
@@ -135,47 +136,143 @@ def __():
 
 
 @app.cell
+def __(mo):
+    def metric_stat(value, label, caption="", **_options):
+        from html import escape
+        return mo.Html(
+            '<div class="cyp-stat"><div class="cyp-stat-label">' + escape(str(label))
+            + '</div><div class="cyp-stat-value">' + escape(str(value))
+            + '</div><div class="cyp-stat-caption">' + escape(str(caption)) + '</div></div>'
+        )
+    return (metric_stat,)
+
+
+@app.cell
 def __(get_dataset_provenance_status, load_curated_dataset, mo):
     # Determine active dataset provenance and compound count
     _df = load_curated_dataset()
     _status = get_dataset_provenance_status()
     _num_cpds = len(_df) if _df is not None else 0
 
-    if _status == "PRIMARY_PARQUET_VERIFIED":
-        _prov_badge = f"""<span style="background: #ecfdf5; color: #047857; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; border: 1px solid #a7f3d0; white-space: nowrap;">🟢 Data Source: Full Curated Dataset ({_num_cpds:,} compounds, Parquet SHA-256 Verified)</span>"""
-    else:
-        _prov_badge = f"""<span style="background: #fefce8; color: #b45309; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; border: 1px solid #fde047; white-space: nowrap;">🟡 Data Source: Embedded Offline Sandbox ({_num_cpds:,}-molecule Fallback Mode)</span>"""
+    _source = (f"Full Curated Dataset · {_num_cpds:,} compounds" if _status == "PRIMARY_PARQUET_VERIFIED"
+               else f"Portable sample · {_num_cpds:,} molecules")
+    header_md = mo.Html(f"""
+    <style>
+      .cyp-paper {{ --ink:#252d2a; --muted:#65706a; --rule:#d5d8cf; --paper:#faf9f4;
+        background:var(--paper); color:var(--ink); padding:32px clamp(16px,4vw,64px) 64px;
+        max-width:1280px; margin:auto; font-family:Arial,Helvetica,sans-serif; }}
+      .cyp-paper p {{ line-height:1.75; max-width:85ch; }}
+      .cyp-paper h2 {{ font-family:Georgia,serif; font-size:clamp(25px,3vw,37px); font-weight:400;
+        letter-spacing:-.035em; line-height:1.2; color:var(--ink); }}
+      .cyp-paper h3 {{ color:var(--ink); letter-spacing:-.02em; }}
+      .cyp-masthead {{ display:flex; justify-content:space-between; gap:16px; padding-bottom:14px;
+        border-bottom:2px solid var(--ink); font:11px monospace; letter-spacing:.12em; text-transform:uppercase; }}
+      .cyp-hero {{ display:grid; grid-template-columns:3fr 1fr; gap:36px; align-items:end; padding:44px 0 36px; }}
+      .cyp-hero h1 {{ font:400 clamp(42px,6vw,76px)/1.02 Georgia,serif; letter-spacing:-.055em; margin:0; max-width:850px; }}
+      .cyp-hero h1 em {{ color:#a34a31; font-weight:400; }}
+      .cyp-hero aside {{ border-left:1px solid var(--rule); padding-left:20px; font-size:14px; line-height:1.7; }}
+      .cyp-index {{ display:flex; flex-wrap:wrap; border-top:1px solid var(--rule); border-bottom:1px solid var(--rule); padding:16px 0; gap:12px 26px; }}
+      .cyp-index a {{ color:var(--ink); text-decoration:none; font-size:13px; }}
+      .cyp-index a:hover {{ color:#a34a31; text-decoration:underline; }}
+      .cyp-index a:focus-visible {{ outline:2px solid #a34a31; outline-offset:5px; }}
+      .cyp-index b {{ font:11px monospace; color:#a34a31; margin-right:6px; }}
+      .cyp-chapter {{ border-top:1px solid var(--ink); padding-top:22px; margin-top:38px; scroll-margin-top:24px; }}
+      .cyp-section-label {{ font:11px monospace; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin-bottom:14px; }}
+      .cyp-question {{ border-left:3px solid #a34a31; padding:8px 24px; margin:18px 0; }}
+      .cyp-paper div[style*="border-radius"] {{ border-radius:2px !important; box-shadow:none !important; }}
+      .cyp-paper div[style*="background: #f1f1e9"], .cyp-paper div[style*="background-color: #f1f1e9"] {{ background:#f1f1e9 !important; }}
+      .cyp-assay-details {{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px 20px;
+        margin-top:12px; padding:14px; background:white; color:#526156; border:1px solid var(--rule); font-size:12px; line-height:1.5; }}
+      .cyp-assay-details span {{ min-width:0; overflow-wrap:anywhere; }}
+      .cyp-assay-details strong {{ display:block; color:#252d2a; margin-bottom:3px; }}
+      @media(max-width:900px) {{ .cyp-assay-details {{ grid-template-columns:repeat(2,minmax(0,1fr)); }} }}
+      @media(max-width:540px) {{ .cyp-assay-details {{ grid-template-columns:1fr; gap:10px; }} }}
+      .cyp-stat {{ height:100%; padding:20px; border:1px solid var(--rule); background:white; color:#252d2a; box-sizing:border-box; }}
+      .cyp-stat-label {{ font-size:14px; line-height:1.4; }}
+      .cyp-stat-value {{ font-size:28px; font-weight:600; margin:10px 0; }}
+      .cyp-stat-caption {{ font-size:13px; line-height:1.6; color:#526156; overflow-wrap:anywhere; }}
+      .cyp-paper div:has(> div > .cyp-stat) {{ display:grid !important; grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr)); gap:12px !important; }}
+      .cyp-paper div:has(> .cyp-stat) {{ min-width:0; }}
+      .cyp-paper .vega-embed {{ max-width:100%; overflow-x:auto; }}
+      /* Keep the paper and its inherited text together in either system theme.
+         Native marimo controls manage their own theme within this surface. */
+      @media(max-width:760px) {{
+        .cyp-paper {{ padding:16px 12px 32px; font-size:14px; }}
+        .cyp-paper .paragraph {{ margin-block:10px !important; line-height:1.6; }}
+        .cyp-paper h2 {{ font-size:27px; margin-block:12px; }}
+        .cyp-paper h3 {{ font-size:20px; margin-block:12px; }}
+        .cyp-hero h1 {{ font-size:38px; line-height:1.05; }}
+        .cyp-hero aside {{ border-left:0; padding-left:0; font-size:14px; }}
+        .cyp-masthead {{ gap:6px; font-size:9px; letter-spacing:.08em; }}
+        .cyp-index a {{ display:flex; align-items:center; min-height:44px; }}
+        .cyp-index {{ padding:4px 0; column-gap:18px !important; row-gap:0 !important; }}
+        .cyp-question {{ padding:0 0 0 12px; margin:8px 0; }}
+        .cyp-chapter {{ margin-top:24px; padding-top:16px; }}
+        .cyp-paper div[style*="flex-flow: row"] {{ flex-flow:column !important; align-items:stretch !important; }}
+        .cyp-paper div[style*="flex: 1"] {{ min-width:0; }}
+        .cyp-paper .mo-label:has(select), .cyp-paper .mo-label:has(input[type="text"]) {{
+          display:flex; flex-direction:column; align-items:stretch; width:100%; gap:8px; padding-right:0; }}
+        .cyp-paper select,.cyp-paper input[type="text"] {{ width:100%; max-width:100%; min-height:44px; font-size:16px; }}
+        .cyp-paper .bat-top-bar {{ flex-wrap:wrap; }}
+        .cyp-paper .bat-badge {{ max-width:100%; white-space:normal; }}
+        .cyp-paper .bat-btn {{ min-height:40px; }}
+        .cyp-paper .bat-svg-wrapper {{ min-height:230px; }}
 
-    # App Header and Badges
-    header_md = mo.Html(
-        f"""
-        <div style="margin-bottom: 24px;">
-          <h1 style="font-size: 26px; font-weight: 700; color: #0f172a; margin: 0 0 6px 0; letter-spacing: -0.5px;">
-            OpenADMET: Cytochrome P450 Bioactivation &amp; Conformal Risk Control
-          </h1>
-          <h3 style="font-size: 15px; font-weight: 500; color: #64748b; margin: 0 0 14px 0; font-style: italic;">
-            Bridging Quantum Reactivity (ΔSCF), 3D Active-Site Enzymology, and Weighted Conformal Risk Control
-          </h3>
-          <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;">
-            {_prov_badge}
-            <span style="background: #fdf4ff; color: #a21caf; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; border: 1px solid #f5d0fe; white-space: nowrap;">
-              Quantum Physics: AIMNet2-NSE ΔSCF (RTX 4090)
-            </span>
-            <span style="background: #fefce8; color: #a16207; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; border: 1px solid #fef08a; white-space: nowrap;">
-              Macromolecular Docking: CYP3A4 2V0M (Active-Site Steric Proximity)
-            </span>
-            <span style="background: #f0fdf4; color: #15803d; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; border: 1px solid #bbf7d0; white-space: nowrap;">
-              Conformal Selection: Nominal FDR α ≤ 0.10
-            </span>
-            <span style="background: #f8fafc; color: #475569; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; border: 1px solid #e2e8f0; white-space: nowrap;">
-              Latency: 3.6 ms Cold Load
-            </span>
-          </div>
-          <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 18px 0;" />
-        </div>
-        """
-    )
+        .cyp-hero {{ grid-template-columns:1fr; gap:14px; padding:20px 0; }}
+        .cyp-masthead {{ flex-wrap:wrap; }}
+        .cyp-index {{ gap:14px 20px; }}
+        .cyp-paper div[style*="grid-template-columns"] {{ grid-template-columns:minmax(0,1fr) !important; }}
+        .cyp-paper div[style*="flex-direction: row"][style*="flex-wrap: nowrap"] {{ flex-direction:column !important; }}
+        .cyp-paper div[style*="justify-content: space-between"][style*="display: flex"] {{ flex-wrap:wrap; gap:8px; }}
+        .cyp-paper span[style*="white-space: nowrap"] {{ white-space:normal !important; }}
+      }}
+    </style>
+    <header>
+      <div class="cyp-masthead"><span>OpenADMET / CYP450</span><span>An interactive study · Rishyanth Reddy</span></div>
+      <div class="cyp-hero">
+        <h1>When can we trust<br>a <em>CYP prediction?</em></h1>
+        <aside>A suspicious fragment is a starting point. Follow the assay, the model and the evidence to decide what to test next.</aside>
+      </div>
+      <nav class="cyp-index" aria-label="Study chapters">
+        <a href="#cyp-assay"><b>01</b> The assay</a><a href="#cyp-split"><b>02</b> The split</a>
+        <a href="#cyp-descriptors"><b>03</b> The descriptors</a><a href="#cyp-edit"><b>04</b> The chemical edit</a>
+        <a href="#cyp-shortlist"><b>05</b> Your shortlist</a>
+      </nav>
+      <p style="font:11px monospace; color:var(--muted); margin-top:14px;">{_source} · Precomputed results, live exploration</p>
+    </header>
+    """)
     return (header_md,)
+
+
+@app.cell
+def __():
+    import altair as alt
+    return (alt,)
+
+
+@app.cell
+def __(mo):
+    reveal_evidence = mo.ui.switch(label="Reveal the answer", value=False)
+    return (reveal_evidence,)
+
+
+@app.cell
+def __(mo, reveal_evidence):
+    guided_start = mo.vstack([
+        mo.md("""
+### Before you look at the results
+**Does a reactive-looking fragment prove that a molecule inhibits CYP over time?**
+
+The calculations have already been run. The controls let you explore their results. The halos are **illustrative motif weights**: they help you notice a fragment, but do not measure its reactivity.
+"""),
+        reveal_evidence,
+        mo.callout(
+            "An alert is a hypothesis. A measured TDI label describes an assay; a literature mechanism needs separate evidence. No matched alert does not establish safety."
+            if reveal_evidence.value else "Make your prediction first, then reveal the answer and test it against the evidence below.",
+            kind="info",
+        ),
+    ])
+    return (guided_start,)
 
 
 @app.cell
@@ -183,31 +280,29 @@ def __(load_literature_mbi_reference_set, mo):
     # Act 1: Narrative Intro on TDI Fundamentals vs MBI
     act1_intro = mo.md(
         """
-## Act 1: What TDI Is — and What It Is Not
+## Act 1: What does the assay actually tell us?
 
-In preclinical drug discovery, **Time-Dependent Inhibition (TDI)** of Cytochrome P450 enzymes (principally **CYP3A4** and **CYP2D6**) represents one of the most hazardous liabilities leading to clinical trial terminations, adverse drug-drug interactions (DDIs), and FDA black-box warnings.
+CYP enzymes help clear many medicines from the body. If a drug inhibits one of them, it can change how another drug is cleared. Here the question is whether inhibition grows stronger after the compound has spent time with the enzyme.
 
-### 1. The Preincubation Shift Assay Reality
-In high-throughput screening, TDI is measured via an in vitro preincubation assay:
-- The test compound is incubated with human liver microsomes (HLM) in the presence or absence of **NADPH** for 30 minutes before the addition of a probe substrate (e.g., midazolam for CYP3A4, dextromethorphan for CYP2D6).
-- If the $IC_{50}$ decreases after preincubation (typically $\\ge 1.5\\times - 2.0\\times$ shift, corresponding to a $\\Delta pIC_{50} \\ge 0.3$), the compound is scored as a **Time-Dependent Inhibitor ($1$)**.
+### Measuring time-dependent inhibition
+A microsomal preincubation assay compares inhibition before and after incubation with NADPH. In the OpenADMET challenge, a greater-than-twofold IC50 shift is one route to a positive TDI label; the challenge also supplies inferred labels in some cases. The notebook uses those supplied labels rather than applying a new threshold.
 
-### 2. The Critical Distinction: TDI Observation vs. Irreversible MBI Mechanism
-> ⚠️ **Important Distinction: Not all TDI is irreversible Mechanism-Based Inactivation (MBI).**  
-> An observed preincubation shift can arise from:
-> 1. **Slow-binding reversible inhibition** (non-covalent tight binding or metabolite intermediate complexation that eventually dissociates).
-> 2. **Quasi-irreversible metabolic intermediate complexation (MIC)** (e.g. nitrosoalkane coordination to the heme iron).
-> 3. **True irreversible covalent MBI ("Suicide Inactivation")**: The enzyme's catalytic ferryl-oxo intermediate ($[Fe=O]^{3+}$) oxidizes the drug into a hyper-reactive electrophile (quinone methide, thiophene sulfoxide, radical, or ketene) that alkylates the heme porphyrin ring or active-site amino acids (Cys442, Thr309), permanently destroying the enzyme.
+### TDI observation vs. irreversible MBI mechanism
+**Time-dependent inhibition (TDI) does not, by itself, prove mechanism-based inactivation (MBI).** Slow-binding reversible inhibition, quasi-irreversible metabolic intermediate complexation (MIC), and irreversible covalent modification can lead to different interpretations of a time-dependent effect.
 
-When true MBI occurs in vivo, enzyme recovery requires de novo protein synthesis (taking days to weeks). If a co-administered therapeutic relies on that CYP isoform for clearance, it accumulates to lethal systemic concentrations.
+A structural alert tells us where to investigate. An assay tells us what happened under its conditions. Establishing an irreversible mechanism takes further evidence, such as recovery experiments or identifying the modified enzyme or heme.
+
+Choose a literature example below. Its mechanism comes from the cited literature; the highlighted fragments are structural matches.
 """
     )
 
     act1_protocol_content = mo.md(
         r"""
-**Assay setup.** Incubate the test compound with human liver microsomes (HLM) for 30 minutes in matched wells with and without NADPH. Add the CYP probe substrate after preincubation: midazolam for CYP3A4 or dextromethorphan for CYP2D6.
+**Preincubation.** Compare inhibition with and without NADPH preincubation in human liver microsomes. Midazolam and dextromethorphan are example probe substrates for CYP3A4 and CYP2D6.
 
-**Interpretation.** A preincubation IC50 shift of approximately 1.5–2.0x (ΔpIC50 ≥ 0.3) is a TDI observation. It is not, by itself, proof of a covalent MBI mechanism. Slow reversible binding, metabolic-intermediate complexation, and true irreversible inactivation remain mechanistically distinct explanations.
+**Labels.** The challenge uses a greater-than-twofold IC50 shift and additional inference rules. See the linked OpenADMET tutorial for the exact definitions. Labels are taken from the source file, including its missing values.
+
+**Mechanism.** Reversible inhibition, metabolic-intermediate complexation and irreversible covalent modification require different follow-up experiments. A shift alone does not settle which mechanism occurred.
 """
     )
     act1_protocol = mo.accordion(
@@ -231,15 +326,17 @@ def __(mbi_options, mo):
     get_selected_mbi, set_selected_mbi = mo.state("Raloxifene")
 
     mbi_dropdown = mo.ui.dropdown(
+        full_width=True,
         options=list(mbi_options.keys()),
         value="Raloxifene",
         on_change=set_selected_mbi,
-        label="Select a Literature Mechanism-Based Inactivator to Inspect:",
+        label="Choose a literature example:",
     )
     custom_smiles_input = mo.ui.text(
+        full_width=True,
         value="",
         placeholder="Paste custom candidate SMILES (e.g. c1ccccc1, macrocycle, invalid syntax)...",
-        label="Or test custom candidate SMILES (Defensive Fuzzing & QA):",
+        label="Or enter a SMILES:",
     )
     return custom_smiles_input, get_selected_mbi, mbi_dropdown, set_selected_mbi
 
@@ -280,7 +377,7 @@ def __(mbi_entries, mo, normalize_single_table_value, set_selected_mbi):
     )
 
     act1_table_section = mo.vstack([
-        mo.md("### 3. Curated Reference Set of Documented Literature MBIs (Select a row to inspect 2D structure and 3D docking)"),
+        mo.md("### 3. Literature examples — choose a molecule"),
         mbi_summary_table,
     ])
 
@@ -329,35 +426,35 @@ def __(
 
         if not layout["is_valid"]:
             fuzz_callout = mo.callout(
-                f"Defensive Fuzzing Alert: {_escaped_err}. Safe fallback layout active (0 unhandled exceptions).",
+                f"This SMILES could not be read. Check the structure and try again.",
                 kind="danger",
             )
         elif layout.get("has_bioactivation_alert"):
             alerts_str = ", ".join(sorted(set(html.escape(str(a["family"])) for a in layout.get("warhead_alerts", []))))
             fuzz_callout = mo.callout(
-                f"Custom Structure Bioactivation Alert: Warhead motif detected: {alerts_str}. Recommended for soft-spot steering.",
+                f"Matched structural alert: {alerts_str}. A matched motif is a hypothesis to investigate, not a measured TDI result.",
                 kind="warn",
             )
         else:
             fuzz_callout = mo.callout(
-                f"Custom Structure Clean: Validated {layout['num_atoms']} heavy atoms, 0 bioactivation alerts detected.",
+                f"No matched alert in {layout['num_atoms']} heavy atoms. A missing alert does not establish safety.",
                 kind="success",
             )
 
         card_md = mo.Html(
             f"""
-            <div style="padding: 16px; border: 1px solid #e2e8f0; border-radius: 10px; background: #ffffff; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-              <h3 style="margin: 0 0 8px 0; color: #0f172a; font-size: 16px;">Custom Candidate Structure Evaluation</h3>
+            <div style="padding: 16px; border: 1px solid #d5d8cf; border-radius: 10px; background: #ffffff; color: #252d2a; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+              <h3 style="margin: 0 0 8px 0; color: #252d2a; font-size: 16px;">Your structure</h3>
               <p style="margin: 0 0 6px 0; font-size: 13px;"><strong>Input SMILES:</strong> <code style="word-break: break-all;">{_escaped_smi}</code></p>
               <p style="margin: 0 0 6px 0; font-size: 13px;"><strong>Heavy Atoms:</strong> {layout.get('num_atoms', 0)} | <strong>Bonds:</strong> {layout.get('num_bonds', 0)}</p>
-              <p style="margin: 0; font-size: 13px;"><strong>Layout Status:</strong> {'Valid 2D Coordinates' if layout['is_valid'] else 'Defensive Fallback Rendered'}</p>
+              <p style="margin: 0; font-size: 13px;"><strong>Layout Status:</strong> {'Structure drawn' if layout['is_valid'] else 'Structure unavailable'}</p>
             </div>
             """
         )
         act1_viewer = mo.vstack([
             mo.hstack([mbi_dropdown, custom_smiles_input], justify="start", gap=1),
             fuzz_callout,
-            mo.hstack([widget_ui, card_md], justify="start", gap=1),
+            mo.hstack([widget_ui, card_md], justify="start", align="start", widths=[1, 2], gap=1),
         ])
         dist_info = ("Custom", "Custom Candidate", f"Custom SMILES: {_escaped_smi}")
         dock_comp = None
@@ -384,7 +481,7 @@ def __(
             role_str = f"Nearest heavy atom ({atom_lbl}) at {fe_dist_str} from Heme Fe{sulf_txt}"
             dist_info = (fe_dist_str, aff_str, role_str)
         else:
-            dist_info = ("3.20 Å", "Favorable", "Within active-site steric proximity (≤ 5.0 Å)")
+            dist_info = ("Unavailable", "No saved score", "No saved docking result for this molecule")
 
         _pmid = entry.get("pubmed_id", entry.get("pmid", ""))
 
@@ -394,9 +491,9 @@ def __(
 
         _is_verified = ncbi_record.get("ncbi_verified", entry.get("ncbi_verified", False))
         _ncbi_badge = (
-            '<span style="background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600;">✓ NCBI Entrez Verified</span>'
+            '<span style="background: #eff3e9; color: #065f46; border: 1px solid #cad8c2; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600;">✓ PubMed record found</span>'
             if _is_verified
-            else '<span style="background: #f1f5f9; color: #64748b; padding: 2px 8px; border-radius: 4px; font-size: 11px;">Unverified</span>'
+            else '<span style="background: #eeeee5; color: #65706a; padding: 2px 8px; border-radius: 4px; font-size: 11px;">Unverified</span>'
         )
         _ncbi_title = ncbi_record.get("title", entry.get("ncbi_title", entry.get("literature_citation", "N/A")))
         _journal = ncbi_record.get("journal", entry.get("ncbi_journal", "N/A"))
@@ -404,24 +501,24 @@ def __(
         _ncbi_pub = f"{_journal} ({_pubdate})"
 
         _pmid_display = (
-            f'<a href="https://pubmed.ncbi.nlm.nih.gov/{_pmid}/" target="_blank" style="color: #2563eb; text-decoration: underline; font-weight: 600;">PMID: {_pmid} ↗</a>'
+            f'<a href="https://pubmed.ncbi.nlm.nih.gov/{_pmid}/" target="_blank" style="color: #315a49; text-decoration: underline; font-weight: 600;">PMID: {_pmid} ↗</a>'
             if _pmid
             else "N/A"
         )
         _doi = ncbi_record.get("doi", entry.get("ncbi_doi"))
         _doi_url = ncbi_record.get("doi_url", entry.get("ncbi_doi_url"))
         _doi_display = (
-            f'<a href="{_doi_url}" target="_blank" style="color: #2563eb; text-decoration: underline;">{_doi} ↗</a>'
+            f'<a href="{_doi_url}" target="_blank" style="color: #315a49; text-decoration: underline;">{_doi} ↗</a>'
             if _doi and _doi_url
             else (_doi or "N/A (Print Era Citation)")
         )
 
         card_md = mo.Html(
             f"""
-            <div style="padding: 16px; border: 1px solid #e2e8f0; border-radius: 10px; background: #ffffff; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-              <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f1f5f9; padding-bottom: 8px; margin-bottom: 12px;">
+            <div style="padding: 16px; border: 1px solid #d5d8cf; border-radius: 10px; background: #ffffff; color: #252d2a; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+              <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eeeee5; padding-bottom: 8px; margin-bottom: 12px;">
                 <div style="display: flex; align-items: center; gap: 8px;">
-                  <h3 style="margin: 0; color: #0f172a; font-size: 18px;">{entry.get('name', 'Unknown')}</h3>
+                  <h3 style="margin: 0; color: #252d2a; font-size: 18px;">{entry.get('name', 'Unknown')}</h3>
                   {_ncbi_badge}
                 </div>
                 <span style="background: #fef2f2; color: #b91c1c; border: 1px solid #fca5a5; padding: 3px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; white-space: nowrap;">
@@ -431,10 +528,10 @@ def __(
 
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 13px;">
                 <div>
-                  <strong>Target CYP Isoform:</strong> <span style="color: #2563eb; font-weight: 600;">{entry.get('target_cyp', 'N/A')}</span><br>
+                  <strong>Target CYP Isoform:</strong> <span style="color: #315a49; font-weight: 600;">{entry.get('target_cyp', 'N/A')}</span><br>
                   <strong>Warhead Motif:</strong> <code>{entry.get('reactive_warhead_motif', entry.get('warhead', 'N/A'))}</code><br>
                   <strong>Proposed Reactive Intermediate:</strong> {entry.get('inactivation_mechanism', entry.get('mechanism_intermediate', 'Reactive Electrophilic Adduct'))}<br>
-                  <strong>2V0M Distance to Catalytic Heme Fe:</strong> <span style="color: #059669; font-weight: 700;">{dist_info[0]}</span> ({dist_info[1]})
+                  <strong>2V0M Distance to Catalytic Heme Fe:</strong> <span style="color: #35604b; font-weight: 700;">{dist_info[0]}</span> ({dist_info[1]})
                 </div>
                 <div>
                   <strong>NCBI Verified Title:</strong> <em>{_ncbi_title}</em><br>
@@ -450,7 +547,7 @@ def __(
 
         act1_viewer = mo.vstack([
             mo.hstack([mbi_dropdown, custom_smiles_input], justify="start", gap=1),
-            mo.hstack([widget_ui, card_md], justify="start", gap=1),
+            mo.hstack([widget_ui, card_md], justify="start", align="start", widths=[1, 2], gap=1),
         ])
 
     return act1_viewer, card_md, dist_info, dock_comp, docking_ablation, entry, ncbi_client, ncbi_record, widget, widget_ui
@@ -467,19 +564,13 @@ def __(
     # Act 2: Narrative Intro on the Bathtub Audit
     act2_intro = mo.md(
         """
-<hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 32px 0 24px 0;" />
+## Act 2: How much does the split matter?
 
-## Act 2: The Bathtub Audit — Chemical Leakage & The Reality of Scaffold Shift
+A model may look good when it sees close relatives of its training molecules. That is useful, but it is a different task from predicting an unfamiliar chemical series.
 
-In published computational ADMET benchmarks, naive **random splitting** is frequently the default. However, when compounds sharing an identical **Bemis-Murcko molecular core scaffold** appear in both the training and test folds, 2D tabular models (e.g. LightGBM or Random Forest on ECFP4 fingerprints) achieve high apparent scores simply by **memorizing the scaffold-level label**.
+Here a **random split** is compared with a **Bemis-Murcko scaffold split**, which keeps core frameworks together. The “Bathtub Effect” is the observed score difference, not proof of memorization or prospective performance. Change the model and metric below: a small difference can hide a weak model, so look at the absolute scores too.
 
-When deployed in real prospective medicinal chemistry, the model is tasked with predicting **entirely novel scaffolds**, where this memorization completely collapses—an empirical trap we term the **"Bathtub Effect"**.
-
-### 1. Leak-Proof Cluster-Stratified Murcko Scaffold Splitting
-To expose the true generalization barrier, we developed a multi-objective cluster-stratified splitting engine:
-- Clusters molecules by **Bemis-Murcko framework** (5,367 unique scaffolds across 6,145 compounds).
-- Enforces **strict zero-leakage**: exactly **0 shared scaffolds** and **0 shared parent InChIKeys** between any train and validation/test fold pairs.
-- Preserves balanced fold sizes (1,208–1,275 molecules) and identical target class balance (~21% TDI positive).
+The grouped folds contain 1,208–1,275 molecules. Parent identities and nonempty scaffolds are kept apart; related molecules can still have similar fingerprints. Acyclic molecules use a separate identity-based grouping rule. Endpoint masks and class proportions matter when comparing the results.
 """
     )
 
@@ -499,15 +590,16 @@ To expose the true generalization barrier, we developed a multi-objective cluste
 def __(mo):
     # Act 2 Interactive Controls
     model_dropdown = mo.ui.dropdown(
+        full_width=True,
         options=["LightGBM (ECFP4 2048-bit)", "Logistic Regression (ECFP4)", "Chemprop v2 D-MPNN (Graph)"],
         value="LightGBM (ECFP4 2048-bit)",
-        label="Select Machine Learning Architecture:",
+        label="Choose a model:",
     )
 
     metric_radio = mo.ui.radio(
-        options=["PR-AUC (Precision-Recall)", "MCC (Matthews Correlation)", "ROC-AUC", "Brier Calibration Error"],
+        options=["PR-AUC (Precision-Recall)", "MCC (Matthews Correlation)", "ROC-AUC", "Brier Probability Error"],
         value="PR-AUC (Precision-Recall)",
-        label="Select Evaluation Metric:",
+        label="Choose a metric:",
     )
 
     act2_controls = mo.hstack([model_dropdown, metric_radio], justify="start", gap=1.25)
@@ -515,7 +607,7 @@ def __(mo):
 
 
 @app.cell
-def __(dmpnn_data, ecfp_data, metric_radio, model_dropdown, mo):
+def __(metric_stat, dmpnn_data, ecfp_data, metric_radio, model_dropdown, mo):
     # Act 2 Reactive Metric Comparison Card
     arch = model_dropdown.value
     metric_choice = metric_radio.value
@@ -524,7 +616,7 @@ def __(dmpnn_data, ecfp_data, metric_radio, model_dropdown, mo):
         "PR-AUC (Precision-Recall)": ("pr_auc", "pr_auc", True),
         "MCC (Matthews Correlation)": ("mcc", "mcc", True),
         "ROC-AUC": ("roc_auc", "roc_auc", True),
-        "Brier Calibration Error": ("brier_score", "brier", False),
+        "Brier Probability Error": ("brier_score", "brier", False),
     }
     raw_key, ci_key, higher_is_better = metric_key_map[metric_choice]
 
@@ -548,87 +640,25 @@ def __(dmpnn_data, ecfp_data, metric_radio, model_dropdown, mo):
     pct_inflation = (delta / max(scaff_val, 1e-4)) * 100 if higher_is_better else ((scaff_val - rand_val) / max(rand_val, 1e-4)) * 100
 
     if higher_is_better and delta > 0.015:
-        verdict = f"⚠️ Significant Scaffold Inflation (+{pct_inflation:.1f}%)"
+        verdict = f"⚠️ Higher score with random validation (+{pct_inflation:.1f}%)"
         verdict_color = "#dc2626"
         verdict_bg = "#fef2f2"
     elif not higher_is_better and (scaff_val - rand_val) > 0.005:
-        verdict = f"⚠️ Error Inflation under Scaffold Shift (+{pct_inflation:.1f}%)"
+        verdict = f"⚠️ Higher error with scaffold validation (+{pct_inflation:.1f}%)"
         verdict_color = "#dc2626"
         verdict_bg = "#fef2f2"
     else:
-        verdict = f"✅ Robust Generalization Across Splits (Δ ≈ {delta:+.4f})"
+        verdict = f"✅ Small difference between splits (Δ ≈ {delta:+.4f})"
         verdict_color = "#16a34a"
-        verdict_bg = "#f0fdf4"
+        verdict_bg = "#eff3e9"
 
-    act2_kpis = mo.hstack(
-        [
-            mo.stat(
-                value="-0.0364",
-                label="PR-AUC scaffold shift",
-                caption="0.4217 random → 0.3853 scaffold; higher is better",
-                direction="decrease",
-                target_direction="increase",
-                bordered=True,
-            ),
-            mo.stat(
-                value="-0.0394",
-                label="MCC scaffold shift",
-                caption="0.3006 random → 0.2612 scaffold; higher is better",
-                direction="decrease",
-                target_direction="increase",
-                bordered=True,
-            ),
-            mo.stat(
-                value="9.4%",
-                label="PR-AUC apparent inflation",
-                caption="Random-split optimism relative to the 0.3853 scaffold value",
-                direction="increase",
-                target_direction="decrease",
-                bordered=True,
-            ),
-        ],
-        widths="equal",
-        gap=0.75,
-    )
-
+    act2_kpis = mo.hstack([
+        metric_stat(value=f"{rand_val:.4f}", label="Random CV", caption=arch, bordered=True),
+        metric_stat(value=f"{scaff_val:.4f}", label="Scaffold CV", caption=metric_choice, bordered=True),
+        metric_stat(value=f"{scaff_val - rand_val:+.4f}", label="Scaffold minus random", caption="Observed difference; not a significance test", bordered=True),
+    ], widths="equal")
     card_comparison_md = mo.vstack([
-        mo.md(
-            f"""
-            <div style="padding: 16px; border: 1px solid #e2e8f0; border-radius: 10px; background: #ffffff; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-top: 12px; margin-bottom: 12px;">
-              <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f1f5f9; padding-bottom: 8px; margin-bottom: 12px;">
-                <h4 style="margin: 0; color: #0f172a; font-size: 16px;">{arch} — {metric_choice}</h4>
-                <span style="background: {verdict_bg}; color: {verdict_color}; border: 1px solid {verdict_color}33; padding: 3px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; white-space: nowrap;">
-                  {verdict}
-                </span>
-              </div>
-
-              <div style="display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 16px; font-size: 13px;">
-                <div style="padding: 12px; background: #f8fafc; border-radius: 8px; border-left: 4px solid #3b82f6;">
-                  <span style="color: #64748b; font-size: 11px; font-weight: 600; text-transform: uppercase;">Naive Random 5-Fold CV</span><br>
-                  <span style="font-size: 24px; font-weight: 700; color: #1e293b;">{rand_val:.4f}</span><br>
-                  <span style="font-size: 11px; color: #64748b;">
-                    95% CI: [{rand_ci.get('ci_lower', 0.0):.4f}, {rand_ci.get('ci_upper', 0.0):.4f}]
-                  </span>
-                </div>
-
-                <div style="padding: 12px; background: #f8fafc; border-radius: 8px; border-left: 4px solid #eab308;">
-                  <span style="color: #64748b; font-size: 11px; font-weight: 600; text-transform: uppercase;">Grouped Scaffold 5-Fold CV</span><br>
-                  <span style="font-size: 24px; font-weight: 700; color: #1e293b;">{scaff_val:.4f}</span><br>
-                  <span style="font-size: 11px; color: #64748b;">
-                    95% CI: [{scaff_ci.get('ci_lower', 0.0):.4f}, {scaff_ci.get('ci_upper', 0.0):.4f}]
-                  </span>
-                </div>
-
-                <div style="padding: 12px; background: #f8fafc; border-radius: 8px; border-left: 4px solid #64748b;">
-                  <span style="color: #64748b; font-size: 11px; font-weight: 600; text-transform: uppercase;">Scientific Empirical Takeaway</span><br>
-                  <p style="margin: 4px 0 0 0; font-size: 12px; line-height: 1.4; color: #334155;">
-                    {'2D fingerprint representations exhibit sharp scaffold memorization (+0.0364 PR-AUC lift in random split). When forced to predict out-of-domain chemotypes, performance regresses to the true baseline.' if 'ECFP4' in arch else 'Continuous message-passing graph neural networks (Chemprop D-MPNN) generalize evenly across splits (ΔROC-AUC = -0.0013), proving robust representation learning without discrete scaffold overfitting.'}
-                  </p>
-                </div>
-              </div>
-            </div>
-            """
-        ),
+        mo.md(f"### {arch} — {metric_choice}\n**{verdict}**\n\nRandom and scaffold CV ask different generalization questions. Similar scores alone do not establish prospective reliability. The graph model also has lower absolute PR-AUC in this benchmark; compare values as well as differences."),
         act2_kpis,
     ])
     return (
@@ -656,128 +686,67 @@ def __(dmpnn_data, ecfp_data, metric_radio, model_dropdown, mo):
 
 
 @app.cell
-def __(mo):
-    # Act 2 Tanimoto Chemical Distribution Shift SVG Bar Chart
-    tanimoto_svg_chart = mo.md(
-        """
-        <div style="margin-top: 18px; padding: 16px; border: 1px solid #e2e8f0; border-radius: 10px; background: #ffffff;">
-          <h4 style="margin: 0 0 8px 0; color: #0f172a; font-size: 15px;">
-            Chemical Distance Shift: Nearest-Neighbor Morgan Fingerprint Tanimoto Similarity Distribution
-          </h4>
-          <p style="font-size: 12px; color: #64748b; margin-top: 0; margin-bottom: 12px;">
-            Comparison of nearest-neighbor Tanimoto similarity to the training set between <strong>Naive Random Split</strong> (blue) and <strong>Murcko Scaffold Holdout</strong> (amber).
-          </p>
+def __(alt, arch, metric_choice, mo, pd, rand_ci, rand_val, scaff_ci, scaff_val):
+    _rows = []
+    for _label, _value, _ci in (("Random CV", rand_val, rand_ci), ("Scaffold CV", scaff_val, scaff_ci)):
+        _rows.append({"split": _label, "value": _value, "lower": _ci.get("ci_lower"), "upper": _ci.get("ci_upper")})
+    _base = alt.Chart(pd.DataFrame(_rows)).encode(y=alt.Y("split:N", title=None))
+    _points = _base.mark_point(filled=True, size=130).encode(x=alt.X("value:Q", title=metric_choice, scale=alt.Scale(zero=False)), color=alt.Color("split:N", legend=None), tooltip=["split", alt.Tooltip("value:Q", format=".4f"), alt.Tooltip("lower:Q", format=".4f"), alt.Tooltip("upper:Q", format=".4f")])
+    _intervals = _base.mark_rule(strokeWidth=3).encode(x="lower:Q", x2="upper:Q")
+    benchmark_chart = mo.vstack([
+        mo.ui.altair_chart((_intervals + _points).properties(height=150, width="container", title=arch), chart_selection=False, legend_selection=False),
+        mo.md("Points show out-of-fold metrics; bars show reported 95% molecule-level bootstrap intervals where available. These intervals are not a paired test of the difference."),
+    ])
+    return (benchmark_chart,)
 
-          <svg viewBox="0 0 700 200" style="width: 100%; height: auto; font-family: -apple-system, BlinkMacSystemFont, sans-serif;">
-            <!-- Grid Lines -->
-            <line x1="120" y1="20" x2="660" y2="20" stroke="#f1f5f9" stroke-width="1"/>
-            <line x1="120" y1="55" x2="660" y2="55" stroke="#f1f5f9" stroke-width="1"/>
-            <line x1="120" y1="90" x2="660" y2="90" stroke="#f1f5f9" stroke-width="1"/>
-            <line x1="120" y1="125" x2="660" y2="125" stroke="#f1f5f9" stroke-width="1"/>
-            <line x1="120" y1="160" x2="660" y2="160" stroke="#cbd5e1" stroke-width="1.5"/>
 
-            <!-- Y Axis Labels -->
-            <text x="110" y="24" text-anchor="end" font-size="10" fill="#94a3b8">40%</text>
-            <text x="110" y="59" text-anchor="end" font-size="10" fill="#94a3b8">30%</text>
-            <text x="110" y="94" text-anchor="end" font-size="10" fill="#94a3b8">20%</text>
-            <text x="110" y="129" text-anchor="end" font-size="10" fill="#94a3b8">10%</text>
-            <text x="110" y="164" text-anchor="end" font-size="10" fill="#94a3b8">0%</text>
-
-            <!-- Group 1: < 0.30 (Extreme Novelty) -->
-            <!-- Random: 9.2%, Scaffold: 14.8% -->
-            <rect x="145" y="128" width="32" height="32" fill="#3b82f6" rx="3"/>
-            <rect x="180" y="108" width="32" height="52" fill="#eab308" rx="3"/>
-            <text x="178" y="180" text-anchor="middle" font-size="11" font-weight="600" fill="#475569">&lt; 0.30</text>
-            <text x="178" y="193" text-anchor="middle" font-size="9" fill="#94a3b8">Extreme Novelty</text>
-
-            <!-- Group 2: 0.30 - 0.40 (Novel Chemotypes) -->
-            <!-- Random: 19.8%, Scaffold: 25.9% -->
-            <rect x="250" y="91" width="32" height="69" fill="#3b82f6" rx="3"/>
-            <rect x="285" y="69" width="32" height="91" fill="#eab308" rx="3"/>
-            <text x="283" y="180" text-anchor="middle" font-size="11" font-weight="600" fill="#475569">0.30 - 0.40</text>
-            <text x="283" y="193" text-anchor="middle" font-size="9" fill="#94a3b8">Novel Chemotypes</text>
-
-            <!-- Group 3: 0.40 - 0.50 (Moderate Analogues) -->
-            <!-- Random: 32.5%, Scaffold: 32.2% -->
-            <rect x="355" y="46" width="32" height="114" fill="#3b82f6" rx="3"/>
-            <rect x="390" y="47" width="32" height="113" fill="#eab308" rx="3"/>
-            <text x="388" y="180" text-anchor="middle" font-size="11" font-weight="600" fill="#475569">0.40 - 0.50</text>
-            <text x="388" y="193" text-anchor="middle" font-size="9" fill="#94a3b8">Moderate Analogues</text>
-
-            <!-- Group 4: 0.50 - 0.60 (Close Analogues) -->
-            <!-- Random: 19.8%, Scaffold: 16.4% -->
-            <rect x="460" y="91" width="32" height="69" fill="#3b82f6" rx="3"/>
-            <rect x="495" y="103" width="32" height="57" fill="#eab308" rx="3"/>
-            <text x="493" y="180" text-anchor="middle" font-size="11" font-weight="600" fill="#475569">0.50 - 0.60</text>
-            <text x="493" y="193" text-anchor="middle" font-size="9" fill="#94a3b8">Close Analogues</text>
-
-            <!-- Group 5: >= 0.60 (High Memorization Risk) -->
-            <!-- Random: 18.7%, Scaffold: 10.7% -->
-            <rect x="565" y="95" width="32" height="65" fill="#3b82f6" rx="3"/>
-            <rect x="600" y="123" width="32" height="37" fill="#eab308" rx="3"/>
-            <text x="598" y="180" text-anchor="middle" font-size="11" font-weight="600" fill="#475569">&ge; 0.60</text>
-            <text x="598" y="193" text-anchor="middle" font-size="9" fill="#94a3b8">Memorization Risk</text>
-          </svg>
-
-          <div style="display: flex; justify-content: center; gap: 24px; margin-top: 12px; font-size: 11px;">
-            <div style="display: flex; align-items: center; gap: 6px;">
-              <span style="width: 12px; height: 12px; background: #3b82f6; border-radius: 2px; display: inline-block;"></span>
-              <span>Naive Random Split (Mean NN = 0.4862, P90 = 0.7209)</span>
-            </div>
-            <div style="display: flex; align-items: center; gap: 6px;">
-              <span style="width: 12px; height: 12px; background: #eab308; border-radius: 2px; display: inline-block;"></span>
-              <span>Scaffold Holdout (Mean NN = 0.4428, 40.7% Novel Chemotypes &lt; 0.40)</span>
-            </div>
-          </div>
-        </div>
-        """
-    )
+@app.cell
+def __(alt, mo, pd, tani_data):
+    _random = tani_data["random_baseline_comparison"]
+    _holdout = tani_data["holdout_scaffold"]["test_vs_train"]
+    _rows = [
+        {"split": _label, "mean": _summary["mean"], "novel_fraction": _summary["fraction_novel_chemotypes_lt_0_4"], "n": _summary["count"]}
+        for _label, _summary in (("Random CV", _random), ("Scaffold TEST holdout", _holdout))
+    ]
+    _chart = alt.Chart(pd.DataFrame(_rows)).mark_bar().encode(
+        x=alt.X("mean:Q", title="Mean nearest-training-neighbor Tanimoto", scale=alt.Scale(domain=[0, 1])),
+        y=alt.Y("split:N", title=None), color=alt.Color("split:N", legend=None),
+        tooltip=["split", "n", alt.Tooltip("mean:Q", format=".4f"), alt.Tooltip("novel_fraction:Q", format=".1%")],
+    ).properties(height=130, width="container")
+    tanimoto_svg_chart = mo.vstack([
+        mo.ui.altair_chart(_chart, chart_selection=False, legend_selection=False),
+        mo.md("Random CV mean: **0.4862**; scaffold TEST holdout mean: **0.4428**, with **40.7%** below 0.40 similarity. These summaries compare 6,145 CV predictions with a 1,208-compound holdout; they are different populations, not a paired experiment. Exact histogram bins are unavailable in the packaged summary."),
+    ])
     return (tanimoto_svg_chart,)
 
 
 @app.cell
-def __(mo):
-    # Act 2 Summary Comparison Table
-    benchmark_table_data = [
-        {
-            "Model Architecture": "LightGBM (ECFP4 2048-bit)",
-            "Random 5-Fold PR-AUC": "0.4217 [0.389, 0.458]",
-            "Scaffold 5-Fold PR-AUC": "0.3853 [0.356, 0.417]",
-            "PR-AUC Delta": "+0.0364 (+9.4%)",
-            "Random MCC": "0.3006 [0.265, 0.336]",
-            "Scaffold MCC": "0.2612 [0.225, 0.296]",
-            "MCC Delta": "+0.0394 (+15.1%)",
-            "Memorization Status": "⚠️ Scaffold Overfitting",
-        },
-        {
-            "Model Architecture": "Logistic Regression (ECFP4)",
-            "Random 5-Fold PR-AUC": "0.3857 [0.355, 0.421]",
-            "Scaffold 5-Fold PR-AUC": "0.3644 [0.334, 0.395]",
-            "PR-AUC Delta": "+0.0213 (+5.8%)",
-            "Random MCC": "0.2443 [0.207, 0.280]",
-            "Scaffold MCC": "0.2036 [0.166, 0.239]",
-            "MCC Delta": "+0.0407 (+20.0%)",
-            "Memorization Status": "⚠️ Linear Memorization",
-        },
-        {
-            "Model Architecture": "Chemprop v2 D-MPNN (Continuous Graph)",
-            "Random 5-Fold PR-AUC": "0.3331 [0.306, 0.364]",
-            "Scaffold 5-Fold PR-AUC": "0.3436 [0.318, 0.375]",
-            "PR-AUC Delta": "-0.0105 (Neutral)",
-            "Random MCC": "0.0241 [-0.015, 0.063]",
-            "Scaffold MCC": "0.0397 [0.002, 0.079]",
-            "MCC Delta": "-0.0156 (Neutral)",
-            "Memorization Status": "✅ Stable Generalization",
-        },
-    ]
+def __(mo, ecfp_data, dmpnn_data):
+    benchmark_table_data = []
+    for _name, _results in (
+        ("LightGBM (ECFP4 2048-bit)", ecfp_data["models"]["lightgbm"]),
+        ("Logistic Regression (ECFP4)", ecfp_data["models"]["logistic_regression"]),
+        ("Chemprop v2 D-MPNN (Graph)", dmpnn_data["dmpnn"]),
+    ):
+        _random = _results["random_5fold"]["overall_oof"]
+        _grouped = _results["grouped_5fold"]["overall_oof"]
+        _row = {"Model Architecture": _name}
+        for _key, _label in (("pr_auc", "PR-AUC"), ("mcc", "MCC")):
+            for _split, _summary in (("Random", _random), ("Scaffold", _grouped)):
+                _ci = _summary.get("bootstrap_ci_95", {}).get(_key, {})
+                _interval = f" [{_ci['ci_lower']:.4f}, {_ci['ci_upper']:.4f}]" if _ci.get("ci_lower") is not None and _ci.get("ci_upper") is not None else " (CI unavailable)"
+                _row[f"{_split} 5-Fold {_label}"] = f"{_summary[_key]:.4f}{_interval}"
+            _row[f"{_label} Scaffold minus random"] = f"{_grouped[_key] - _random[_key]:+.4f}"
+        _row["Interpretation"] = "Observed split difference; not a significance test"
+        benchmark_table_data.append(_row)
 
     act2_benchmark_table = mo.ui.table(
         data=benchmark_table_data,
-        label="Table 2.1: Empirical Audit of Chemical Leakage and Performance Degradation across Splitting Strategies",
+        label="Table 2.1: Model results under random and scaffold validation",
     )
 
     act2_section = mo.vstack([
-        mo.md("### 2. Comprehensive Model Benchmark Across Splits"),
+        mo.md("### 2. Compare the models"),
         act2_benchmark_table,
     ])
 
@@ -795,23 +764,15 @@ def __(
     # Act 3: Narrative Intro on Quantum Reactivity & Enzymology
     act3_intro = mo.md(
         """
-<hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 32px 0 24px 0;" />
+## Act 3: Do electronic descriptors help?
 
-## Act 3: Physics-Grounded Quantum Reactivity & Active-Site Enzymology
+Fingerprints describe a molecule's structural patterns. Electronic descriptors ask about a different part of the chemistry: how readily the molecule gives up or accepts charge. That is an appealing idea for CYP reactions, where the iron-oxo oxidant **Compound I** can generate reactive intermediates.
 
-Does adding **quantum electronic reactivity features** provide new predictive information beyond 2D molecular topologies?
+This experiment adds ten AIMNet2-family descriptors to a 2D model. The changes are modest: PR-AUC rises by 0.0101 and MCC by 0.0209. ROC-AUC across 3,584 compounds remains essentially unchanged. These results suggest a question worth testing; they do not yet establish a significant improvement or a mechanism.
 
-### 1. The Biophysical Hypothesis
-Cytochrome P450 bioactivation is chemically catalyzed by the high-valent ferryl-oxo iron intermediate:
-$$\\text{P450 } [Fe=O]^{3+} \\quad (\\text{Compound I})$$
-Compound I is an ultra-potent one-electron oxidant ($E^\\circ \\approx +1.2\\text{ V}$). It initiates inactivation by abstracting an electron or hydrogen atom from the substrate, generating an initial **radical cation or neutral radical intermediate**.
+**Vertical Ionization Potential** estimates electron-removal energy, **Chemical Hardness** describes resistance to charge change, and the **Radical Fukui Index** describes electronic response to electron addition and removal. None is an enzyme reaction rate.
 
-Because standard 2D topological fingerprints (ECFP4) only count local atomic path connectivity, they are blind to global electronic charge reorganization and radical localization. To provide explicit physical inductive bias, we extracted **10 AIMNet2-NSE $\\Delta\\text{SCF}$ descriptors** via neural spin-equilibrium density calculations on an NVIDIA GeForce RTX 4090:
-- **$IP_v$ (Vertical Ionization Potential, eV):** The energy required for Compound I to pull an electron from the neutral ground state ($E_{cat} - E_{neut}$).
-- **$EA_v$ (Vertical Electron Affinity, eV):** Propensity to accept radical electron density.
-- **$\\eta$ (Chemical Hardness, eV):** $\\eta = (IP_v - EA_v)/2$; resistance to electron charge transfer.
-- **$\\omega$ (Condensed Electrophilicity Index):** $\\omega = \\mu^2 / (2\\eta)$; absolute drive for covalent adduction.
-- **$f_k^0$ (Radical Fukui Index):** Atomic-level spatial distribution of radical susceptibility.
+There is also a limit to what can be traced in this cache. The small Beam experiment names an NSE model, but the full-feature script's uncached path selects `aimnet2`; the saved full cache lacks a model and conformer record. The benchmark is therefore described as AIMNet2-family augmentation. The molecule viewer uses illustrative halos, not these atom-level calculations.
 """
     )
 
@@ -830,15 +791,15 @@ Because standard 2D topological fingerprints (ECFP4) only count local atomic pat
 def __(mo):
     # Act 3 Interactive Controls: Metric Selector
     act3_metric_radio = mo.ui.radio(
-        options=["PR-AUC (Precision-Recall)", "MCC (Matthews Correlation)", "ROC-AUC (Global Ranking)", "Brier Score (Calibration Error)"],
+        options=["PR-AUC (Precision-Recall)", "MCC (Matthews Correlation)", "ROC-AUC (Global Ranking)", "Brier Score (Probability Error)"],
         value="PR-AUC (Precision-Recall)",
-        label="Select Act 3 Evaluation Metric:",
+        label="Choose a metric:",
     )
     return (act3_metric_radio,)
 
 
 @app.cell
-def __(act3_metric_radio, aug_data, mo):
+def __(metric_stat, act3_metric_radio, aug_data, mo):
     # Act 3 Reactive Comparison Card: 2D Baseline vs Physics-Augmented
     _metric_choice = act3_metric_radio.value
 
@@ -846,7 +807,7 @@ def __(act3_metric_radio, aug_data, mo):
         "PR-AUC (Precision-Recall)": ("pr_auc", "pr_auc", True),
         "MCC (Matthews Correlation)": ("mcc", "mcc", True),
         "ROC-AUC (Global Ranking)": ("roc_auc", "roc_auc", True),
-        "Brier Score (Calibration Error)": ("brier_score", "brier", False),
+        "Brier Score (Probability Error)": ("brier_score", "brier", False),
     }
     _raw_k, _ci_k, _higher_better = _metric_map[_metric_choice]
 
@@ -861,68 +822,44 @@ def __(act3_metric_radio, aug_data, mo):
 
     _delta = _aim_val - _b2d_val
 
-    if _raw_k == "roc_auc":
-        _verdict = "⚖️ Neutral Hypothesis Outcome: ROC-AUC Is Governed by Lipophilicity & Size"
-        _verdict_color = "#475569"
-        _verdict_bg = "#f8fafc"
-        _scientific_insight = (
-            "Global ROC-AUC across 3,584 compounds remains essentially unchanged (+0.0023). "
-            "Why? Coarse physicochemical properties (cLogP, MW, rotatable bonds) dictate microsomal partitioning "
-            "and broad active-site occupancy. Quantum features do not alter the broad ranking of inactive decoys."
-        )
-    elif _higher_better and _delta > 0.008:
-        _verdict = f"✅ Falsifiable Value Proven: +{_delta:.4f} Lift in Decision Precision"
-        _verdict_color = "#15803d"
-        _verdict_bg = "#f0fdf4"
-        _scientific_insight = (
-            f"Quantum ionization potential ($IP_v$) and Fukui radical indices ($f_k^0$) directly sharpen precision on the "
-            f"minority bioactivation class (+{_delta:.4f} lift). When the active-site oxidation trigger is physically represented, "
-            f"false-positive rates among lipophilic non-inactivators decrease."
-        )
-    elif not _higher_better and _delta < -0.002:
-        _verdict = f"✅ Enhanced Probability Calibration: {_delta:.4f} Error Reduction"
-        _verdict_color = "#15803d"
-        _verdict_bg = "#f0fdf4"
-        _scientific_insight = (
-            "Brier score drops from 0.1573 to 0.1542 (-0.0031), showing that predicted bioactivation risks are tighter "
-            "and better calibrated. Downstream conformal calibration sets become narrower without sacrificing coverage."
-        )
-    else:
-        _verdict = f"Delta: {_delta:+.4f}"
-        _verdict_color = "#475569"
-        _verdict_bg = "#f8fafc"
-        _scientific_insight = "Physics augmentation provides marginal change on this endpoint."
+    _verdict = f"Observed change: {_delta:+.4f}"
+    _verdict_color = "#526156"
+    _verdict_bg = "#f1f1e9"
+    _scientific_insight = (
+        "These are small changes. The reported intervals do not establish a statistically significant improvement or explain a mechanism. "
+        "Brier measures probability error, rather than calibration alone."
+    )
 
     act3_kpis = mo.hstack(
         [
-            mo.stat(
+            metric_stat(
                 value="+0.0101",
                 label="PR-AUC lift",
-                caption="0.4652 baseline → 0.4753 AIMNet2-NSE; grouped scaffold CV",
+                caption="0.4652 baseline → 0.4753 AIMNet2-family; grouped scaffold CV",
                 direction="increase",
                 target_direction="increase",
                 bordered=True,
             ),
-            mo.stat(
+            metric_stat(
                 value="+0.0209",
                 label="MCC lift",
-                caption="0.3298 baseline → 0.3507 AIMNet2-NSE; grouped scaffold CV",
+                caption="0.3298 baseline → 0.3507 AIMNet2-family; grouped scaffold CV",
                 direction="increase",
                 target_direction="increase",
                 bordered=True,
             ),
-            mo.stat(
+            metric_stat(
                 value="+0.0023",
                 label="ROC-AUC change",
-                caption="0.7868 baseline → 0.7891 AIMNet2-NSE; neutral within uncertainty",
+                caption="0.7868 baseline → 0.7891 AIMNet2-family; neutral within uncertainty",
                 direction=None,
                 target_direction="increase",
                 bordered=True,
             ),
-            mo.stat(
+            metric_stat(
                 value="-0.0031",
                 label="Brier error change",
-                caption="0.1573 baseline → 0.1542 AIMNet2-NSE; lower is better",
+                caption="0.1573 baseline → 0.1542 AIMNet2-family; lower is better",
                 direction="decrease",
                 target_direction="decrease",
                 bordered=True,
@@ -935,34 +872,34 @@ def __(act3_metric_radio, aug_data, mo):
     act3_card_comparison_md = mo.vstack([
         mo.md(
             f"""
-            <div style="padding: 16px; border: 1px solid #e2e8f0; border-radius: 10px; background: #ffffff; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-top: 12px; margin-bottom: 12px;">
-              <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f1f5f9; padding-bottom: 8px; margin-bottom: 12px;">
-                <h4 style="margin: 0; color: #0f172a; font-size: 16px;">2D Baseline vs Physics-Augmented (AIMNet2-NSE ΔSCF) — {_metric_choice}</h4>
+            <div style="padding: 16px; border: 1px solid #d5d8cf; border-radius: 10px; background: #ffffff; color: #252d2a; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-top: 12px; margin-bottom: 12px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eeeee5; padding-bottom: 8px; margin-bottom: 12px;">
+                <h4 style="margin: 0; color: #252d2a; font-size: 16px;">With and without electronic descriptors — {_metric_choice}</h4>
                 <span style="background: {_verdict_bg}; color: {_verdict_color}; border: 1px solid {_verdict_color}33; padding: 3px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; white-space: nowrap;">
                   {_verdict}
                 </span>
               </div>
 
               <div style="display: grid; grid-template-columns: 1fr 1fr 1.3fr; gap: 16px; font-size: 13px;">
-                <div style="padding: 12px; background: #f8fafc; border-radius: 8px; border-left: 4px solid #94a3b8;">
-                  <span style="color: #64748b; font-size: 11px; font-weight: 600; text-transform: uppercase;">2D Baseline (ECFP4 + RDKit)</span><br>
-                  <span style="font-size: 24px; font-weight: 700; color: #1e293b;">{_b2d_val:.4f}</span><br>
-                  <span style="font-size: 11px; color: #64748b;">
+                <div style="padding: 12px; background: #f1f1e9; border-radius: 8px; border-left: 4px solid #8c968e;">
+                  <span style="color: #65706a; font-size: 11px; font-weight: 600; text-transform: uppercase;">2D Baseline (ECFP4 + RDKit)</span><br>
+                  <span style="font-size: 24px; font-weight: 700; color: #303a32;">{_b2d_val:.4f}</span><br>
+                  <span style="font-size: 11px; color: #65706a;">
                     95% CI: [{_b2d_ci.get('ci_lower', 0.0):.4f}, {_b2d_ci.get('ci_upper', 0.0):.4f}]
                   </span>
                 </div>
 
-                <div style="padding: 12px; background: #f8fafc; border-radius: 8px; border-left: 4px solid #8b5cf6;">
-                  <span style="color: #64748b; font-size: 11px; font-weight: 600; text-transform: uppercase;">Physics-Augmented (ΔSCF)</span><br>
-                  <span style="font-size: 24px; font-weight: 700; color: #1e293b;">{_aim_val:.4f}</span><br>
-                  <span style="font-size: 11px; color: #64748b;">
+                <div style="padding: 12px; background: #f1f1e9; border-radius: 8px; border-left: 4px solid #8c6d43;">
+                  <span style="color: #65706a; font-size: 11px; font-weight: 600; text-transform: uppercase;">Plus electronic descriptors</span><br>
+                  <span style="font-size: 24px; font-weight: 700; color: #303a32;">{_aim_val:.4f}</span><br>
+                  <span style="font-size: 11px; color: #65706a;">
                     95% CI: [{_aim_ci.get('ci_lower', 0.0):.4f}, {_aim_ci.get('ci_upper', 0.0):.4f}]
                   </span>
                 </div>
 
-                <div style="padding: 12px; background: #f8fafc; border-radius: 8px; border-left: 4px solid #64748b;">
-                  <span style="color: #64748b; font-size: 11px; font-weight: 600; text-transform: uppercase;">Transparent Scientific Discussion</span><br>
-                  <p style="margin: 4px 0 0 0; font-size: 12px; line-height: 1.4; color: #334155;">
+                <div style="padding: 12px; background: #f1f1e9; border-radius: 8px; border-left: 4px solid #65706a;">
+                  <span style="color: #65706a; font-size: 11px; font-weight: 600; text-transform: uppercase;">Reading this result</span><br>
+                  <p style="margin: 4px 0 0 0; font-size: 12px; line-height: 1.4; color: #37443b;">
                     {_scientific_insight}
                   </p>
                 </div>
@@ -983,9 +920,10 @@ def __(dock_data, mo, selected_name):
     _default_name = selected_name if selected_name in compound_names else (compound_names[0] if compound_names else "Raloxifene")
 
     dock_dropdown = mo.ui.dropdown(
+        full_width=True,
         options=compound_names,
         value=_default_name,
-        label="Select Inactivator to Inspect 3D Active-Site Docking Pose:",
+        label="Choose a molecule for CYP3A4 docking:",
     )
 
     return compound_names, dock_dropdown, evals
@@ -1010,40 +948,41 @@ def __(dock_dropdown, evals, mo):
 
     _docking_inspection_md = mo.Html(
         f"""
-        <div style="margin-top: 16px; padding: 16px; border: 1px solid #e2e8f0; border-radius: 10px; background: #ffffff; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f1f5f9; padding-bottom: 8px; margin-bottom: 12px;">
-            <h4 style="margin: 0; color: #0f172a; font-size: 16px;">
+        <div style="margin-top: 16px; padding: 16px; border: 1px solid #d5d8cf; border-radius: 10px; background: #ffffff; color: #252d2a; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eeeee5; padding-bottom: 8px; margin-bottom: 12px;">
+            <h4 style="margin: 0; color: #252d2a; font-size: 16px;">
                CYP3A4 Crystallographic Active-Site Docking: {_sel_name}
             </h4>
-            <span style="background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; padding: 3px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; white-space: nowrap;">
-              AutoDock Vina v1.2.7 (Native Apple Silicon)
+            <span style="background: #eff3e9; color: #065f46; border: 1px solid #cad8c2; padding: 3px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; white-space: nowrap;">
+              AutoDock Vina v1.2.7 (CPU backend)
             </span>
           </div>
 
           <div style="display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 14px; font-size: 13px;">
-            <div style="padding: 12px; background: #f0fdf4; border-radius: 8px; border-left: 4px solid #10b981;">
+            <div style="padding: 12px; background: #eff3e9; border-radius: 8px; border-left: 4px solid #54775f;">
               <strong style="color: #065f46;">Substrate-Bound State (PDB: 2V0M, 2.80 Å)</strong><br>
               <div style="margin-top: 6px;">
-                <strong>Min Distance to Heme Fe:</strong> <span style="font-size: 16px; font-weight: 700; color: #047857;">{_dist_2v0m:.2f} Å</span><br>
-                <strong>Vina Binding Affinity:</strong> <span style="font-weight: 600;">{_aff_2v0m:.2f} kcal/mol</span><br>
-                <span style="color: #059669; font-size: 11px; font-weight: 600;">✅ Active-Site Steric Proximity (Heavy Atom ≤ 3.54 Å)</span>
+                <strong>Min Distance to Heme Fe:</strong> <span style="font-size: 16px; font-weight: 700; color: #35604b;">{_dist_2v0m:.2f} Å</span><br>
+                <strong>Vina score:</strong> <span style="font-weight: 600;">{_aff_2v0m:.2f} kcal/mol</span><br>
+                <span style="color: #35604b; font-size: 11px; font-weight: 600;">Whole-ligand distance, not a reaction-site distance</span>
               </div>
             </div>
 
-            <div style="padding: 12px; background: #f8fafc; border-radius: 8px; border-left: 4px solid #94a3b8;">
-              <strong style="color: #475569;">Unliganded Resting State (PDB: 1TQN, 2.05 Å)</strong><br>
+            <div style="padding: 12px; background: #f1f1e9; border-radius: 8px; border-left: 4px solid #8c968e;">
+              <strong style="color: #526156;">Unliganded Resting State (PDB: 1TQN, 2.05 Å)</strong><br>
               <div style="margin-top: 6px;">
-                <strong>Min Distance to Heme Fe:</strong> <span style="font-size: 16px; font-weight: 700; color: #334155;">{_dist_1tqn:.2f} Å</span><br>
-                <strong>Vina Binding Affinity:</strong> <span style="font-weight: 600;">{_aff_1tqn:.2f} kcal/mol</span><br>
-                <span style="color: #64748b; font-size: 11px;">Constricted Pocket (Induced Fit Required)</span>
+                <strong>Min Distance to Heme Fe:</strong> <span style="font-size: 16px; font-weight: 700; color: #37443b;">{_dist_1tqn:.2f} Å</span><br>
+                <strong>Vina score:</strong> <span style="font-weight: 600;">{_aff_1tqn:.2f} kcal/mol</span><br>
+                <span style="color: #65706a; font-size: 11px;">A different receptor conformation</span>
               </div>
             </div>
 
-            <div style="padding: 12px; background: #f8fafc; border-radius: 8px; border-left: 4px solid #6366f1;">
-              <strong style="color: #4338ca;">Enzymology & Radical Coupling</strong><br>
-              <p style="margin: 4px 0 0 0; font-size: 12px; line-height: 1.4; color: #334155;">
-                In the substrate-bound 2V0M structure, the inactivating warhead enters the active-site cavity (all 10 reference inactivators place heavy atoms within ≤ 4.54 Å of Heme Fe, with 9 of 10 ≤ 3.62 Å; canonical Raloxifene benchmark docks at <strong>2.23 Å</strong> from Heme Fe).
-                For {_sel_name} (MODEL 1 top pose), the nearest heavy atom docks at <strong>{_dist_2v0m:.2f} Å from Heme Fe</strong> (Vina affinity: <strong>{_aff_2v0m:.2f} kcal/mol</strong>), providing geometric proximity consistent with active-site accommodation.
+            <div style="padding: 12px; background: #f1f1e9; border-radius: 8px; border-left: 4px solid #8c6d43;">
+              <strong style="color: #695333;">What this pose shows</strong><br>
+              <p style="margin: 4px 0 0 0; font-size: 12px; line-height: 1.4; color: #37443b;">
+                For {_sel_name}, the top saved pose places its nearest heavy atom <strong>{_dist_2v0m:.2f} Å from the heme iron</strong>. Raloxifene's reference pose has a distance of <strong>2.23 Å</strong>.
+                This describes where the ligand sits in the model. It does not identify the reacting atom or demonstrate inactivation.
+
               </p>
             </div>
           </div>
@@ -1052,11 +991,12 @@ def __(dock_dropdown, evals, mo):
     )
 
     act3_docking_section = mo.vstack([
-        mo.md("### 2. Macromolecular 3D Enzymology: AutoDock Vina v1.2.7 Docking in CYP3A4"),
+        mo.md("### 2. Docking in CYP3A4"),
         mo.Html(
             """
-            <div style="padding: 10px 14px; background: #f8fafc; border-left: 4px solid #3b82f6; font-size: 12px; color: #475569; margin-bottom: 12px; border-radius: 4px; line-height: 1.5;">
-              <strong>Cross-Isoform Structural Modeling Note:</strong> While our 10 curated documented literature MBIs span diverse cytochrome P450 isoforms (CYP1A2, 2A6, 2C9, 2C19, 2D6, and 3A4), the CYP3A4 substrate-bound crystal structure (PDB: 2V0M, 2.80 Å) serves as our prototypical macromolecular steric model to assess whether bulky inactivating warheads physically enter the catalytic heme cavity versus unliganded resting-state steric occlusion (PDB: 1TQN, 2.05 Å).
+            <div style="padding: 10px 14px; background: #f1f1e9; border-left: 4px solid #315a49; font-size: 12px; color: #526156; margin-bottom: 12px; border-radius: 4px; line-height: 1.5;">
+              <strong>Comparing different isoforms:</strong> The literature examples involve several CYP isoforms. Here they are docked into CYP3A4 structures 2V0M (2.80 Å) and 1TQN (2.05 Å). A pose in CYP3A4 does not transfer a mechanism demonstrated for another isoform.
+
             </div>
             """
         ),
@@ -1079,19 +1019,21 @@ def __(cyp2d6_dock_data, mo):
     )
 
     cyp2d6_compound_dropdown = mo.ui.dropdown(
+        full_width=True,
         options=cyp2d6_compound_names,
         value=_default_compound,
-        label="Select Inactivator to Inspect CYP2D6 Conformation:",
+        label="Choose a molecule for CYP2D6 docking:",
     )
 
     cyp2d6_isoform_dropdown = mo.ui.dropdown(
+        full_width=True,
         options=[
             "All Conformations (Side-by-Side)",
             "Substrate-Bound State (PDB: 3TBG, 2.10 Å)",
             "Unliganded Resting State (PDB: 4WNW, 3.30 Å)",
         ],
         value="All Conformations (Side-by-Side)",
-        label="Select CYP2D6 Crystallographic Conformation:",
+        label="Choose the CYP2D6 structure:",
     )
 
     return cyp2d6_compound_dropdown, cyp2d6_compound_names, cyp2d6_evals, cyp2d6_isoform_dropdown
@@ -1122,38 +1064,38 @@ def __(
         _warhead = _target_eval.get("warhead") or _target_eval.get("reactive_warhead_motif") or "characterized bioactivation"
         _is_paroxetine = bool(_sel_compound == "Paroxetine")
         if _is_paroxetine:
-            _iso_badge = '<span style="background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700;">🟢 Isoform-Matched Canonical Reference</span>'
+            _iso_badge = '<span style="background: #eff3e9; color: #065f46; border: 1px solid #cad8c2; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700;">🟢 Isoform-Matched Canonical Reference</span>'
         else:
-            _iso_badge = f'<span style="background: #f8fafc; color: #475569; border: 1px solid #cbd5e1; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600;">⚪ Exploratory Cross-Isoform Panel (Primary Target: {_target_cyp})</span>'
+            _iso_badge = f'<span style="background: #f1f1e9; color: #526156; border: 1px solid #cbd1c7; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600;">⚪ Exploratory Cross-Isoform Panel (Primary Target: {_target_cyp})</span>'
         _narrative_text = (
-            "<strong>Canonical CYP2D6 Mechanism:</strong> Paroxetine features a basic piperidine amine that provides active-site electrostatic guidance toward Asp301 (6.71 Å in 3TBG, non-contact proximity), positioning the ligand within the active-site cavity (whole-molecule nearest-heavy-atom proximity: 4.89 Å [fluorine] from heme iron in 3TBG, placing the ligand inside the ≤ 5.0 Å catalytic strike zone). Bioactivation of the methylenedioxyphenyl warhead yields a reactive carbene that forms a quasi-irreversible metabolite-intermediate complex (MIC) with the heme iron."
+            "<strong>Canonical CYP2D6 Mechanism:</strong> Paroxetine features a basic piperidine amine that provides active-site electrostatic guidance toward Asp301 (6.71 Å in 3TBG, non-contact proximity), positioning the ligand within the active-site cavity (whole-molecule nearest-heavy-atom proximity: 4.89 Å [fluorine] from heme iron in 3TBG, indicating ligand proximity; the nearest fluorine is not a demonstrated bioactivation site). Bioactivation of the methylenedioxyphenyl warhead yields a reactive carbene that forms a quasi-irreversible metabolite-intermediate complex (MIC) with the heme iron."
             if _is_paroxetine
             else f"<strong>Exploratory Cross-Isoform Probe:</strong> {_sel_compound} is clinically characterized as a mechanism-based inactivator of {_target_cyp} bearing a {_warhead} warhead. Cross-docking into CYP2D6 evaluates active-site cavity steric accommodation versus isoform-specific selectivity."
         )
-        _vina_3tbg_html = f'<span style="font-weight: 700; color: #047857;">{_res_3tbg["vina_affinity_kcal_mol"]:.2f} kcal/mol</span>'
-        _fe_dist_3tbg_html = f'<span style="font-size: 15px; font-weight: 700; color: #047857;">{_res_3tbg["min_dist_to_heme_fe_angstrom"]:.2f} Å</span> ({_res_3tbg.get("nearest_heavy_atom", "N/A")})'
-        _vina_4wnw_html = f'<span style="font-weight: 700; color: #334155;">{_res_4wnw["vina_affinity_kcal_mol"]:.2f} kcal/mol</span>'
-        _fe_dist_4wnw_html = f'<span style="font-size: 15px; font-weight: 700; color: #334155;">{_res_4wnw["min_dist_to_heme_fe_angstrom"]:.2f} Å</span> ({_res_4wnw.get("nearest_heavy_atom", "N/A")})'
+        _vina_3tbg_html = f'<span style="font-weight: 700; color: #35604b;">{_res_3tbg["vina_affinity_kcal_mol"]:.2f} kcal/mol</span>'
+        _fe_dist_3tbg_html = f'<span style="font-size: 15px; font-weight: 700; color: #35604b;">{_res_3tbg["min_dist_to_heme_fe_angstrom"]:.2f} Å</span> ({_res_3tbg.get("nearest_heavy_atom", "N/A")})'
+        _vina_4wnw_html = f'<span style="font-weight: 700; color: #37443b;">{_res_4wnw["vina_affinity_kcal_mol"]:.2f} kcal/mol</span>'
+        _fe_dist_4wnw_html = f'<span style="font-size: 15px; font-weight: 700; color: #37443b;">{_res_4wnw["min_dist_to_heme_fe_angstrom"]:.2f} Å</span> ({_res_4wnw.get("nearest_heavy_atom", "N/A")})'
         _asp_3tbg = _res_3tbg.get("asp301_contact")
         _asp_4wnw = _res_4wnw.get("asp301_contact")
         _contact_3tbg_label = "Direct Salt Bridge Contact (≤ 4.0 Å)" if _asp_3tbg and _asp_3tbg.get("contact_type") == "salt_bridge" else "Active-Site Proximity (Non-Contact)"
-        _asp_3tbg_html = f'<span style="color: #047857; font-weight: 600;">{_asp_3tbg["distance_angstrom"]:.2f} Å ({_contact_3tbg_label})</span>' if _asp_3tbg else '<span style="color: #94a3b8;">N/A (Non-Basic Pharmacophore)</span>'
+        _asp_3tbg_html = f'<span style="color: #35604b; font-weight: 600;">{_asp_3tbg["distance_angstrom"]:.2f} Å ({_contact_3tbg_label})</span>' if _asp_3tbg else '<span style="color: #8c968e;">N/A (Non-Basic Pharmacophore)</span>'
         _contact_4wnw_label = "Direct Salt Bridge Contact (≤ 4.0 Å)" if _asp_4wnw and _asp_4wnw.get("contact_type") == "salt_bridge" else "Active-Site Proximity (Non-Contact)"
-        _asp_4wnw_html = f'<span style="color: #334155; font-weight: 600;">{_asp_4wnw["distance_angstrom"]:.2f} Å ({_contact_4wnw_label})</span>' if _asp_4wnw else '<span style="color: #94a3b8;">N/A (Non-Basic Pharmacophore)</span>'
-        _prox_3tbg = "✅ In Active-Site Strike Zone (≤ 5.0 Å)" if _res_3tbg.get("active_site_steric_proximity_le_5A") else "❌ Distal to Heme Fe (> 5.0 Å)"
-        _prox_4wnw = "✅ In Active-Site Strike Zone (≤ 5.0 Å)" if _res_4wnw.get("active_site_steric_proximity_le_5A") else "❌ Distal to Heme Fe (> 5.0 Å)"
+        _asp_4wnw_html = f'<span style="color: #37443b; font-weight: 600;">{_asp_4wnw["distance_angstrom"]:.2f} Å ({_contact_4wnw_label})</span>' if _asp_4wnw else '<span style="color: #8c968e;">N/A (Non-Basic Pharmacophore)</span>'
+        _prox_3tbg = "Nearest ligand atom within 5.0 Å" if _res_3tbg.get("active_site_steric_proximity_le_5A") else "Nearest ligand atom beyond 5.0 Å"
+        _prox_4wnw = "Nearest ligand atom within 5.0 Å" if _res_4wnw.get("active_site_steric_proximity_le_5A") else "Nearest ligand atom beyond 5.0 Å"
     else:
         _target_cyp = "None"
         _warhead = "None"
         _is_paroxetine = False
-        _iso_badge = '<span style="background: #f1f5f9; color: #64748b; border: 1px solid #cbd5e1; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600;">⚪ No Structural Evaluation Available</span>'
+        _iso_badge = '<span style="background: #eeeee5; color: #65706a; border: 1px solid #cbd1c7; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600;">⚪ No Structural Evaluation Available</span>'
         _narrative_text = "<strong>No Active-Site Evaluation:</strong> No docking evaluation record is available for the current selection."
-        _vina_3tbg_html = '<span style="color: #94a3b8; font-weight: 600;">No Evaluation Available</span>'
-        _fe_dist_3tbg_html = '<span style="color: #94a3b8; font-weight: 600;">No Evaluation Available</span>'
-        _vina_4wnw_html = '<span style="color: #94a3b8; font-weight: 600;">No Evaluation Available</span>'
-        _fe_dist_4wnw_html = '<span style="color: #94a3b8; font-weight: 600;">No Evaluation Available</span>'
-        _asp_3tbg_html = '<span style="color: #94a3b8;">No Evaluation Available</span>'
-        _asp_4wnw_html = '<span style="color: #94a3b8;">No Evaluation Available</span>'
+        _vina_3tbg_html = '<span style="color: #8c968e; font-weight: 600;">No Evaluation Available</span>'
+        _fe_dist_3tbg_html = '<span style="color: #8c968e; font-weight: 600;">No Evaluation Available</span>'
+        _vina_4wnw_html = '<span style="color: #8c968e; font-weight: 600;">No Evaluation Available</span>'
+        _fe_dist_4wnw_html = '<span style="color: #8c968e; font-weight: 600;">No Evaluation Available</span>'
+        _asp_3tbg_html = '<span style="color: #8c968e;">No Evaluation Available</span>'
+        _asp_4wnw_html = '<span style="color: #8c968e;">No Evaluation Available</span>'
         _prox_3tbg = "No Evaluation Available"
         _prox_4wnw = "No Evaluation Available"
 
@@ -1162,25 +1104,25 @@ def __(
     _show_4wnw = ("4WNW" in _sel_conformation or "All" in _sel_conformation)
 
     _card_3tbg_html = f"""
-    <div style="padding: 12px; background: #f0fdf4; border-radius: 8px; border-left: 4px solid #10b981;">
+    <div style="padding: 12px; background: #eff3e9; border-radius: 8px; border-left: 4px solid #54775f;">
       <strong style="color: #065f46;">Substrate-Bound State (PDB: 3TBG, 2.10 Å)</strong><br>
       <div style="margin-top: 6px; line-height: 1.6;">
         <strong>Vina Binding Score:</strong> {_vina_3tbg_html}<br>
         <strong>Min Distance to Heme Fe:</strong> {_fe_dist_3tbg_html}<br>
         <strong>Asp301 Anchor Distance:</strong> {_asp_3tbg_html}<br>
-        <span style="color: #059669; font-size: 11px; font-weight: 600;">{_prox_3tbg}</span>
+        <span style="color: #35604b; font-size: 11px; font-weight: 600;">{_prox_3tbg}</span>
       </div>
     </div>
     """ if _show_3tbg else ""
 
     _card_4wnw_html = f"""
-    <div style="padding: 12px; background: #f8fafc; border-radius: 8px; border-left: 4px solid #94a3b8;">
-      <strong style="color: #475569;">Unliganded Resting State (PDB: 4WNW, 3.30 Å)</strong><br>
+    <div style="padding: 12px; background: #f1f1e9; border-radius: 8px; border-left: 4px solid #8c968e;">
+      <strong style="color: #526156;">Unliganded Resting State (PDB: 4WNW, 3.30 Å)</strong><br>
       <div style="margin-top: 6px; line-height: 1.6;">
         <strong>Vina Binding Score:</strong> {_vina_4wnw_html}<br>
         <strong>Min Distance to Heme Fe:</strong> {_fe_dist_4wnw_html}<br>
         <strong>Asp301 Anchor Distance:</strong> {_asp_4wnw_html}<br>
-        <span style="color: #64748b; font-size: 11px; font-weight: 600;">{_prox_4wnw}</span>
+        <span style="color: #65706a; font-size: 11px; font-weight: 600;">{_prox_4wnw}</span>
       </div>
     </div>
     """ if _show_4wnw else ""
@@ -1189,16 +1131,16 @@ def __(
 
     _cyp2d6_inspection_md = mo.Html(
         f"""
-        <div style="margin-top: 16px; padding: 16px; border: 1px solid #e2e8f0; border-radius: 10px; background: #ffffff; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f1f5f9; padding-bottom: 8px; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+        <div style="margin-top: 16px; padding: 16px; border: 1px solid #d5d8cf; border-radius: 10px; background: #ffffff; color: #252d2a; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eeeee5; padding-bottom: 8px; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
             <div>
-              <h4 style="margin: 0; color: #0f172a; font-size: 16px;">
+              <h4 style="margin: 0; color: #252d2a; font-size: 16px;">
                  CYP2D6 Active-Site Conformation: {_sel_compound or 'None Selected'}
               </h4>
               <div style="margin-top: 4px;">{_iso_badge}</div>
             </div>
-            <span style="background: #f5f3ff; color: #6d28d9; border: 1px solid #ddd6fe; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; white-space: nowrap;">
-              ⚡ AutoDock Vina v1.2.7 on Beam Cloud {_gpu_device} ({_vram} GB VRAM) • Task: {_beam_task[:8]}...
+            <span style="background: #f4efe4; color: #695333; border: 1px solid #ded3be; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; white-space: nowrap;">
+              AutoDock Vina v1.2.7 · computed on Beam Cloud with the CPU backend
             </span>
           </div>
 
@@ -1206,9 +1148,9 @@ def __(
             {_card_3tbg_html}
             {_card_4wnw_html}
 
-            <div style="padding: 12px; background: #f8fafc; border-radius: 8px; border-left: 4px solid #8b5cf6;">
-              <strong style="color: #5b21b6;">Asp301 Anchor & Bioactivation Geometry</strong><br>
-              <p style="margin: 4px 0 0 0; font-size: 12px; line-height: 1.45; color: #334155;">
+            <div style="padding: 12px; background: #f1f1e9; border-radius: 8px; border-left: 4px solid #8c6d43;">
+              <strong style="color: #695333;">Asp301 Anchor & Bioactivation Geometry</strong><br>
+              <p style="margin: 4px 0 0 0; font-size: 12px; line-height: 1.45; color: #37443b;">
                 {_narrative_text}
               </p>
             </div>
@@ -1218,15 +1160,15 @@ def __(
     )
 
     act3_cyp2d6_section = mo.vstack([
-        mo.md("### 3. Dual-Isoform Enzymology: AutoDock Vina Docking in Human CYP2D6"),
+        mo.md("### 3. Docking in CYP2D6"),
         mo.Html(
             """
-            <div style="padding: 10px 14px; background: #faf5ff; border-left: 4px solid #a855f7; font-size: 12px; color: #581c87; margin-bottom: 12px; border-radius: 4px; line-height: 1.5;">
-              <strong>Cross-Isoform Structural Scope & Beam Cloud RTX 4090 Validation:</strong> Human CYP2D6 is responsible for the hepatic clearance of ~25% of clinical therapeutics, featuring a canonical electrostatic anchor residue (<strong>Asp301</strong>). Docking evaluations were performed across both substrate-bound (PDB 3TBG, 2.10 Å) and unliganded resting-state (PDB 4WNW, 3.30 Å) crystallographic conformations on remote <strong>Beam Cloud NVIDIA GeForce RTX 4090 GPU workers</strong> (Task: <code>dc1112ce-e7dc-4abe-943b-790ccae2e9b5</code>). Vina scores are empirical scoring functions, providing geometric proximity proxies rather than experimental free energies or covalent inactivation constants ($k_{inact}/K_I$).
+            <div style="padding: 10px 14px; background: #f4efe4; border-left: 4px solid #8c6d43; font-size: 12px; color: #695333; margin-bottom: 12px; border-radius: 4px; line-height: 1.5;">
+              <strong>Where these docking results come from:</strong> Human CYP2D6 is responsible for the hepatic clearance of ~25% of clinical therapeutics, featuring a canonical electrostatic anchor residue (<strong>Asp301</strong>). Vina used a CPU backend on Beam Cloud for the substrate-bound (PDB 3TBG, 2.10 Å) and unliganded (PDB 4WNW, 3.30 Å) structures. Vina scores are empirical scoring functions, providing geometric proximity proxies rather than experimental free energies or covalent inactivation constants ($k_{inact}/K_I$).
             </div>
             """
         ),
-        mo.hstack([cyp2d6_compound_dropdown, cyp2d6_isoform_dropdown], gap=2),
+        mo.vstack([cyp2d6_compound_dropdown, cyp2d6_isoform_dropdown], gap=1),
         _cyp2d6_inspection_md,
     ])
 
@@ -1243,25 +1185,25 @@ def __(mo):
             "Scaffold 5-Fold MCC": "0.3298 [0.2960, 0.3646]",
             "Scaffold 5-Fold ROC-AUC": "0.7868 [0.7706, 0.8032]",
             "Brier Score": "0.1573 [0.1506, 0.1644]",
-            "Scientific Impact": "Standard 2D Baseline",
+            "Observed change": "Standard 2D Baseline",
         },
         {
-            "Feature Representation": "Physics-Augmented (2D + AIMNet2-NSE ΔSCF)",
+            "Feature Representation": "Physics-Augmented (2D + AIMNet2-family ΔSCF)",
             "Scaffold 5-Fold PR-AUC": "0.4753 [0.4414, 0.5110]",
             "Scaffold 5-Fold MCC": "0.3507 [0.3156, 0.3850]",
             "Scaffold 5-Fold ROC-AUC": "0.7891 [0.7725, 0.8053]",
             "Brier Score": "0.1542 [0.1473, 0.1615]",
-            "Scientific Impact": "✅ +0.0101 PR-AUC, +0.0209 MCC, -0.0031 Brier",
+            "Observed change": "✅ +0.0101 PR-AUC, +0.0209 MCC, -0.0031 Brier",
         },
     ]
 
     act3_benchmark_table = mo.ui.table(
         data=act3_table_data,
-        label="Table 3.1: Empirical Benchmark of 2D Topological Baseline vs Physics-Augmented Model under Scaffold Shift",
+        label="Table 3.1: Model results with and without electronic descriptors",
     )
 
     act3_table_section = mo.vstack([
-        mo.md("### 3. Falsifiable Benchmark Summary: 2D vs Physics-Augmented Representation"),
+        mo.md("### 3. The descriptor comparison in numbers"),
         act3_benchmark_table,
     ])
 
@@ -1273,19 +1215,13 @@ def __(load_mmp_transformations, mo):
     # Act 4: Narrative Intro on MMP Activity Cliffs & Lead Optimization
     act4_intro = mo.md(
         r"""
-<hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 32px 0 24px 0;" />
+## Act 4: What can a small chemical edit change?
 
-## Act 4: Medicinal Chemistry Steering — Activity Cliffs, Bioisosteres, & Real Model Errors
+Two close analogues can have different assay labels. Looking at them side by side can help suggest a next experiment without throwing away the whole chemical series.
 
-When a high-throughput microsomal assay or predictive model flags a lead candidate for **CYP bioactivation**, discarding the entire chemical series is costly and unnecessary. 
+The dataset contains **34 unique matched molecular pairs** with different TDI labels: 25 CYP3A4 pairs and 9 CYP2D6 pairs. Each has a shared core of at least ten heavy atoms and one ring, with a substituent change of at most six heavy atoms.
 
-Instead, medicinal chemists employ **Matched Molecular Pairs (MMPs)**: single exocyclic bond substitutions on a conserved core framework that **abrogate reactive intermediate formation** while maintaining target binding affinity and drug-like properties.
-
-### 1. Curated Matched Molecular Pair (MMP) Label Shifts
-Using RDKit's algorithmic single-cut fragmentation engine (`rdMMPA`), we screened 5,081 isoform endpoints and extracted **34 unique matched molecular pairs** (25 CYP3A4, 9 CYP2D6) exhibiting active-to-inactive ($1 \to 0$) bioactivation label shifts on an identical conserved core:
-- **Conserved Core:** Core framework contains $\ge 10$ heavy atoms and $\ge 1$ ring system.
-- **Minimal Chemical Edit:** Exocyclic substituent change is limited to $\le 6$ heavy atoms.
-- **Observed Assay Shift:** Measured active-to-inactive ($1 \to 0$) target label shift on the identical conserved core in OpenADMET microsomal assay data.
+These are observed label differences. They do not prove that the edit prevents a particular reaction, preserves binding affinity, or makes a compound safe. Choose a pair, then look at a model error below. The proposed mechanism explanations are hypotheses.
 """
     )
 
@@ -1303,9 +1239,10 @@ Using RDKit's algorithmic single-cut fragmentation engine (`rdMMPA`), we screene
 def __(mmp_options, mo):
     # Act 4 Interactive MMP Selector
     mmp_dropdown = mo.ui.dropdown(
+        full_width=True,
         options=list(mmp_options.keys()),
         value=list(mmp_options.keys())[0] if mmp_options else None,
-        label="Select a Curated Matched Molecular Pair (Activity Cliff):",
+        label="Choose a molecular pair:",
     )
     return (mmp_dropdown,)
 
@@ -1336,41 +1273,41 @@ def __(BioactivationTracer, mmp_dropdown, mmp_options, mo):
 
         _cliff_card = mo.md(
             f"""
-            <div style="margin-top: 12px; padding: 14px; border: 1px solid #e2e8f0; border-radius: 8px; background: #f8fafc; font-size: 13px;">
+            <div style="margin-top: 12px; padding: 14px; border: 1px solid #d5d8cf; border-radius: 8px; background: #f1f1e9; font-size: 13px;">
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                <strong style="color: #0f172a; font-size: 15px;">{_pair['mmp_id']} — {_pair['isoform']} Bioactivation Cliff</strong>
-                <span style="background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; padding: 3px 10px; border-radius: 6px; font-weight: 600; font-size: 11px; white-space: nowrap;">
+                <strong style="color: #252d2a; font-size: 15px;">{_pair['mmp_id']} — {_pair['isoform']} Bioactivation Cliff</strong>
+                <span style="background: #eff3e9; color: #16a34a; border: 1px solid #cad8c2; padding: 3px 10px; border-radius: 6px; font-weight: 600; font-size: 11px; white-space: nowrap;">
                   {_pair.get('curation_status', 'OPENADMET_LABEL_SHIFT')}
                 </span>
               </div>
               <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px; margin-bottom: 8px;">
-                <div style="background: #ffffff; padding: 8px; border-radius: 6px; border: 1px solid #e2e8f0;">
-                  <span style="color: #64748b; font-size: 10px; font-weight: 600;">TRANSFORMATION</span><br>
+                <div style="background: #ffffff; color: #252d2a; padding: 8px; border-radius: 6px; border: 1px solid #d5d8cf;">
+                  <span style="color: #65706a; font-size: 10px; font-weight: 600;">TRANSFORMATION</span><br>
                   <code style="font-size: 11px;">{_pair['transformation']}</code>
                 </div>
-                <div style="background: #ffffff; padding: 8px; border-radius: 6px; border: 1px solid #e2e8f0;">
-                  <span style="color: #64748b; font-size: 10px; font-weight: 600;">Δ MOLECULAR WEIGHT</span><br>
-                  <strong style="font-size: 14px; color: #0f172a;">{_pair['delta_mw']:+.1f} Da</strong>
+                <div style="background: #ffffff; color: #252d2a; padding: 8px; border-radius: 6px; border: 1px solid #d5d8cf;">
+                  <span style="color: #65706a; font-size: 10px; font-weight: 600;">Δ MOLECULAR WEIGHT</span><br>
+                  <strong style="font-size: 14px; color: #252d2a;">{_pair['delta_mw']:+.1f} Da</strong>
                 </div>
-                <div style="background: #ffffff; padding: 8px; border-radius: 6px; border: 1px solid #e2e8f0;">
-                  <span style="color: #64748b; font-size: 10px; font-weight: 600;">Δ cLogP</span><br>
-                  <strong style="font-size: 14px; color: #0f172a;">{_pair['delta_logp']:+.2f}</strong>
+                <div style="background: #ffffff; color: #252d2a; padding: 8px; border-radius: 6px; border: 1px solid #d5d8cf;">
+                  <span style="color: #65706a; font-size: 10px; font-weight: 600;">Δ cLogP</span><br>
+                  <strong style="font-size: 14px; color: #252d2a;">{_pair['delta_logp']:+.2f}</strong>
                 </div>
-                <div style="background: #ffffff; padding: 8px; border-radius: 6px; border: 1px solid #e2e8f0;">
-                  <span style="color: #64748b; font-size: 10px; font-weight: 600;">Δ TPSA</span><br>
-                  <strong style="font-size: 14px; color: #0f172a;">{_pair['delta_tpsa']:+.1f} Å²</strong>
+                <div style="background: #ffffff; color: #252d2a; padding: 8px; border-radius: 6px; border: 1px solid #d5d8cf;">
+                  <span style="color: #65706a; font-size: 10px; font-weight: 600;">Δ TPSA</span><br>
+                  <strong style="font-size: 14px; color: #252d2a;">{_pair['delta_tpsa']:+.1f} Å²</strong>
                 </div>
               </div>
-              <p style="margin: 0; color: #334155; font-size: 12px; line-height: 1.4;">
-                <strong>Steering Principle:</strong> A targeted exocyclic bioisosteric substitution abolishes the time-dependent inactivation liability while keeping the primary scaffold binding core identical.
+              <p style="margin: 0; color: #37443b; font-size: 12px; line-height: 1.4;">
+                <strong>What this pair shows:</strong> This pair has different TDI labels on a shared core. The edit suggests an experiment; its effect on mechanism and binding affinity has not been established.
               </p>
-              <div style="margin-top: 10px; padding: 8px 12px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 11px; color: #475569; display: flex; gap: 16px; flex-wrap: wrap;">
-                <span><strong>Lead Row:</strong> {_mol_act.get('source_row_id', 'N/A')} (ΔpIC50 = {_mol_act.get('pic50_shift', 'N/A')})</span>
-                <span><strong>Safe Analog Row:</strong> {_mol_inact.get('source_row_id', 'N/A')} (ΔpIC50 = {_mol_inact.get('pic50_shift', 'N/A')})</span>
+              <div class="cyp-assay-details">
+                <span><strong>TDI-positive row:</strong> {_mol_act.get('source_row_id', 'N/A')} (ΔpIC50 = {_mol_act.get('pic50_shift', 'N/A')})</span>
+                <span><strong>TDI-negative row:</strong> {_mol_inact.get('source_row_id', 'N/A')} (ΔpIC50 = {_mol_inact.get('pic50_shift', 'N/A')})</span>
                 <span><strong>Assay ID:</strong> {_mol_act.get('assay_id', 'OCTANT_CYP_HLM_IC50_SHIFT')}</span>
                 <span><strong>Source:</strong> {_mol_act.get('source_dataset', 'cyp-challenge-TRAIN_TDI.csv')}</span>
                 <span><strong>Measurement:</strong> {_mol_act.get('measurement_type', 'Preincubation IC50 Shift Ratio')}</span>
-                <span><strong>Threshold:</strong> {_mol_act.get('uncertainty', 'Binary classification (shift >= 1.5 ratio threshold)')}</span>
+                <span><strong>Threshold:</strong> Source challenge labels; see assay definitions</span>
                 <span><strong>Replicates:</strong> {_mol_act.get('replicate_summary', 'Mean of duplicate IC50 curves')}</span>
               </div>
             </div>
@@ -1378,15 +1315,15 @@ def __(BioactivationTracer, mmp_dropdown, mmp_options, mo):
         )
 
         act4_mmp_viewer = mo.vstack([
-            mo.md("### 2. Side-by-Side Activity Cliff: Toxic Lead vs Safe Redesign"),
+            mo.md("### 2. One core, two assay labels"),
             mmp_dropdown,
             mo.hstack([
                 mo.vstack([
-                    mo.md("<div style='text-align: center; font-weight: 600; color: #dc2626;'>⚠️ Toxic Inactivator (TDI = Positive)</div>"),
+                    mo.md("<div style='text-align: center; font-weight: 600; color: #dc2626;'>TDI-positive label</div>"),
                     _ui_act,
                 ]),
                 mo.vstack([
-                    mo.md("<div style='text-align: center; font-weight: 600; color: #16a34a;'>✅ Redesigned Safe Analog (TDI = Negative)</div>"),
+                    mo.md("<div style='text-align: center; font-weight: 600; color: #16a34a;'>TDI-negative label</div>"),
                     _ui_inact,
                 ]),
             ], justify="center", gap=1.5),
@@ -1405,9 +1342,10 @@ def __(BioactivationTracer, load_oof_error_cases, mo):
     oof_cases = _oof_payload.get("cases", [])
 
     oof_dropdown = mo.ui.dropdown(
+        full_width=True,
         options=[c["display_label"] for c in oof_cases],
         value=oof_cases[0]["display_label"] if oof_cases else "",
-        label="Select a Real Out-of-Fold Model Error to Diagnose:",
+        label="Choose a prediction error:",
     )
 
     return oof_cases, oof_dropdown
@@ -1439,27 +1377,27 @@ def __(BioactivationTracer, mo, oof_cases, oof_dropdown):
 
     _oof_card = mo.md(
         f"""
-        <div style="padding: 16px; border: 1px solid #e2e8f0; border-radius: 10px; background: #ffffff; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f1f5f9; padding-bottom: 8px; margin-bottom: 12px;">
-            <h4 style="margin: 0; color: #0f172a; font-size: 16px;">{_case.get('molecule_name', '')} ({_case.get('chemical_name', '')})</h4>
+        <div style="padding: 16px; border: 1px solid #d5d8cf; border-radius: 10px; background: #ffffff; color: #252d2a; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eeeee5; padding-bottom: 8px; margin-bottom: 12px;">
+            <h4 style="margin: 0; color: #252d2a; font-size: 16px;">{_case.get('molecule_name', '')} ({_case.get('chemical_name', '')})</h4>
             <span style="background: {_badge_bg}; color: {_badge_color}; border: 1px solid {_badge_color}33; padding: 3px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; white-space: nowrap;">
               {_case.get('category', '')}
             </span>
           </div>
 
           <div style="display: grid; grid-template-columns: 1fr 1.4fr; gap: 16px; font-size: 13px;">
-            <div style="padding: 12px; background: #f8fafc; border-radius: 8px;">
-              <strong>OpenADMET Assay Ground Truth:</strong> <span style="color: {'#dc2626' if _true_tdi == 1 else '#16a34a'}; font-weight: 700;">{'TDI Active (1)' if _true_tdi == 1 else 'Safe (0)'}</span><br>
-              <strong>2D Baseline Probability (p̂):</strong> <span style="font-weight: 600; color: #334155;">{_pred_2d:.4f}</span><br>
-              <strong>Augmented Model Probability (p̂):</strong> <span style="font-size: 16px; font-weight: 700; color: #1e293b;">{_pred_prob:.4f}</span><br>
+            <div style="padding: 12px; background: #f1f1e9; border-radius: 8px;">
+              <strong>Source assay label:</strong> <span style="color: {'#dc2626' if _true_tdi == 1 else '#16a34a'}; font-weight: 700;">{'TDI Active (1)' if _true_tdi == 1 else 'TDI-negative (0)'}</span><br>
+              <strong>2D Baseline Probability (p̂):</strong> <span style="font-weight: 600; color: #37443b;">{_pred_2d:.4f}</span><br>
+              <strong>Augmented Model Probability (p̂):</strong> <span style="font-size: 16px; font-weight: 700; color: #303a32;">{_pred_prob:.4f}</span><br>
               <strong>Evaluation Provenance:</strong> Grouped Scaffold 5-Fold CV (Fold {_case.get('cv_fold_5', 0)})<br>
               <strong>Source Assay:</strong> {_case.get('source_dataset', 'Octant HLM Assay')}<br>
               <strong>Chemical SMILES:</strong> <code style="font-size: 11px; word-break: break-all;">{_smiles}</code>
             </div>
 
-            <div style="padding: 12px; background: #f8fafc; border-radius: 8px; border-left: 4px solid {_badge_color};">
-              <strong style="color: #0f172a;">Root-Cause Mechanistic Diagnosis:</strong><br>
-              <p style="margin: 4px 0 0 0; font-size: 12px; line-height: 1.4; color: #334155;">
+            <div style="padding: 12px; background: #f1f1e9; border-radius: 8px; border-left: 4px solid {_badge_color};">
+              <strong style="color: #252d2a;">A possible explanation:</strong><br>
+              <p style="margin: 4px 0 0 0; font-size: 12px; line-height: 1.4; color: #37443b;">
                 {_case.get('rationale', '')}
               </p>
             </div>
@@ -1469,8 +1407,8 @@ def __(BioactivationTracer, mo, oof_cases, oof_dropdown):
     )
 
     act4_oof_section = mo.vstack([
-        mo.md("""### 3. Out-of-Fold Model Error Diagnosis (Honest Cross-Validation)
-*Examines real out-of-fold diagnostic failure modes across Grouped Scaffold 5-Fold CV, including **False Negative (Dangerous Escape)** cases like Resorcinol auto-oxidation and **False Positive (False Alarm)** cases where steric shields protect against bioactivation.*"""),
+        mo.md("""### 3. Where the model gets it wrong
+*Examines real out-of-fold diagnostic failure modes across Grouped Scaffold 5-Fold CV, including false negatives and false positives. The proposed explanations are hypotheses, not validated causal attributions.*"""),
         oof_dropdown,
         mo.hstack([_widget_ui, _oof_card], justify="start", gap=1),
     ])
@@ -1483,28 +1421,15 @@ def __(BASE_DIR, load_txconformal_selection_results, mo):
     # Act 5: Narrative Intro on TxConformal Selection
     act5_intro = mo.md(
         r"""
-<hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 32px 0 24px 0;" />
+## Act 5: Which molecules would we test next?
 
-## Act 5: TxConformal Candidate Prioritization, Honest Limitations, & DOME Checklist
+Suppose there is room to test only a shortlist. A low predicted TDI probability is a useful starting point, but how should it become a decision?
 
-In late-stage preclinical hit-to-lead campaigns, testing thousands of synthesized compounds in human liver microsome incubation assays is economically prohibitive. Discovery teams must prioritize a **candidate shortlist**.
+This example uses **TxConformal-inspired weighted conformal selection** with the Benjamini-Hochberg procedure. Move the nominal FDR level, alpha, to see how the shortlist changes. A smaller alpha asks for stronger evidence against the null hypothesis that a molecule has a TDI label.
 
-### 1. The Risk of Naive Probability Ranking
-Standard practice simply sorts compounds by predicted model probability ($\hat{p}$) and picks the top $K$. However, under **severe Murcko scaffold shift**, this offers **no statistical error control**—a team can easily advance candidates that turn out to be potent suicide inactivators in vivo.
+The predictive model was fitted on TRAIN labels only, then calibrated separately. The plot contains the first 100 TEST molecules in source order, rather than a representative sample. Selection is rerun on this pool at your chosen alpha.
 
-### 2. Empirical Candidate Prioritization: Weighted Conformal Selection
-To prioritize candidate leads under distribution shift, we implemented **TxConformal** (Jin, Huang, Diamant et al., *bioRxiv / ICLR 2026*):
-
-* Estimates covariate shift between calibration and test chemical space using a domain discriminator to compute likelihood ratio weights:
-
-$$w(x) = \frac{p_{\text{test}}(x)}{p_{\text{cal}}(x)}$$
-
-* Computes shift-adjusted conformal p-values for candidate compounds ($H_0$: molecule is a TDI bioactivation liability).
-* Employs a weighted Benjamini-Hochberg step-up selection procedure targeting nominal False Discovery Rate (FDR) control:
-
-$$\text{Target Screening Threshold: } \alpha \in [0.05, 0.20] \quad (\text{Standard Screening Default: } \alpha \le 0.10)$$
-
-*(Note on statistical assumptions: Finite-sample theoretical bounds require exact exchangeability and well-calibrated density ratios. On empirical chemical benchmarks, we evaluate realized False Discovery Proportion (FDP) across 250-run Monte Carlo screening pools).*
+The historical 2.67% mean false discovery proportion at alpha 0.10 comes from **250-run Monte Carlo** resampling of a larger, 703-compound holdout. It is not the measured error rate of the shortlist below. Estimated density weights and ordinary BH do not give a verified guarantee under arbitrary chemical shift, and a selected molecule is not certified safe.
 """
     )
 
@@ -1522,13 +1447,19 @@ def __(mo):
         stop=0.20,
         step=0.01,
         value=0.10,
-        label="Select Candidate Screening Threshold (Nominal target FDR α in [0.05, 0.20]; standard default α = 0.10):",
+        label="Choose alpha for this shortlist:",
     )
     return (alpha_slider,)
 
 
 @app.cell
-def __(alpha_slider, conformal_fdr_select, csv, io, mo, tx_data):
+def __(mo):
+    get_candidate_focus, set_candidate_focus = mo.state(None)
+    return get_candidate_focus, set_candidate_focus
+
+
+@app.cell
+def __(metric_stat, alpha_slider, conformal_fdr_select, csv, io, mo, tx_data, normalize_single_table_value, set_candidate_focus):
     # Act 5 Reactive Candidate Selection Sandbox: Real Weighted Benjamini-Hochberg Step-Up Selection
     _target_alpha = alpha_slider.value
     _mc_summary = tx_data.get("monte_carlo_robustness_summary", {})
@@ -1570,6 +1501,7 @@ def __(alpha_slider, conformal_fdr_select, csv, io, mo, tx_data):
 
     candidate_table = mo.ui.table(
         data=candidate_rows,
+        on_change=lambda value: set_candidate_focus(normalize_single_table_value(value).get("candidate_id")),
         selection="single",
         initial_selection=[0] if candidate_rows else [],
         hidden_columns=["candidate_id", "smiles"],
@@ -1630,83 +1562,21 @@ def __(alpha_slider, conformal_fdr_select, csv, io, mo, tx_data):
         filename=candidate_csv_filename,
         mimetype="text/csv",
         disabled=not bool(_selected_indices),
-        label="Download Prioritized Non-TDI Leads (CSV)",
+        label="Download Selected Candidates (CSV)",
     )
 
-    act5_kpis = mo.hstack(
-        [
-            mo.stat(
-                value=f"{_benchmark_mean_fdp:.2%}",
-                label="Empirical FDP",
-                caption=f"α={_nearest_alpha:.2f} · 250 MC runs · N=703",
-                direction="decrease",
-                target_direction="decrease",
-                bordered=True,
-            ),
-            mo.stat(
-                value=f"{_stats.get('mean_selection_size', 30.0):.1f}",
-                label="Mean selected candidates",
-                caption="250-run diagnostic utility",
-                direction="increase",
-                target_direction="increase",
-                bordered=True,
-            ),
-            mo.stat(
-                value=f"{_target_alpha:.2f}",
-                label="Active nominal α",
-                caption="Slider range 0.05–0.20",
-                direction=None,
-                target_direction="increase",
-                bordered=True,
-            ),
-        ],
-        widths="equal",
-        gap=0.75,
-    )
-
+    act5_kpis = mo.hstack([
+        metric_stat(value=f"{_selected_count} / {_m}", label="Selected in this pool", bordered=True),
+        metric_stat(value=f"{_target_alpha:.2f}", label="Nominal alpha", bordered=True),
+        metric_stat(value=f"{_critical_cutoff:.4f}", label="BH cutoff", bordered=True),
+    ], widths="equal")
     conformal_card = mo.vstack([
         act5_kpis,
-        mo.md(
-            f"""
-            <div style="padding: 16px; border: 1px solid #e2e8f0; border-radius: 10px; background: #ffffff; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-top: 12px; margin-bottom: 12px;">
-              <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f1f5f9; padding-bottom: 8px; margin-bottom: 12px;">
-                <h4 style="margin: 0; color: #0f172a; font-size: 16px;">
-                  Weighted Conformal BH Step-Up Selection at Current α = {_target_alpha:.2f} (Interactive Display Sample)
-                </h4>
-                <span style="background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; padding: 3px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; white-space: nowrap;">
-                  Observed Screening FDP Diagnostic (Nominal FDR α ≤ {_target_alpha:.2f})
-                </span>
-              </div>
-
-              <div style="display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 14px; font-size: 13px;">
-                <div style="padding: 12px; background: #f8fafc; border-radius: 8px; border-left: 4px solid #10b981;">
-                  <span style="color: #64748b; font-size: 11px; font-weight: 600; text-transform: uppercase;">Benchmark Monte Carlo FDP</span><br>
-                  <span style="font-size: 24px; font-weight: 700; color: #047857;">{_benchmark_mean_fdp * 100:.2f}%</span><br>
-                  <span style="font-size: 11px; color: #059669; font-weight: 600;">
-                    Nearest Precomputed Benchmark (Nominal α = {_nearest_alpha:.2f}, N = 703)
-                  </span>
-                </div>
-
-                <div style="padding: 12px; background: #f8fafc; border-radius: 8px; border-left: 4px solid #3b82f6;">
-                  <span style="color: #64748b; font-size: 11px; font-weight: 600; text-transform: uppercase;">Display Shortlist (k*)</span><br>
-                  <span style="font-size: 24px; font-weight: 700; color: #1e293b;">{_selected_count} / {_m}</span><br>
-                  <span style="font-size: 11px; color: #64748b;">
-                    Dynamic Cutoff: p* ≤ {_critical_cutoff:.4f} (k*/{_m} · {_target_alpha:.2f})
-                  </span>
-                </div>
-
-                <div style="padding: 12px; background: #f8fafc; border-radius: 8px; border-left: 4px solid #6366f1;">
-                  <span style="color: #64748b; font-size: 11px; font-weight: 600; text-transform: uppercase;">Dynamic Algorithmic Rigor</span><br>
-                  <p style="margin: 4px 0 0 0; font-size: 12px; line-height: 1.4; color: #334155;">
-                    Dynamically computes the Benjamini-Hochberg critical index k* over density-ratio weighted conformal p-values for 100 representative held-out test candidates (sampled from the 703-compound scaffold holdout universe). Exactly {_selected_count} candidate leads satisfy p(i) ≤ (i/{_m})·{_target_alpha:.2f}.
-                  </p>
-                </div>
-              </div>
-            </div>
-            """
-        ),
+        mo.md("Green points meet the selection rule. Click a point or a table row to look at that molecule, then download the selected set."),
+        mo.accordion({"How this relates to the earlier benchmark": mo.md(
+            f"At the nearest saved alpha, **{_nearest_alpha:.2f}**, the 250-run diagnostic had a mean FDP of **{_benchmark_mean_fdp:.2%}** and selected **{_stats.get('mean_selection_size', 30.0):.1f}** molecules on average. Each run resampled 200 molecules from the 703-compound TEST holdout. These summaries describe that experiment, not the current 100-molecule pool."
+        )}),
     ])
-
     return (
         EXPORT_COLUMNS,
         act5_kpis,
@@ -1721,9 +1591,23 @@ def __(alpha_slider, conformal_fdr_select, csv, io, mo, tx_data):
 
 
 @app.cell
-def __(BioactivationTracer, alpha_slider, candidate_table, mo, normalize_single_table_value, safe_generate_molecule_layout):
+def __(alpha_slider, alt, candidate_rows, mo, pd, normalize_single_table_value, set_candidate_focus):
+    _plot_rows = sorted(candidate_rows, key=lambda row: row["weighted_conformal_pvalue"])
+    _plot_rows = [dict(row, rank=i + 1, bh_threshold=(i + 1) / max(len(_plot_rows), 1) * alpha_slider.value, selected="Selected" if row["selection_status"].startswith("✅") else "Excluded") for i, row in enumerate(_plot_rows)]
+    _base = alt.Chart(pd.DataFrame(_plot_rows)).encode(x=alt.X("rank:Q", title="Rank in this display pool"))
+    _points = _base.mark_circle(size=55).encode(y=alt.Y("weighted_conformal_pvalue:Q", title="Weighted conformal p-value", scale=alt.Scale(domain=[0, 1])), color=alt.Color("selected:N", scale=alt.Scale(domain=["Selected", "Excluded"], range=["#35604b", "#8c968e"])), tooltip=["molecule_name", alt.Tooltip("weighted_conformal_pvalue:Q", format=".5f"), alt.Tooltip("predicted_liability_prob:Q", format=".4f"), "selected"])
+    _pick = alt.selection_point(name="candidate_pick", fields=["candidate_id"], on="click", clear="dblclick")
+    _points = _points.add_params(_pick)
+    _line = _base.mark_line(color="#315a49", strokeDash=[5, 3], tooltip=False).encode(y="bh_threshold:Q")
+    selection_plot = mo.ui.altair_chart((_line + _points).properties(height=260, width="container"), chart_selection=False, legend_selection=False, on_change=lambda value: set_candidate_focus(normalize_single_table_value(value).get("candidate_id") if value is not None and len(value) == 1 else None), label="Click one candidate to inspect it. Dashed line: nominal α × rank / pool size.")
+    return (selection_plot,)
+
+
+@app.cell
+def __(BioactivationTracer, alpha_slider, candidate_table, candidate_rows, get_candidate_focus, mo, normalize_single_table_value, safe_generate_molecule_layout):
     # Act 5 Reactive Candidate 2D Structure Inspection Card
-    selected_candidate = normalize_single_table_value(candidate_table.value)
+    _focus = get_candidate_focus()
+    selected_candidate = next((row for row in candidate_rows if row["candidate_id"] == _focus), None) if _focus else normalize_single_table_value(candidate_table.value)
     if not selected_candidate:
         candidate_card = mo.callout(
             "Select a candidate row in Table 5.1 above to inspect its 2D chemical structure.",
@@ -1769,11 +1653,14 @@ def __(
     candidate_table,
     conformal_card,
     mo,
+    selection_plot,
 ):
     act5_conformal_section = mo.vstack([
-        mo.md("### 3. Interactive Conformal Shortlist Sandbox (Display Sample: N = 100 from 703 Test Candidates)"),
+        mo.md("### 3. Explore the 100-molecule shortlist"),
         alpha_slider,
         conformal_card,
+        selection_plot,
+        mo.md("BH is rerun on the current 100-row display pool. The separate 250-run benchmark resamples 200 candidates from the full holdout; its FDP is not the FDP of this displayed shortlist. Model fitting used TRAIN labels only; density weighting used unlabeled calibration/test features."),
         candidate_table,
         candidate_card,
         candidate_download,
@@ -1786,16 +1673,15 @@ def __(mo):
     # Act 5 Honest Limitations, DOME Checklist, and Citations
     act5_limitations_md = mo.md(
         r"""
----
-### 4. Honest Scientific Limitations
+### 4. What would we need to know next?
 
-> 💡 **Critical Preclinical Nuances:**
-> 1. **Binary TDI vs. Kinetic $k_{\text{inact}} / K_I$ Potency:** High-throughput screening measures a binary preincubation IC50 shift ratio ($\ge 1.5 - 2.0$), not the continuous maximum inactivation rate ($k_{\text{inact}}$) or dissociation constant ($K_I$). Compounds flagged as positive may have modest inactivation kinetics that are clinically manageable at low human therapeutic doses.
-> 2. **In Vitro Microsomes vs. Whole-Body In Vivo Clearance:** Human liver microsomes (HLM) contain membrane-bound Cytochromes and UGTs, but lack cytosolic sulfotransferases and phase II conjugating enzymes. A compound with a vulnerable warhead in microsomes may be rapidly and safely conjugated in hepatocytes in vivo.
-> 3. **Conformal Coverage-Efficiency Trade-Off:** Conformal prediction calibrates candidate selection under exchangeability and density-ratio estimation assumptions; under extreme out-of-distribution shifts (Tanimoto $< 0.30$), conformal p-values inflate and candidate sets appropriately shrink, reflecting statistical caution.
+A sensible shortlist is the beginning of an experiment. The next checks would be a repeat TDI assay, a look at inhibition recovery, and testing whether the result carries over to a different chemical series or assay setup.
 
----
-### 5. DOME Recommendations Compliance (Machine Learning in Life Sciences)
+**Assay context matters.** Probe substrate, incubation conditions and additional metabolism can change the picture. CYP3A4 also has a flexible binding pocket; one docking pose does not capture all of its behavior.
+
+**The statistical results have a scope.** Scaffold validation is useful but not a prospective study. The descriptor changes need a stronger comparison, and the selection benchmark does not certify individual molecules as safe.
+
+### 5. Methods and sources
 """
     )
 
@@ -1804,9 +1690,9 @@ def __(mo):
 | DOME axis | Implementation in OpenADMET Cytochrome P450 Platform |
 | :--- | :--- |
 | **Data (D)** | 6,145 compounds curated with dual-SMILES policy. Strict missingness masks (3,584 3A4, 1,497 2D6). Zero target leakage verified programmatically. Murcko scaffold clustering with 0 parent InChIKey overlap across folds. |
-| **Optimization (O)** | Tree-based GBDT tuned via stratified CV; Chemprop v2 D-MPNN optimized on Apple Silicon GPU (MPS) using Adam with Noam learning rate scheduling and early stopping. |
-| **Model (M)** | 2D ECFP4 tabular baselines, continuous message-passing graph neural networks (D-MPNN), AIMNet2-NSE ΔSCF quantum electronic descriptors, and AutoDock Vina v1.2.7 macromolecular docking. |
-| **Evaluation (E)** | Strict Grouped Murcko Scaffold 5-Fold CV + 60/20/20 holdout. 1000-resample bootstrap 95% confidence intervals across PR-AUC, MCC, ROC-AUC, and Brier scores. Empirical FDR evaluated under covariate shift via weighted conformal selection. |
+| **Optimization (O)** | Fixed LightGBM hyperparameters; Chemprop v2 D-MPNN trained for 20 epochs on MPS. No early stopping or validation checkpoint selection is implemented. |
+| **Model (M)** | 2D ECFP4 tabular baselines, continuous message-passing graph neural networks (D-MPNN), AIMNet2-family electronic descriptors with incomplete cache provenance, and AutoDock Vina v1.2.7 macromolecular docking. |
+| **Evaluation (E)** | Strict Grouped Murcko Scaffold 5-Fold CV + 60/20/20 holdout. 1000-resample molecule-level bootstrap 95% confidence intervals across PR-AUC, MCC, ROC-AUC, and Brier scores. Empirical FDR evaluated under covariate shift via weighted conformal selection. |
 """
     )
     act5_dome_accordion = mo.accordion(
@@ -1819,12 +1705,12 @@ def __(mo):
     act5_citations_md = mo.md(
         """
 ---
-### 6. Primary Data Sources & Methodological Citations
+### 6. Sources
 
-1. **OpenADMET Challenge (2024-2025):** Cytochrome P450 Time-Dependent Inhibition and Reversible Inhibition Benchmark Dataset.
+1. **OpenADMET Challenge (2026):** [CYP Challenge tutorial and assay definitions](https://github.com/OpenADMET/CYP-Challenge-Tutorial). This notebook competition is separate from the blind prediction challenge.
 2. **Octant Bio:** High-throughput Cytochrome P450 reactivity and microsomal stability datasets (*willitfly* and *reactivity* libraries).
-3. **AIMNet2-NSE:** Zubatyuk et al. (2024) *Accurate neural network potentials for open-shell systems and vertical ionization potentials*.
-4. **TxConformal:** Jin, Huang, Diamant et al. (2026) *Conformal candidate selection and risk control under covariate shift in therapeutic discovery*, Nature Communications / ICLR.
+3. **AIMNet2 family:** [Isayev Lab model documentation](https://isayevlab.github.io/aimnetcentral/models/guide/); [AIMNet2-NSE open-shell study](https://pmc.ncbi.nlm.nih.gov/articles/PMC12851018/).
+4. **TxConformal:** Jin, Huang, Diamant et al. (2026), [*TxConformal: Controlling False Discoveries in AI-Driven Therapeutic Discovery*](https://doi.org/10.64898/2026.04.27.721076), bioRxiv preprint. This notebook is a simplified empirical demonstration, not a verified implementation of every published guarantee.
 5. **RCSB Protein Data Bank:** CYP3A4 Crystal Structures **2V0M** (Ketoconazole-bound complex, 2.80 Å) and **1TQN** (Unliganded resting state, 2.05 Å).
 6. **AutoDock Vina v1.2.7:** Eberhardt et al. (2021) *AutoDock Vina 1.2.0: Automating docking calculations for macromolecular complexes*.
 """
@@ -1834,12 +1720,13 @@ def __(mo):
         act5_limitations_md,
         act5_dome_accordion,
         act5_citations_md,
+        mo.md("**Authorship and AI disclosure:** Rishyanth Reddy developed this scientific exploration with AI assistance for code, review, and presentation. Precomputed artifacts are retained for reproducibility. Assay labels, descriptor estimates, docking hypotheses, and illustrative halos are distinct evidence types."),
     ])
 
     return (act5_limitations_and_dome,)
 
 
-@app.cell
+@app.cell(expand_output=True)
 def __(
     act1_intro,
     act1_protocol,
@@ -1864,32 +1751,26 @@ def __(
     header_md,
     mo,
     tanimoto_svg_chart,
+    guided_start,
+    benchmark_chart,
 ):
-    # Combine Complete 5-Act Interactive Narrative into Main View
-    main_view = mo.vstack([
+    # Each chapter keeps its controls beside the evidence they change.
+    def _chapter(anchor, label, content):
+        return mo.Html(f'<section class="cyp-chapter" id="{anchor}"><div class="cyp-section-label">{label}</div>{mo.vstack(content).text}</section>')
+
+    main_view = mo.Html('<article class="cyp-paper">' + mo.vstack([
+
         header_md,
-        act1_intro,
-        act1_protocol,
-        act1_viewer,
-        act1_table_section,
-        act2_intro,
-        act2_controls,
-        card_comparison_md,
-        tanimoto_svg_chart,
-        act2_section,
-        act3_intro,
-        act3_metric_radio,
-        act3_card_comparison_md,
-        act3_docking_section,
-        act3_cyp2d6_section,
-        act3_table_section,
-        act4_intro,
-        act4_mmp_viewer,
-        act4_oof_section,
-        act5_intro,
-        act5_conformal_section,
+        mo.Html('<div class="cyp-question">' + guided_start.text + '</div>'),
+        _chapter("cyp-assay", "01 / Observation", [act1_intro, act1_viewer, act1_protocol, act1_table_section]),
+        _chapter("cyp-split", "02 / Generalisation", [act2_intro, act2_controls, card_comparison_md,
+            benchmark_chart, tanimoto_svg_chart, act2_section]),
+        _chapter("cyp-descriptors", "03 / Mechanistic evidence", [act3_intro, act3_metric_radio,
+            act3_card_comparison_md, act3_docking_section, act3_cyp2d6_section, act3_table_section]),
+        _chapter("cyp-edit", "04 / Counterexamples", [act4_intro, act4_mmp_viewer, act4_oof_section]),
+        _chapter("cyp-shortlist", "05 / The next experiment", [act5_intro, act5_conformal_section]),
         act5_limitations_and_dome,
-    ])
+    ]).text + '</article>')
     main_view
     return (main_view,)
 

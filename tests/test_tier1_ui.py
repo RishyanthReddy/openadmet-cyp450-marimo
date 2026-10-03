@@ -45,19 +45,18 @@ def test_act5_dome_uses_native_accordion():
 # ---------------------------------------------------------------------------
 
 def test_act2_stat_specification():
-    """Asserts that Act 2 defines act2_kpis using native mo.stat with exact values and direction semantics."""
-    app_code = APP_PATH.read_text(encoding="utf-8")
-    assert "act2_kpis" in app_code, "act2_kpis must be defined in app.py"
-    assert "PR-AUC scaffold shift" in app_code
-    assert "-0.0364" in app_code
-    assert "MCC scaffold shift" in app_code
-    assert "-0.0394" in app_code
-    assert "PR-AUC apparent inflation" in app_code
-    assert "9.4%" in app_code
-    # Ensure direction semantics: inflation has target_direction="decrease"
-    assert 'direction="increase", target_direction="decrease"' in app_code or (
-        'direction="increase"' in app_code and 'target_direction="decrease"' in app_code
-    )
+    """The default KPI values must match the packaged model and selected metric."""
+    import app as notebook
+    _, defs = notebook.app.run()
+    model = defs["ecfp_data"]["models"]["lightgbm"]
+    random = model["random_5fold"]["overall_oof"]["pr_auc"]
+    grouped = model["grouped_5fold"]["overall_oof"]["pr_auc"]
+    assert defs["rand_val"] == random
+    assert defs["scaff_val"] == grouped
+    rendered = defs["act2_kpis"].text
+    assert f"{random:.4f}" in rendered
+    assert f"{grouped:.4f}" in rendered
+    assert f"{grouped - random:+.4f}" in rendered
 
 
 def test_act3_stat_specification():
@@ -80,10 +79,10 @@ def test_act5_stat_specification():
     """Asserts that Act 5 defines act5_kpis using native mo.stat for FDP, candidate count, and active alpha."""
     app_code = APP_PATH.read_text(encoding="utf-8")
     assert "act5_kpis" in app_code, "act5_kpis must be defined in app.py"
-    assert "Empirical FDP" in app_code
-    assert "Mean selected candidates" in app_code
-    assert "Active nominal α" in app_code
-    assert "250-run diagnostic utility" in app_code
+    assert 'label="Selected in this pool"' in app_code
+    assert 'label="BH cutoff"' in app_code
+    assert 'label="Nominal alpha"' in app_code
+    assert "How this relates to the earlier benchmark" in app_code
 
 
 # ---------------------------------------------------------------------------
@@ -226,16 +225,14 @@ def test_standalone_inlined_esm_syntax_and_svg_namespace():
     import subprocess
 
     standalone_code = STANDALONE_PATH.read_text(encoding="utf-8")
-    assert 'const svgNS = "http://www.w3.org/2000/svg";' in standalone_code, (
-        "standalone_app.py must contain full SVG namespace without truncation"
-    )
-
-    # Extract _INLINED_ESM
-    start_marker = '_INLINED_ESM = """'
-    assert start_marker in standalone_code
-    start = standalone_code.index(start_marker) + len(start_marker)
-    end = standalone_code.index('"""', start)
-    js_code = standalone_code[start:end]
+    import ast, base64, gzip
+    from scripts.bundle_app import get_inlined_js
+    tree = ast.parse(standalone_code)
+    assignment = next(n for n in ast.walk(tree) if isinstance(n, ast.Assign) and any(isinstance(t, ast.Name) and t.id == "_INLINED_ESM" for t in n.targets))
+    # Only evaluate the known decompression expression with no builtins.
+    js_code = eval(compile(ast.Expression(assignment.value), "<bundle>", "eval"), {"__builtins__": {}, "gzip": gzip, "base64": base64})
+    assert js_code == get_inlined_js()
+    assert 'const svgNS = "http://www.w3.org/2000/svg";' in js_code
 
     # Validate ESM syntax without disk writes
     res = subprocess.run(

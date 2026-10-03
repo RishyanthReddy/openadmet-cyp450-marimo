@@ -135,58 +135,26 @@ def generate_predictions_and_pvalues(df_master: pd.DataFrame) -> pd.DataFrame:
     df_master.loc[idx_3a4, "pred_cyp3a4_prob_baseline_2d"] = np.round(oof_2d_3a4, 4)
     df_master.loc[idx_3a4, "pred_cyp3a4_prob_augmented_physics"] = np.round(oof_aug_3a4, 4)
 
-    # 2. TxConformal p-values on CYP3A4
-    train_holdout = np.where(df_3a4["holdout_split"] == "TRAIN")[0]
-    cal_holdout = np.where(df_3a4["holdout_split"] == "CALIBRATION")[0]
-    test_holdout = np.where(df_3a4["holdout_split"] == "TEST")[0]
-
-    # Domain discriminator on CALIBRATION vs TEST
-    desc_all = physchem_cols + aimnet_cols
-    scaler = StandardScaler()
-    X_domain = scaler.fit_transform(df_3a4.iloc[np.concatenate([cal_holdout, test_holdout])][desc_all].values)
-    y_domain = np.array([0] * len(cal_holdout) + [1] * len(test_holdout))
-    disc = LogisticRegression(C=0.1, max_iter=500, random_state=42)
-    disc.fit(X_domain, y_domain)
-    d_probs = disc.predict_proba(X_domain)[:, 1]
-
-    n_cal, n_test = len(cal_holdout), len(test_holdout)
-    odds = d_probs / (1.0 - np.clip(d_probs, 1e-4, 1.0 - 1e-4))
-    w_all = odds * (n_cal / n_test)
-    w_all = np.clip(w_all, 0.1, 10.0)
-
-    w_cal = w_all[:n_cal]
-    w_test = w_all[n_cal:]
-
-    cal_null_mask = (y_3a4[cal_holdout] == 1)
-    s_cal_null = 1.0 - oof_aug_3a4[cal_holdout][cal_null_mask]
-    w_cal_null = w_cal[cal_null_mask]
-
-    s_test = 1.0 - oof_aug_3a4[test_holdout]
-    sum_w_cal = np.sum(w_cal_null)
-
-    pvals_test = np.zeros(len(test_holdout), dtype=float)
-    for i in range(len(test_holdout)):
-        num = np.sum(w_cal_null[s_cal_null >= s_test[i]]) + w_test[i]
-        pvals_test[i] = num / (sum_w_cal + w_test[i])
-
-    # Benjamini-Hochberg selections
-    def bh_select(pvals, alpha):
-        m = len(pvals)
-        s_idx = np.argsort(pvals)
-        sp = pvals[s_idx]
-        thresh = (np.arange(1, m + 1) / m) * alpha
-        below = np.where(sp <= thresh)[0]
-        if len(below) == 0:
-            return set()
-        return set(s_idx[:below[-1] + 1])
-
-    sel_10 = bh_select(pvals_test, 0.10)
-    sel_20 = bh_select(pvals_test, 0.20)
-
-    test_global_indices = idx_3a4[test_holdout]
-    df_master.loc[test_global_indices, "txconformal_pvalue_cyp3a4"] = np.round(pvals_test, 4)
-    df_master.loc[test_global_indices, "txconformal_selected_alpha_0_10"] = [i in sel_10 for i in range(len(test_holdout))]
-    df_master.loc[test_global_indices, "txconformal_selected_alpha_0_20"] = [i in sel_20 for i in range(len(test_holdout))]
+    # Selection values come from the independent TRAIN-only holdout workflow.
+    # OOF predictions above are for error inspection, not holdout calibration.
+    holdout_path = BASE_DIR / "data" / "packaged" / "txconformal_holdout.parquet"
+    tx_path = BASE_DIR / "data" / "packaged" / "txconformal_selection_results.json"
+    metadata = json.loads(tx_path.read_text())["metadata"]
+    if hashlib.sha256(holdout_path.read_bytes()).hexdigest() != metadata["holdout_sha256"]:
+        raise ValueError("Holdout artifact digest mismatch; rerun models/txconformal_selector.py")
+    for relative_path, expected in metadata["input_sha256"].items():
+        if hashlib.sha256((BASE_DIR / relative_path).read_bytes()).hexdigest() != expected:
+            raise ValueError("Selection inputs changed; rerun models/txconformal_selector.py")
+    holdout = pd.read_parquet(holdout_path).set_index("assay_inchikey")
+    if not holdout.index.is_unique:
+        raise ValueError("Duplicate holdout assay identities")
+    test_mask = df_master["mask_cyp3a4"] & (df_master["holdout_split"] == "TEST")
+    if set(df_master.loc[test_mask, "assay_inchikey"]) != set(holdout.index):
+        raise ValueError("Selection holdout identities do not match the packaged TEST partition")
+    aligned = holdout.loc[df_master.loc[test_mask, "assay_inchikey"]]
+    df_master.loc[test_mask, "txconformal_pvalue_cyp3a4"] = aligned["weighted_pvalue"].to_numpy()
+    df_master.loc[test_mask, "txconformal_selected_alpha_0_10"] = aligned["selected_alpha_0.10"].to_numpy()
+    df_master.loc[test_mask, "txconformal_selected_alpha_0_20"] = aligned["selected_alpha_0.20"].to_numpy()
 
     # 3. CYP2D6 Predictions (1,497 compounds)
     mask_2d6 = df_master["mask_cyp2d6"].values

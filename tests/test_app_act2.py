@@ -30,16 +30,20 @@ def test_act2_narrative_and_scientific_leakage_audit():
     content = APP_PATH.read_text(encoding="utf-8")
 
     # Verify key Act 2 narrative concepts
-    assert "Act 2: The Bathtub Audit" in content
-    assert "Bemis-Murcko molecular core scaffold" in content
+    assert "Act 2: How much does the split matter?" in content
+    assert "Bemis-Murcko scaffold split" in content
     assert "Bathtub Effect" in content
-    assert "strict zero-leakage" in content
+    assert "Acyclic molecules use a separate identity-based grouping rule" in content
+    assert "not proof of memorization or prospective performance" in content
 
     # Verify quantitative empirical deltas and CIs
-    assert "+0.0364" in content
-    assert "+0.0394" in content
-    assert "0.4217" in content
-    assert "0.3853" in content
+    import app as notebook
+    _, definitions = notebook.app.run()
+    table = definitions["benchmark_table_data"]
+    assert table[0]["PR-AUC Scaffold minus random"] == "-0.0364"
+    assert table[0]["MCC Scaffold minus random"] == "-0.0394"
+    assert table[0]["Random 5-Fold PR-AUC"].startswith("0.4217")
+    assert table[0]["Scaffold 5-Fold PR-AUC"].startswith("0.3853")
     assert "Chemprop v2 D-MPNN" in content
 
     # Verify Tanimoto distribution values

@@ -92,6 +92,7 @@ def test_node_headless_simulated_render():
             this.children.push(child);
             return child;
         }}
+        replaceChildren(...children) {{ this.children = children; }}
         setAttribute(name, val) {{
             this.attributes[name] = val;
         }}

@@ -90,29 +90,29 @@ class TestAllFiveActsCoherence:
         content = APP_PATH.read_text(encoding="utf-8")
 
         # Act 1
-        assert "Act 1: What TDI Is — and What It Is Not" in content
+        assert "Act 1: What does the assay actually tell us?" in content
         assert "Table 1.1: Curated Reference Set" in content
 
         # Act 2
-        assert "Act 2: The Bathtub Audit" in content
-        assert "Table 2.1: Empirical Audit" in content
+        assert "Act 2: How much does the split matter?" in content
+        assert "Table 2.1: Model results" in content
         assert "tanimoto_svg_chart" in content
 
         # Act 3
-        assert "Act 3: Physics-Grounded Quantum Reactivity" in content
+        assert "Act 3: Do electronic descriptors help?" in content
         assert "Compound I" in content
-        assert "Table 3.1: Empirical Benchmark" in content
+        assert "Table 3.1: Model results" in content
 
         # Act 4
-        assert "Act 4: Medicinal Chemistry Steering" in content
+        assert "Act 4: What can a small chemical edit change?" in content
         assert "34 unique matched molecular pairs" in content
-        assert "Out-of-Fold Model Error Diagnosis" in content
+        assert "Where the model gets it wrong" in content
 
         # Act 5
-        assert "Act 5: TxConformal Candidate Prioritization" in content
+        assert "Act 5: Which molecules would we test next?" in content
         assert "Table 5.1: TxConformal Prioritized Candidate Shortlist" in content
         assert "DOME Recommendations Compliance" in content
-        assert "Primary Data Sources & Methodological Citations" in content
+        assert "Sources" in content
 
     def test_main_view_assembly_contains_all_acts(self):
         content = APP_PATH.read_text(encoding="utf-8")
@@ -192,7 +192,7 @@ class TestLiveBrowserDevToolsExecution:
                 assert resp is not None and resp.status == 200, "Page failed to load with HTTP 200"
 
                 try:
-                    page.wait_for_selector("text=Act 1: What TDI Is", timeout=15000)
+                    page.wait_for_selector("text=Act 1: What does the assay actually tell us?", timeout=15000)
                 except Exception:
                     page.wait_for_timeout(3000)
                 page.wait_for_timeout(1000)
@@ -202,11 +202,11 @@ class TestLiveBrowserDevToolsExecution:
 
                 # Assert DOM contains all 5 Acts
                 body_text = page.inner_text("body")
-                assert "Act 1: What TDI Is" in body_text
-                assert "Act 2: The Bathtub Audit" in body_text
-                assert "Act 3: Physics-Grounded Quantum Reactivity" in body_text
-                assert "Act 4: Medicinal Chemistry Steering" in body_text
-                assert "Act 5: TxConformal Candidate Prioritization" in body_text
+                assert "Act 1: What does the assay actually tell us?" in body_text
+                assert "Act 2: How much does the split matter?" in body_text
+                assert "Act 3: Do electronic descriptors help?" in body_text
+                assert "Act 4: What can a small chemical edit change?" in body_text
+                assert "Act 5: Which molecules would we test next?" in body_text
 
                 # Assert SVG elements & Anywidgets
                 svgs = page.query_selector_all("svg")

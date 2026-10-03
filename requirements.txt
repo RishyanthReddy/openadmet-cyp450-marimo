@@ -1,4 +1,12 @@
-marimo>=0.11.0
+marimo==0.25.0
+altair==6.3.0
+anywidget>=0.9.0
 rdkit>=2023.9.0
+pandas>=2.0.0
+numpy>=1.24.0
+pyarrow>=14.0.0
+traitlets>=5.14.0
 pytest>=8.0.0
 playwright>=1.40.0
+scikit-learn>=1.5.0
+lightgbm>=4.5.0

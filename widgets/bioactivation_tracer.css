@@ -1,8 +1,8 @@
 /* BioactivationTracer Custom Anywidget Stylesheet */
 :root, :host, .bat-container {
-  --bat-bg: #ffffff;
-  --bat-card-bg: #f8fafc;
-  --bat-border: #e2e8f0;
+  --bat-bg: #faf9f4;
+  --bat-card-bg: #f1f1e9;
+  --bat-border: #d5d8cf;
   --bat-text-main: #0f172a;
   --bat-text-muted: #64748b;
   --bat-bond: #334155;
@@ -17,12 +17,12 @@
   --bat-badge-safe-bg: #f0fdf4;
   --bat-badge-safe-text: #16a34a;
   --bat-badge-safe-border: #bbf7d0;
-  --bat-btn-active: #2563eb;
+  --bat-btn-active: #315a49;
   --bat-btn-active-text: #ffffff;
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root, :host, .bat-container {
     --bat-bg: #0f172a;
     --bat-card-bg: #1e293b;
     --bat-border: #334155;
@@ -48,11 +48,11 @@
   flex-direction: column;
   background-color: var(--bat-card-bg);
   border: 1px solid var(--bat-border);
-  border-radius: 12px;
+  border-radius: 2px;
   overflow: visible;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   color: var(--bat-text-main);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  box-shadow: none;
   position: relative;
   width: 100%;
   max-width: 100%;
@@ -274,4 +274,11 @@
 .bat-tooltip-val {
   font-weight: 600;
   font-family: ui-monospace, monospace;
+}
+
+@media(max-width:760px) {
+  .bat-top-bar { flex-wrap:wrap; }
+  .bat-badge { max-width:100%; white-space:normal; }
+  .bat-btn { min-height:40px; }
+  .bat-svg-wrapper { min-height:230px; }
 }

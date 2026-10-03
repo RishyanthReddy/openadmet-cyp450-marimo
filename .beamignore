@@ -17,6 +17,8 @@ drive/MyDrive
 .dockerignore
 .ipynb_checkpoints
 .env.local
+.env
+.env.*
 .envrc
 **/__pycache__/
 **/.pytest_cache/

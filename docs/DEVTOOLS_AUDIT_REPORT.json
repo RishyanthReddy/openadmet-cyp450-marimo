@@ -1,23 +1,25 @@
 {
-  "timestamp": "2026-09-08T18:01:28.176542+00:00",
-  "browser_version": "152.0.7977.76",
-  "total_network_requests": 342,
+  "execution_scope": "local headless Chrome, standalone notebook",
+  "reactivity_measurement": "5 keyboard alpha updates, waiting for the updated candidate-table label; maximum observed latency",
+  "timestamp": "2026-10-03T10:16:58.186733+00:00",
+  "browser_version": "155.0.8059.26",
+  "total_network_requests": 254,
   "unhandled_console_errors": 0,
   "network_failures": [],
-  "total_svg_elements": 96,
+  "total_svg_elements": 90,
   "total_anywidget_instances": 5,
   "audit_status": "PASS",
   "artifact_path": "standalone_app.py",
-  "artifact_size_bytes": 197383,
-  "artifact_sha256": "952160741c621f504f68380b2b3f84d13c3e496f3168a5d264e7f04fb7caafae",
+  "artifact_size_bytes": 187396,
+  "artifact_sha256": "9a93ab962af66ed0004b1070cb7a6e730f3a29ddc2ea50c26518bd14e4bff50d",
   "details": {
-    "page_load_latency_seconds": 1.005,
-    "reactive_render_p95_ms": 28.44,
+    "page_load_latency_seconds": 1.045,
+    "reactive_render_p95_ms": 210.22,
     "all_5_acts_verified": true,
     "mounted_controls": {
       "dropdowns": 7,
       "sliders": 2,
-      "buttons": 125
+      "buttons": 129
     }
   }
 }

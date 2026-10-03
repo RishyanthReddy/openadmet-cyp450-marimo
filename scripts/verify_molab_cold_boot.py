@@ -67,7 +67,7 @@ def measure_single_cold_boot(
     t0 = time.perf_counter()
 
     cmd = [
-        str(MARIMO_BIN),
+        sys.executable, "-m", "marimo",
         "run",
         str(artifact_path),
         "--port",
@@ -239,6 +239,9 @@ def run_cold_boot_verification(
 
     import numpy as np
     summary_report = {
+        "execution_scope": "local headless Chrome; hosted molab unverified",
+        "python_executable": sys.executable,
+        "marimo_version": __import__("marimo").__version__,
         "artifact_sha256": artifact_sha256,
         "gist_revision": gist_revision,
         "measured_runs_count": runs_count,
@@ -273,7 +276,7 @@ if __name__ == "__main__":
     parser.add_argument("--artifact", type=Path, default=BASE_DIR / "standalone_app.py", help="Path to standalone notebook")
     parser.add_argument("--runs", type=int, default=5, help="Number of fresh cold-boot runs")
     parser.add_argument("--timeout-seconds", type=float, default=10.0, help="SLA threshold timeout in seconds")
-    parser.add_argument("--gist-revision", type=str, default="candidate-standalone-rc1", help="Gist revision identifier")
+    parser.add_argument("--gist-revision", type=str, default="local-submission-candidate", help="Gist revision identifier")
     parser.add_argument("--output", type=Path, default=BASE_DIR / "docs" / "molab_cold_boot_results.json", help="Path for output JSON")
 
     args = parser.parse_args()

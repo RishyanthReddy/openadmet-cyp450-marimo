@@ -30,13 +30,14 @@ def test_act4_mmp_and_oof_narrative():
     content = APP_PATH.read_text(encoding="utf-8")
 
     # Verify key Act 4 narrative concepts
-    assert "Act 4: Medicinal Chemistry Steering" in content
-    assert "Matched Molecular Pairs (MMPs)" in content
+    assert "Act 4: What can a small chemical edit change?" in content
+    assert "matched molecular pairs" in content
     assert "34 unique matched molecular pairs" in content
-    assert "Out-of-Fold Model Error Diagnosis" in content
-    assert "False Negative (Dangerous Escape)" in content
-    assert "False Positive (False Alarm)" in content
-    assert "Resorcinol" in content
+    assert "Where the model gets it wrong" in content
+    assert "false negatives" in content
+    assert "false positives" in content
+    from models.embedded_assets import load_oof_error_cases
+    assert "Resorcinol" in str(load_oof_error_cases())
 
 
 def test_app_import_and_act4_objects():

@@ -168,7 +168,7 @@ class TestPhase4DefensiveFuzzingAndAnyWidget:
         # Ensure warning banner and badge use textContent and safe DOM construction
         assert "strongEl.textContent" in js_code
         assert "msgSpan.textContent" in js_code
-        assert "svgWrapper.replaceChildren(warnBox)" in js_code
+        assert "svgWrapper.replaceChildren(warnBox, tooltip)" in js_code
         assert "badgeEl.textContent" in js_code
         assert "badgeEl.innerHTML" not in js_code
 

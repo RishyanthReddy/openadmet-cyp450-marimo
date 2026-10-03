@@ -21,6 +21,8 @@ under covariate shift:
 from __future__ import annotations
 
 import json
+import hashlib
+from datetime import datetime, timezone
 from pathlib import Path
 import numpy as np
 import pandas as pd
@@ -34,6 +36,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SPLITS_PARQUET = BASE_DIR / "data" / "curated" / "cyp_splits.parquet"
 AIMNET_PARQUET = BASE_DIR / "data" / "curated" / "aimnet2_cyp3a4_features.parquet"
 OUT_JSON = BASE_DIR / "data" / "packaged" / "txconformal_selection_results.json"
+OUT_HOLDOUT = BASE_DIR / "data" / "packaged" / "txconformal_holdout.parquet"
 
 BANNED_COLUMNS = {
     "cyp3a4_is_tdi", "CYP3A4_is_TDI",
@@ -64,6 +67,10 @@ def conformal_fdr_select(p_values: np.ndarray | list[float], target_alpha: float
       - target_alpha: float nominal FDR target level
     """
     p_arr = np.asarray(p_values, dtype=float)
+    if p_arr.ndim != 1 or not np.isfinite(p_arr).all() or np.any((p_arr < 0) | (p_arr > 1)):
+        raise ValueError("p-values must be a finite one-dimensional array in [0, 1]")
+    if not np.isfinite(target_alpha) or not 0 <= target_alpha <= 1:
+        raise ValueError("alpha must lie in [0, 1]")
     m = len(p_arr)
     if m == 0:
         return {
@@ -175,6 +182,12 @@ def run_txconformal_pipeline():
     train_idx = np.where(train_mask)[0]
     cal_idx = np.where(cal_mask)[0]
     test_idx = np.where(test_mask)[0]
+
+    for key in ("grouping_parent_inchikey", "murcko_scaffold_smiles"):
+        if key in df_3a4:
+            groups = [set(df_3a4.iloc[idx][key].dropna()) - {""} for idx in (train_idx, cal_idx, test_idx)]
+            if any(groups[a] & groups[b] for a, b in ((0, 1), (0, 2), (1, 2))):
+                raise ValueError(f"Holdout partition overlap in {key}")
 
     print(f"Partition breakdown -> TRAIN: {len(train_idx)}, CALIBRATION: {len(cal_idx)}, TEST: {len(test_idx)}", flush=True)
 
@@ -325,6 +338,19 @@ def run_txconformal_pipeline():
             "unweighted_mean_fdp": round(float(np.mean(fdp_u_arr)), 4),
         }
 
+    # One source of truth for dataset packaging and the notebook's display sample.
+    holdout = df_3a4.iloc[test_idx][["molecule_name", "assay_inchikey", "assay_smiles"]].copy()
+    holdout["predicted_liability_prob"] = p_test
+    holdout["weighted_pvalue"] = pvals_w_full
+    holdout["unweighted_pvalue"] = pvals_u_full
+    for alpha in (0.10, 0.20):
+        selected = set(apply_benjamini_hochberg(pvals_w_full, alpha))
+        holdout[f"selected_alpha_{alpha:.2f}"] = [i in selected for i in range(len(test_idx))]
+    OUT_HOLDOUT.parent.mkdir(parents=True, exist_ok=True)
+    holdout.to_parquet(OUT_HOLDOUT, index=False)
+    display_count = min(100, len(test_idx))
+    display_selected = set(apply_benjamini_hochberg(pvals_w_full[:display_count], 0.10))
+
     # Package and save
     out_payload = {
         "metadata": {
@@ -335,7 +361,14 @@ def run_txconformal_pipeline():
             "n_test": int(len(test_idx)),
             "monte_carlo_trials": B,
             "screening_pool_size": pool_size,
-            "created_at": "2026-09-08",
+            "created_at": datetime.now(timezone.utc).isoformat(),
+            "n_train": int(len(train_idx)),
+            "prediction_training_partition": "TRAIN only; no calibration or test labels used in fitting",
+            "density_ratio_estimation": "Transductive CALIBRATION/TEST features only; logistic discriminator; weights clipped to [0.1, 10]",
+            "display_sample_policy": "First 100 TEST rows in dataset order; BH rerun on this display pool",
+            "model_parameters": model.get_params(),
+            "input_sha256": {str(p.relative_to(BASE_DIR)): hashlib.sha256(p.read_bytes()).hexdigest() for p in (SPLITS_PARQUET, AIMNET_PARQUET)},
+            "holdout_sha256": hashlib.sha256(OUT_HOLDOUT.read_bytes()).hexdigest(),
             "statistical_note": "Empirical Benjamini-Hochberg step-up procedure under covariate shift density weighting; reports realized test False Discovery Proportion (FDP) and 250-run Monte Carlo estimates. Finite-sample theoretical bounds require exact exchangeability and well-calibrated density ratios.",
         },
         "full_test_holdout_evaluation": full_eval,
@@ -344,10 +377,10 @@ def run_txconformal_pipeline():
             {
                 "molecule_name": df_3a4.loc[test_idx[i], "molecule_name"],
                 "smiles": df_3a4.loc[test_idx[i], "assay_smiles"],
-                "predicted_liability_prob": round(float(p_test[i]), 4),
-                "weighted_pvalue": round(float(pvals_w_full[i]), 4),
-                "unweighted_pvalue": round(float(pvals_u_full[i]), 4),
-                "selected_at_alpha_0_10": bool(i in apply_benjamini_hochberg(pvals_w_full, 0.10)),
+                "predicted_liability_prob": float(p_test[i]),
+                "weighted_pvalue": float(pvals_w_full[i]),
+                "unweighted_pvalue": float(pvals_u_full[i]),
+                "selected_at_alpha_0_10": bool(i in display_selected),
             }
             for i in range(min(100, len(test_idx)))
         ],

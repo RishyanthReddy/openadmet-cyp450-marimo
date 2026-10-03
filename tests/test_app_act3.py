@@ -30,7 +30,7 @@ def test_act3_quantum_and_enzymology_narrative():
     content = APP_PATH.read_text(encoding="utf-8")
 
     # Verify key Act 3 biophysical concepts
-    assert "Act 3: Physics-Grounded Quantum Reactivity & Active-Site Enzymology" in content
+    assert "Act 3: Do electronic descriptors help?" in content
     assert "Compound I" in content
     assert "Vertical Ionization Potential" in content
     assert "Radical Fukui Index" in content

@@ -30,13 +30,13 @@ def test_act5_txconformal_and_dome_narrative():
     content = APP_PATH.read_text(encoding="utf-8")
 
     # Verify key Act 5 narrative concepts
-    assert "Act 5: TxConformal Candidate Prioritization" in content
+    assert "Act 5: Which molecules would we test next?" in content
     assert "TxConformal" in content
-    assert "False Discovery Rate (FDR) control" in content
+    assert "nominal FDR level" in content
     assert "DOME Recommendations Compliance" in content
-    assert "Honest Scientific Limitations" in content
-    assert "Binary TDI vs. Kinetic" in content
-    assert "In Vitro Microsomes vs. Whole-Body In Vivo Clearance" in content
+    assert "What would we need to know next?" in content
+    assert "inhibition recovery" in content
+    assert "additional metabolism" in content
 
     # Verify primary data citations
     assert "OpenADMET Challenge" in content

@@ -1,37 +1,34 @@
-# JotForm Official Submission Package (EC-T3-02)
+# Competition submission package — draft
 
-**Competition:** Bring Cheminformatics to Life — molab Notebook Competition #3 (OpenADMET x marimo)  
-**Submission Form:** Official Competition JotForm  
-**Target Category:** Grand Prize / All Tracks  
-**Platform Status:** Fully Verified, 100% Offline Portability, Zero Runtime GPU Required  
+**Title:** OpenADMET: When Can We Trust a CYP Prediction?
 
----
+**Status:** Local candidate prepared. Final publication, hosted molab verification, video upload, and form submission are pending.
 
-## 1. Submission Metadata & Identity Checklist
+## Description to paste
 
-- [x] **Competition Title and Track:** Bring Cheminformatics to Life — molab Notebook Competition #3 (OpenADMET x marimo).
-- [ ] **Entrant / Team Lead:** Rishyanth Reddy (and team co-authors as designated at submission time).
-- [ ] **Contact Email:** Authorized submitter email.
-- [x] **Repository URL:** `https://github.com/RishyanthReddy/openadmet-cyp450-marimo`
-- [x] **Hosted Molab URL:** `https://molab.marimo.io/github/RishyanthReddy/openadmet-cyp450-marimo/blob/main/standalone_app.py` (WASM interactive: `https://molab.marimo.io/github/RishyanthReddy/openadmet-cyp450-marimo/blob/main/standalone_app.py/wasm`).
-- [x] **Public Gist URL & Commit Revision:** `https://gist.github.com/RishyanthReddy/3ee85971e676e6a770d3bb2886f81792` (Revision: `2c5a40622f785d4b24c405d3ee7e7c81f4a5ea3d`).
-- [ ] **Video URL / File:** YouTube / Vimeo / MP4 link (measured duration strictly <= 300s, planned 285s).
-- [x] **Notebook Description:** Self-contained reactive marimo application predicting Cytochrome P450 (CYP3A4 and CYP2D6) bioactivation, time-dependent inhibition, and mechanism-based inactivation risks using AIMNet2 quantum delta-SCF reactivity descriptors, cross-isoform docking proxies, matched molecular pair activity cliffs, and finite-sample distribution-free TxConformal risk control. Cold boots offline in < 10 seconds with zero runtime GPU or network dependencies.
-- [x] **Scientific Claims Rigor:** All docking scores framed as geometric active-site proximity proxies near catalytic heme iron (not experimental binding affinities or kinact/KI); TxConformal false discovery proportions reported as empirical 250-run diagnostics (2.67% at alpha 0.10), not unconditional asymptotic guarantees.
-- [x] **License & Attribution:** MIT Open Source License. Complete attribution for RCSB PDB (3TBG, 4WNW), AutoDock Vina, AIMNet2, and NCBI Entrez APIs.
-- [x] **Zero Credentials Guarantee:** Verified zero API keys, GitHub tokens, Beam credentials, or private customer data in notebook, repository, or submission package.
-- [ ] **Clean-Browser Operational Verification:** Verified that the hosted Molab session boots cleanly in an incognito browser window, supports Table 1.1 selection, updates the BioactivationTracer, adjusts alpha in Act 5, and downloads the candidate CSV.
-- [ ] **Submission Confirmation Receipt:** Confirmation number and receipt timestamp saved upon final form submission.
+When is a CYP prediction worth trusting? This notebook follows that question from a molecular fragment to a shortlist of compounds to test. Choose a literature molecule, inspect its structural alerts, and compare what the literature and assay labels actually support. Then change the model and evaluation metric to see how random and scaffold validation affect the result. Electronic descriptors, docking results, molecular pairs and prediction errors add pieces of evidence, with their limits kept visible. Finally, change alpha, inspect a candidate in the plot or table, and download the selected set. The calculations are saved in the notebook, so the reader can explore them without a GPU or API credentials.
 
----
+**AI disclosure:** AI tools assisted with implementation, review, and presentation; the entrant is responsible for scientific claims and verification. Precomputed results and source references are included.
 
-## 2. Technical Artifact Specifications
+## Required remaining fields
 
-| Attribute | Measured Production Value | Verification Gate |
-|---|---|---|
-| **Standalone File** | `standalone_app.py` | Exists at repository root |
-| **File Size (Decimal)** | **197,383 bytes** (192.8 KB) | Strictly $< 200,000$ bytes decimal |
-| **Cold Boot SLA** | **< 2.5s local, < 10s hosted** | Median & p95 strictly $< 10.0$ seconds |
-| **Dependencies Inlined** | `BioactivationTracer` (AnyWidget ESM+CSS), 2D Layout Engine, Conformal Selector, GZIP Base64 Datasets | Zero local file or external network imports |
-| **Beam GPU Validation** | Remote RTX 4090 execution (Task `dc1112ce-e7dc-4abe-943b-790ccae2e9b5`) | Real biophysical evidence, zero mocks |
-| **Automated Test Coverage** | 213 automated pytest unit and seam tests passing cleanly | 100% test pass rate |
+- Entrant/team names and contact email: confirm with entrant.
+- Public repository revision containing the final standalone file: publish only after approval.
+- Final molab link: populate after publishing and a fresh hosted-session check.
+- Video: planned 4:45 walkthrough; upload the final narrated video to the venue accepted by the form (the reviewed form requested a Google Drive link). Confirm anonymous viewing access.
+- Dataset title and attribution: OpenADMET CYP Challenge data; include the source and challenge tutorial references from the notebook.
+- License: no repository LICENSE file exists; do not claim an MIT license until one has been chosen and added.
+- Submission receipt: save only after the entrant approves final submission.
+
+The older candidate URL is [molab on repository main](https://molab.marimo.io/github/RishyanthReddy/openadmet-cyp450-marimo/blob/main/standalone_app.py). It has **not** been verified against this local candidate. The older gist is likewise not this release. Do not submit a `/wasm` URL without testing it.
+
+## Approval and release checklist
+
+1. Review the local diff, screenshots, evidence ledger, and verification report.
+2. Approve publishing the bounded candidate files to GitHub; keep unrelated user assets and credentials out of the release.
+3. Verify the exact hosted link in a fresh session: all acts, molecule selection, model/metric controls, invalid input recovery, alpha update, plot/table linkage, CSV export.
+4. Record or narrate the demo, upload it, and test access while signed out.
+5. Confirm entrant details, notebook/video links, disclosure, and attribution.
+6. Approve final form submission, then record confirmation.
+
+Official [competition page](https://marimo.io/pages/events/notebook-competition-3), [rubric](https://docs.google.com/spreadsheets/d/1xEd-njH43jTWQfr-2wjXULhiGKXl6zEvmKIobWOO8Ks/edit?gid=620363524), and [submission form](https://form.jotform.com/262315091510143). The reviewed page posts October 4, 2026 at 11:59 PM PST; use October 4 evening in Zurich as the internal target and reconfirm the form before submitting.
