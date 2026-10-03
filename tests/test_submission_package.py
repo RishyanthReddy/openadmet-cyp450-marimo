@@ -11,18 +11,18 @@ def test_video_timeline_is_continuous_and_under_five_minutes():
     assert spans[0][0] == 0
     assert all(start < stop for start, stop in spans)
     assert all(spans[i][1] == spans[i+1][0] for i in range(len(spans)-1))
-    assert spans[-1][1] == 285
+    assert 0 < spans[-1][1] < 300
 
 
 def test_video_explains_main_controls_and_evidence_limits():
     text = (ROOT/'docs/VIDEO_285_SECOND_SCRIPT.md').read_text().lower()
-    for phrase in ('fragment', 'model', 'scaffold', '0.0101', '0.0209', 'hypotheses', 'alpha', '2.67', 'or a guarantee', 'download', 'ai assistance'):
-        assert phrase in text
+    for phrase in ('fragment', 'model', 'scaffold', '0.4652', '0.4753', 'unknown', 'alpha', 'error guarantee', 'download', 'ai assistance'):
+        assert phrase.lower() in text.lower()
 
 
 def test_submission_package_preserves_unfinished_release_gates():
     text = (ROOT/'docs/JOTFORM_SUBMISSION_PACKAGE.md').read_text()
-    for phrase in ('publication', 'hosted molab verification', 'video upload', 'contact email', 'AI disclosure', 'receipt', 'approval'):
-        assert phrase in text
+    for phrase in ('Published to molab', 'hosted rendering', 'video upload', 'contact email', 'AI disclosure', 'receipt', 'approval'):
+        assert phrase.lower() in text.lower()
     assert 'no repository LICENSE file exists' in text
     assert 'Fully Verified' not in text

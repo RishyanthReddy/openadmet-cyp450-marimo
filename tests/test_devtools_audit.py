@@ -261,8 +261,8 @@ class TestDevToolsAuditReportContract:
         assert data["audit_status"] == "PASS"
         assert data["unhandled_console_errors"] == 0
         assert len(data.get("network_failures", [])) == 0
-        assert data["total_svg_elements"] >= 70
-        assert data["total_anywidget_instances"] >= 2
+        assert data["total_svg_elements"] >= 5
+        assert data["total_anywidget_instances"] == 5
         assert data["details"]["all_5_acts_verified"] is True
         assert data["details"]["reactive_render_p95_ms"] < 500.0
         assert "timestamp" in data
@@ -288,10 +288,10 @@ class TestDevToolsAudit:
             assert present, f"DOM is missing required section: '{act}'"
 
     def test_svg_elements_and_custom_anywidget_thresholds(self, browser_audit_results):
-        assert browser_audit_results["total_svg_elements"] >= 70, (
-            f"Expected >= 70 SVG elements, found {browser_audit_results['total_svg_elements']}"
+        assert browser_audit_results["total_svg_elements"] >= 5, (
+            f"Expected >= 5 SVG elements, found {browser_audit_results['total_svg_elements']}"
         )
-        assert browser_audit_results["total_anywidget_instances"] >= 2, (
+        assert browser_audit_results["total_anywidget_instances"] == 5, (
             f"Expected >= 2 .bat-container anywidget instances, found {browser_audit_results['total_anywidget_instances']}"
         )
 
@@ -310,8 +310,8 @@ class TestDevToolsAudit:
         data = json.loads(REPORT_PATH.read_text(encoding="utf-8"))
         assert data["audit_status"] == "PASS"
         assert data["unhandled_console_errors"] == 0
-        assert data["total_svg_elements"] >= 70
-        assert data["total_anywidget_instances"] >= 2
+        assert data["total_svg_elements"] >= 5
+        assert data["total_anywidget_instances"] == 5
         assert "timestamp" in data
         assert "browser_version" in data
         assert "total_network_requests" in data

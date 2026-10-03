@@ -1,15 +1,38 @@
-# Narration and recording script — 4:45 target
+# Narrated walkthrough — target 4 minutes
 
-This is a storyboard, not a recorded or uploaded video. The reviewed competition asks for a video; the 285-second duration is our chosen target. Record the final public candidate after hosted verification. Keep the question visible early and show real controls, without terminal/audit detours.
+Use your own phrasing. These are prompts, not claims about your personal experience.
 
-| Time | Visual action | Narration |
-|---|---|---|
-| 0:00–0:25 | Title and opening question; reveal answer | “When can we trust a CYP prediction? This notebook asks you to investigate, starting with a tempting mistake: assuming that a reactive-looking fragment proves time-dependent inhibition. An alert is a hypothesis. An assay label and a mechanism need different evidence.” |
-| 0:25–1:10 | Table 1.1: Raloxifene, then Paroxetine; Illustrative Halos; hover an atom; custom SMILES | “Selecting a literature molecule updates the custom molecular viewer. These halos are explicitly illustrative motif weights, not computed atom-level Fukui indices. Literature metadata and assay context remain available. A valid structure with no matched alert is not certified safe.” |
-| 1:10–2:00 | Model dropdown: LightGBM then graph model; change PR-AUC to MCC | “Change the architecture and the metric. Random and scaffold evaluation ask different questions. The linked plot includes the reported uncertainty. LightGBM PR-AUC is 0.4217 under random validation and 0.3853 under scaffold validation. The graph model has a smaller split difference but lower absolute PR-AUC. Similar scores alone do not prove reliability.” |
-| 2:00–2:40 | Descriptor comparison and Paroxetine docking panel | “Electronic descriptors show a modest observed PR-AUC improvement of 0.0101 and MCC improvement of 0.0209. We have not demonstrated statistical significance, and the cache's model provenance is incomplete. Docking contributes geometry, not measured reaction rates. A nearby fluorine is not evidence of the bioactivation site. These calculations are precomputed; Vina uses a CPU backend.” |
-| 2:40–3:15 | Select a molecular pair and an out-of-fold error | “Pairs show observed assay-label differences on related structures. They suggest experiments; they do not prove a causal redesign. The error inspector makes mistakes visible, while its mechanism explanations remain hypotheses.” |
-| 3:15–4:25 | Alpha slider .10→.05→.15; click a plot candidate, then table row; download CSV | “The final decision is a shortlist. Changing alpha reruns Benjamini-Hochberg selection on this displayed 100-compound TEST pool. The predictive model used TRAIN labels only, with calibration handled separately. The historical 2.67 percent mean FDP comes from 250 resampled pools from a larger 703-compound holdout; it is not the current shortlist's error rate or a guarantee. Click a point or row to inspect a molecule, then download the selected candidates with the exact alpha and cutoff.” |
-| 4:25–4:45 | Return to question; limitations and final public link | “The lesson is to connect each conclusion to its evidence. Alerts, assays, predictions, and docking answer different questions. Reactive controls make those distinctions explorable. The notebook and results were developed with AI assistance, with limitations and sources disclosed.” |
+## 0:00–0:30 — The question
+“When can we trust a CYP prediction? I wanted to separate what a model says from what the chemistry and assay actually establish.” Show the opening question and reveal its answer.
 
-Before recording: confirm title, current counts and controls against the final artifact. Use a 1440×900 or 1920×1080 browser window, hide unrelated tabs, enlarge charts, and rehearse the path once. Pause briefly after a reactive change so the result is readable. Do not say ‘guaranteed safety,’ ‘significant improvement,’ ‘GPU docking,’ ‘live 3D viewer,’ or ‘hosted verified’ unless new evidence supports that exact claim.
+## 0:30–1:15 — One molecule, different evidence
+Select Raloxifene. Point to its literature citation and the saved 2.23 Å docking distance. Explain that a nearby atom in a pose does not establish a reaction; the bioactivation claim comes from the cited study. Halos mark matched fragments, not measured reactivity.
+
+## 1:15–2:00 — Change the evaluation
+Choose logistic regression and PR-AUC. Compare random 0.4097 with scaffold 0.3738. Explain why a different chemical split asks a different generalisation question. Do not describe this gap as a paired significance result.
+
+## 2:00–2:35 — Did electronic descriptors help?
+Show 0.4652 versus 0.4753. Say the gain is modest and not established as significant. The full feature cache has incomplete model/conformer provenance, so this is a limited saved benchmark. Do not claim a new reaction mechanism.
+
+## 2:35–3:10 — Inspect a counterexample
+Open a prediction error. Distinguish the source assay label from the catalog score. The exact metabolic explanation is unknown; the notebook does not invent one. Mention that diagnostic score provenance is incomplete.
+
+## 3:10–3:45 — Make a shortlist
+Move alpha from 0.05 to 0.20; selection changes from 41 to 76 out of 100. Pick a candidate and export CSV. Explain that this is an exploratory selection rule, not a safety certificate or a verified error guarantee.
+
+## 3:45–4:00 — Finish
+“The useful outcome is a better next experiment. The notebook keeps predictions, observations and hypotheses separate, and lets you inspect the evidence yourself.”
+
+Record after the final hosted check. Verify video sharing access before submission. Add one honest personal observation about what you learned, without reading this script word for word.
+
+## Timing checklist
+
+| Time | Focus |
+|---|---|
+| 0:00–0:30 | Question |
+| 0:30–1:15 | Raloxifene |
+| 1:15–2:00 | Validation split |
+| 2:00–2:35 | Descriptor comparison |
+| 2:35–3:10 | Prediction error |
+| 3:10–3:45 | Shortlist and download |
+| 3:45–4:00 | Takeaway and AI assistance disclosure |

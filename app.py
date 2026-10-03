@@ -263,6 +263,10 @@ def __(mo, reveal_evidence):
 ### Before you look at the results
 **Does a reactive-looking fragment prove that a molecule inhibits CYP over time?**
 
+Start with **Raloxifene** below. Its literature record describes bioactivation. The saved CYP3A4 docking pose puts the nearest heavy atom 2.23 Å from heme iron—but proximity alone does not establish that reaction. These are two different kinds of evidence, even when they appear beside the same molecule.
+
+Then ask whether extra chemistry helps the model: the saved descriptor experiment changes PR-AUC from **0.4652 to 0.4753**. That modest average change cannot tell us whether a particular prediction is trustworthy.
+
 The calculations have already been run. The controls let you explore their results. The halos are **illustrative motif weights**: they help you notice a fragment, but do not measure its reactivity.
 """),
         reveal_evidence,
@@ -307,7 +311,7 @@ Choose a literature example below. Its mechanism comes from the cited literature
     )
     act1_protocol = mo.accordion(
         {
-            "🔬 Deep Dive: The In Vitro Microsomal Preincubation Assay Protocol": act1_protocol_content,
+            "How the preincubation assay works": act1_protocol_content,
         },
         multiple=False,
     )
@@ -1275,7 +1279,7 @@ def __(BioactivationTracer, mmp_dropdown, mmp_options, mo):
             f"""
             <div style="margin-top: 12px; padding: 14px; border: 1px solid #d5d8cf; border-radius: 8px; background: #f1f1e9; font-size: 13px;">
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                <strong style="color: #252d2a; font-size: 15px;">{_pair['mmp_id']} — {_pair['isoform']} Bioactivation Cliff</strong>
+                <strong style="color: #252d2a; font-size: 15px;">{_pair['mmp_id']} — {_pair['isoform']} Observed label change</strong>
                 <span style="background: #eff3e9; color: #16a34a; border: 1px solid #cad8c2; padding: 3px 10px; border-radius: 6px; font-weight: 600; font-size: 11px; white-space: nowrap;">
                   {_pair.get('curation_status', 'OPENADMET_LABEL_SHIFT')}
                 </span>
@@ -1308,7 +1312,7 @@ def __(BioactivationTracer, mmp_dropdown, mmp_options, mo):
                 <span><strong>Source:</strong> {_mol_act.get('source_dataset', 'cyp-challenge-TRAIN_TDI.csv')}</span>
                 <span><strong>Measurement:</strong> {_mol_act.get('measurement_type', 'Preincubation IC50 Shift Ratio')}</span>
                 <span><strong>Threshold:</strong> Source challenge labels; see assay definitions</span>
-                <span><strong>Replicates:</strong> {_mol_act.get('replicate_summary', 'Mean of duplicate IC50 curves')}</span>
+                <span><strong>Replicates:</strong> {_mol_act.get('replicate_summary', 'Not recorded in this artifact')}</span>
               </div>
             </div>
             """
@@ -1396,7 +1400,7 @@ def __(BioactivationTracer, mo, oof_cases, oof_dropdown):
             </div>
 
             <div style="padding: 12px; background: #f1f1e9; border-radius: 8px; border-left: 4px solid {_badge_color};">
-              <strong style="color: #252d2a;">A possible explanation:</strong><br>
+              <strong style="color: #252d2a;">What the saved evidence supports:</strong><br>
               <p style="margin: 4px 0 0 0; font-size: 12px; line-height: 1.4; color: #37443b;">
                 {_case.get('rationale', '')}
               </p>
@@ -1697,7 +1701,7 @@ A sensible shortlist is the beginning of an experiment. The next checks would be
     )
     act5_dome_accordion = mo.accordion(
         {
-            "📋 DOME Recommendations Compliance": dome_content,
+            "Methods and reproducibility (DOME)": dome_content,
         },
         multiple=False,
     )
@@ -1762,13 +1766,21 @@ def __(
 
         header_md,
         mo.Html('<div class="cyp-question">' + guided_start.text + '</div>'),
-        _chapter("cyp-assay", "01 / Observation", [act1_intro, act1_viewer, act1_protocol, act1_table_section]),
+        _chapter("cyp-assay", "01 / Observation", [act1_intro, act1_viewer, act1_protocol, mo.accordion({"Browse all literature examples": act1_table_section})]),
         _chapter("cyp-split", "02 / Generalisation", [act2_intro, act2_controls, card_comparison_md,
-            benchmark_chart, tanimoto_svg_chart, act2_section]),
+            benchmark_chart, mo.accordion({"Chemical distance and full benchmark table": mo.vstack([tanimoto_svg_chart, act2_section])})]),
         _chapter("cyp-descriptors", "03 / Mechanistic evidence", [act3_intro, act3_metric_radio,
-            act3_card_comparison_md, act3_docking_section, act3_cyp2d6_section, act3_table_section]),
+            act3_card_comparison_md, mo.accordion({"Inspect the saved docking results": mo.vstack([act3_docking_section, act3_cyp2d6_section]), "Full descriptor benchmark": act3_table_section})]),
         _chapter("cyp-edit", "04 / Counterexamples", [act4_intro, act4_mmp_viewer, act4_oof_section]),
         _chapter("cyp-shortlist", "05 / The next experiment", [act5_intro, act5_conformal_section]),
+        mo.md("""### What I would take into the next experiment
+
+**The split changes the question.** Random validation and scaffold validation test different kinds of generalisation; compare both before trusting a score on new chemistry.
+
+**More descriptors did not settle it.** The observed PR-AUC gain was 0.0101. The reported intervals do not establish a reliable improvement, and incomplete cache provenance limits reproduction of the electronic features.
+
+**A shortlist is a choice about what to test.** The alpha control changes an exploratory selection rule; it does not certify a compound as safe or guarantee the error rate of this sample. For Raloxifene, the literature supplies evidence that its docking distance alone cannot. For an unfamiliar candidate, the next step is an experiment, not a stronger claim from the picture.
+"""),
         act5_limitations_and_dome,
     ]).text + '</article>')
     main_view

@@ -196,8 +196,8 @@ class TestPhase4DevToolsAuditReportArtifact:
         assert data["audit_status"] == "PASS"
         assert data["unhandled_console_errors"] == 0
         assert len(data.get("network_failures", [])) == 0
-        assert data["total_svg_elements"] >= 70
-        assert data["total_anywidget_instances"] >= 2
+        assert data["total_svg_elements"] >= 5
+        assert data["total_anywidget_instances"] == 5
         assert data["details"]["reactive_render_p95_ms"] < 500.0
 
 

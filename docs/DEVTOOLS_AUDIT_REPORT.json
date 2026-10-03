@@ -1,25 +1,25 @@
 {
   "execution_scope": "local headless Chrome, standalone notebook",
   "reactivity_measurement": "5 keyboard alpha updates, waiting for the updated candidate-table label; maximum observed latency",
-  "timestamp": "2026-10-03T10:16:58.186733+00:00",
+  "timestamp": "2026-10-03T14:30:27.588596+00:00",
   "browser_version": "155.0.8059.26",
-  "total_network_requests": 254,
+  "total_network_requests": 250,
   "unhandled_console_errors": 0,
   "network_failures": [],
-  "total_svg_elements": 90,
+  "total_svg_elements": 37,
   "total_anywidget_instances": 5,
   "audit_status": "PASS",
   "artifact_path": "standalone_app.py",
-  "artifact_size_bytes": 187396,
-  "artifact_sha256": "9a93ab962af66ed0004b1070cb7a6e730f3a29ddc2ea50c26518bd14e4bff50d",
+  "artifact_size_bytes": 188571,
+  "artifact_sha256": "e5a2d0010142774720a3a2dbbf5a93541168be0c4be81c643aa2d642dbec04c5",
   "details": {
-    "page_load_latency_seconds": 1.045,
-    "reactive_render_p95_ms": 210.22,
+    "page_load_latency_seconds": 1.032,
+    "reactive_render_p95_ms": 122.07,
     "all_5_acts_verified": true,
     "mounted_controls": {
-      "dropdowns": 7,
+      "dropdowns": 4,
       "sliders": 2,
-      "buttons": 129
+      "buttons": 60
     }
   }
 }

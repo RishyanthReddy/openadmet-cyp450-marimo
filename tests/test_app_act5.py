@@ -33,7 +33,7 @@ def test_act5_txconformal_and_dome_narrative():
     assert "Act 5: Which molecules would we test next?" in content
     assert "TxConformal" in content
     assert "nominal FDR level" in content
-    assert "DOME Recommendations Compliance" in content
+    assert "Methods and reproducibility (DOME)" in content
     assert "What would we need to know next?" in content
     assert "inhibition recovery" in content
     assert "additional metabolism" in content

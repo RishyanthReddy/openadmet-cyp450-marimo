@@ -89,7 +89,7 @@ def extract_isoform_mmps(df_iso: pd.DataFrame, target_col: str, isoform: str, ma
                     "direct_pic50": direct_pic50,
                     "tdi_pic50": tdi_pic50,
                     "pic50_shift": pic50_shift,
-                    "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision ±0.15 log units)",
+                    "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
                     "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; ΔpIC50 >= 0.176)",
                 })
 

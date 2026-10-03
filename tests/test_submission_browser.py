@@ -103,6 +103,8 @@ def test_linked_controls_and_exact_csv(standalone_page):
     custom.fill('N[C@H](C)C(=O)O');custom.press('Enter')
     expect(page.get_by_text('Structure drawn', exact=False)).to_be_visible()
     custom.fill('');custom.press('Enter')
+    page.get_by_text('Browse all literature examples', exact=True).click()
+    page.get_by_text('Inspect the saved docking results', exact=True).click()
     literature = page.locator('marimo-table').filter(has_text='Table 1.1')
     literature.get_by_role('row').filter(has_text='Paroxetine').get_by_role('checkbox').click()
     expect(page.get_by_role('heading', name='CYP3A4 Crystallographic Active-Site Docking: Paroxetine', exact=True)).to_be_visible()

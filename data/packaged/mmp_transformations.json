@@ -29,7 +29,7 @@
         "direct_pic50": 5.856,
         "tdi_pic50": 5.796,
         "pic50_shift": -0.06,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "mol_active": {
@@ -46,7 +46,7 @@
         "direct_pic50": 5.213,
         "tdi_pic50": 5.593,
         "pic50_shift": 0.38,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "substituent_active": "Cn1nccc1CC[*:1]",
@@ -76,7 +76,7 @@
         "direct_pic50": 3.663,
         "tdi_pic50": 4.217,
         "pic50_shift": 0.554,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "mol_active": {
@@ -93,7 +93,7 @@
         "direct_pic50": 4.193,
         "tdi_pic50": 4.631,
         "pic50_shift": 0.438,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "substituent_active": "CC1(C)CC([*:1])CCO1",
@@ -123,7 +123,7 @@
         "direct_pic50": 5.851,
         "tdi_pic50": 6.149,
         "pic50_shift": 0.298,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "mol_active": {
@@ -140,7 +140,7 @@
         "direct_pic50": 5.52,
         "tdi_pic50": 6.247,
         "pic50_shift": 0.727,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "substituent_active": "COc1ccc([*:1])cc1",
@@ -170,7 +170,7 @@
         "direct_pic50": 5.388,
         "tdi_pic50": 5.534,
         "pic50_shift": 0.146,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "mol_active": {
@@ -187,7 +187,7 @@
         "direct_pic50": 5.156,
         "tdi_pic50": 5.687,
         "pic50_shift": 0.531,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "substituent_active": "Cc1cc(C)c([*:1])s1",
@@ -217,7 +217,7 @@
         "direct_pic50": 2.02,
         "tdi_pic50": 2.113,
         "pic50_shift": 0.093,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "mol_active": {
@@ -234,7 +234,7 @@
         "direct_pic50": 4.233,
         "tdi_pic50": 4.842,
         "pic50_shift": 0.609,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "substituent_active": "COC(=O)CC[*:1]",
@@ -264,7 +264,7 @@
         "direct_pic50": 3.903,
         "tdi_pic50": 4.231,
         "pic50_shift": 0.328,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "mol_active": {
@@ -281,7 +281,7 @@
         "direct_pic50": 5.29,
         "tdi_pic50": 6.217,
         "pic50_shift": 0.927,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "substituent_active": "Cc1noc(C)c1C[*:1]",
@@ -311,7 +311,7 @@
         "direct_pic50": 4.815,
         "tdi_pic50": 4.845,
         "pic50_shift": 0.03,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "mol_active": {
@@ -328,7 +328,7 @@
         "direct_pic50": 4.06,
         "tdi_pic50": 4.468,
         "pic50_shift": 0.408,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "substituent_active": "CCn1cc([*:1])cn1",
@@ -358,7 +358,7 @@
         "direct_pic50": 4.703,
         "tdi_pic50": 4.735,
         "pic50_shift": 0.032,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "mol_active": {
@@ -375,7 +375,7 @@
         "direct_pic50": 4.06,
         "tdi_pic50": 4.468,
         "pic50_shift": 0.408,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "substituent_active": "CCn1cc([*:1])cn1",
@@ -405,7 +405,7 @@
         "direct_pic50": 2.331,
         "tdi_pic50": 2.136,
         "pic50_shift": -0.195,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "mol_active": {
@@ -422,7 +422,7 @@
         "direct_pic50": 5.133,
         "tdi_pic50": 5.696,
         "pic50_shift": 0.563,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "substituent_active": "CCO[*:1]",
@@ -452,7 +452,7 @@
         "direct_pic50": 2.729,
         "tdi_pic50": 2.735,
         "pic50_shift": 0.006,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "mol_active": {
@@ -469,7 +469,7 @@
         "direct_pic50": 4.778,
         "tdi_pic50": 5.11,
         "pic50_shift": 0.332,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "substituent_active": "Cc1csc([*:1])n1",
@@ -499,7 +499,7 @@
         "direct_pic50": 3.852,
         "tdi_pic50": 4.168,
         "pic50_shift": 0.316,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "mol_active": {
@@ -516,7 +516,7 @@
         "direct_pic50": 4.07,
         "tdi_pic50": 4.605,
         "pic50_shift": 0.535,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "substituent_active": "OCC(F)(F)C[*:1]",
@@ -546,7 +546,7 @@
         "direct_pic50": 4.809,
         "tdi_pic50": 4.892,
         "pic50_shift": 0.083,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "mol_active": {
@@ -563,7 +563,7 @@
         "direct_pic50": 4.122,
         "tdi_pic50": 4.883,
         "pic50_shift": 0.761,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "substituent_active": "CN(C)C(=O)CCC[*:1]",
@@ -593,7 +593,7 @@
         "direct_pic50": 4.882,
         "tdi_pic50": 5.092,
         "pic50_shift": 0.21,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "mol_active": {
@@ -610,7 +610,7 @@
         "direct_pic50": 4.122,
         "tdi_pic50": 4.883,
         "pic50_shift": 0.761,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "substituent_active": "CN(C)C(=O)CCC[*:1]",
@@ -640,7 +640,7 @@
         "direct_pic50": 4.057,
         "tdi_pic50": 4.303,
         "pic50_shift": 0.246,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "mol_active": {
@@ -657,7 +657,7 @@
         "direct_pic50": 4.32,
         "tdi_pic50": 4.798,
         "pic50_shift": 0.478,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "substituent_active": "Cc1nc([*:1])oc1C",
@@ -687,7 +687,7 @@
         "direct_pic50": 3.16,
         "tdi_pic50": 3.403,
         "pic50_shift": 0.243,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "mol_active": {
@@ -704,7 +704,7 @@
         "direct_pic50": 4.923,
         "tdi_pic50": 5.382,
         "pic50_shift": 0.459,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "substituent_active": "Oc1cccc([*:1])c1F",
@@ -734,7 +734,7 @@
         "direct_pic50": 4.645,
         "tdi_pic50": 4.846,
         "pic50_shift": 0.201,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "mol_active": {
@@ -751,7 +751,7 @@
         "direct_pic50": 4.954,
         "tdi_pic50": 5.338,
         "pic50_shift": 0.384,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "substituent_active": "C1CCN([*:1])C1",
@@ -781,7 +781,7 @@
         "direct_pic50": 5.388,
         "tdi_pic50": 5.534,
         "pic50_shift": 0.146,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "mol_active": {
@@ -798,7 +798,7 @@
         "direct_pic50": 4.691,
         "tdi_pic50": 5.162,
         "pic50_shift": 0.471,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "substituent_active": "Fc1ccc([*:1])c(F)c1",
@@ -828,7 +828,7 @@
         "direct_pic50": 3.823,
         "tdi_pic50": 4.161,
         "pic50_shift": 0.338,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "mol_active": {
@@ -845,7 +845,7 @@
         "direct_pic50": 5.213,
         "tdi_pic50": 5.593,
         "pic50_shift": 0.38,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "substituent_active": "Cn1nccc1CC[*:1]",
@@ -875,7 +875,7 @@
         "direct_pic50": 4.893,
         "tdi_pic50": 4.96,
         "pic50_shift": 0.067,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "mol_active": {
@@ -892,7 +892,7 @@
         "direct_pic50": 4.166,
         "tdi_pic50": 4.535,
         "pic50_shift": 0.369,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "substituent_active": "CCC(C)[*:1]",
@@ -922,7 +922,7 @@
         "direct_pic50": 4.893,
         "tdi_pic50": 4.96,
         "pic50_shift": 0.067,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "mol_active": {
@@ -939,7 +939,7 @@
         "direct_pic50": 4.037,
         "tdi_pic50": 4.664,
         "pic50_shift": 0.627,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "substituent_active": "CC(C)[*:1]",
@@ -969,7 +969,7 @@
         "direct_pic50": 4.815,
         "tdi_pic50": 4.845,
         "pic50_shift": 0.03,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "mol_active": {
@@ -986,7 +986,7 @@
         "direct_pic50": 5.913,
         "tdi_pic50": 6.272,
         "pic50_shift": 0.359,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "substituent_active": "Oc1cccc([*:1])c1",
@@ -1016,7 +1016,7 @@
         "direct_pic50": 4.703,
         "tdi_pic50": 4.735,
         "pic50_shift": 0.032,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "mol_active": {
@@ -1033,7 +1033,7 @@
         "direct_pic50": 5.913,
         "tdi_pic50": 6.272,
         "pic50_shift": 0.359,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "substituent_active": "Oc1cccc([*:1])c1",
@@ -1063,7 +1063,7 @@
         "direct_pic50": 5.851,
         "tdi_pic50": 6.149,
         "pic50_shift": 0.298,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "mol_active": {
@@ -1080,7 +1080,7 @@
         "direct_pic50": 5.689,
         "tdi_pic50": 6.248,
         "pic50_shift": 0.559,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "substituent_active": "Cc1cc(F)ccc1[*:1]",
@@ -1110,7 +1110,7 @@
         "direct_pic50": 4.594,
         "tdi_pic50": 4.731,
         "pic50_shift": 0.137,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "mol_active": {
@@ -1127,7 +1127,7 @@
         "direct_pic50": 5.168,
         "tdi_pic50": 5.57,
         "pic50_shift": 0.402,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "substituent_active": "CC#CC[*:1]",
@@ -1157,7 +1157,7 @@
         "direct_pic50": 4.924,
         "tdi_pic50": 5.173,
         "pic50_shift": 0.249,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "mol_active": {
@@ -1174,7 +1174,7 @@
         "direct_pic50": 4.474,
         "tdi_pic50": 4.913,
         "pic50_shift": 0.439,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "substituent_active": "c1ccc([*:1])nc1",
@@ -1204,7 +1204,7 @@
         "direct_pic50": 5.542,
         "tdi_pic50": 5.594,
         "pic50_shift": 0.052,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "mol_active": {
@@ -1221,7 +1221,7 @@
         "direct_pic50": 5.992,
         "tdi_pic50": 6.362,
         "pic50_shift": 0.37,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "substituent_active": "CN(C)CC[*:1]",
@@ -1251,7 +1251,7 @@
         "direct_pic50": 4.851,
         "tdi_pic50": 5.064,
         "pic50_shift": 0.213,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "mol_active": {
@@ -1268,7 +1268,7 @@
         "direct_pic50": 4.143,
         "tdi_pic50": 4.917,
         "pic50_shift": 0.774,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "substituent_active": "Clc1ccc([*:1])cc1",
@@ -1298,7 +1298,7 @@
         "direct_pic50": 4.79,
         "tdi_pic50": 4.954,
         "pic50_shift": 0.164,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "mol_active": {
@@ -1315,7 +1315,7 @@
         "direct_pic50": 4.674,
         "tdi_pic50": 5.114,
         "pic50_shift": 0.44,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "substituent_active": "CN1CCN([*:1])CC1",
@@ -1345,7 +1345,7 @@
         "direct_pic50": 4.79,
         "tdi_pic50": 4.954,
         "pic50_shift": 0.164,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "mol_active": {
@@ -1362,7 +1362,7 @@
         "direct_pic50": 4.285,
         "tdi_pic50": 4.765,
         "pic50_shift": 0.48,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "substituent_active": "Cc1ccccc1[*:1]",
@@ -1392,7 +1392,7 @@
         "direct_pic50": 5.432,
         "tdi_pic50": 5.73,
         "pic50_shift": 0.298,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "mol_active": {
@@ -1409,7 +1409,7 @@
         "direct_pic50": 4.143,
         "tdi_pic50": 4.917,
         "pic50_shift": 0.774,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "substituent_active": "Clc1ccc([*:1])cc1",
@@ -1439,7 +1439,7 @@
         "direct_pic50": 4.981,
         "tdi_pic50": 4.936,
         "pic50_shift": -0.045,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "mol_active": {
@@ -1456,7 +1456,7 @@
         "direct_pic50": 4.383,
         "tdi_pic50": 4.727,
         "pic50_shift": 0.344,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "substituent_active": "Clc1ccccc1O[*:1]",
@@ -1486,7 +1486,7 @@
         "direct_pic50": 6.068,
         "tdi_pic50": 6.276,
         "pic50_shift": 0.208,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "mol_active": {
@@ -1503,7 +1503,7 @@
         "direct_pic50": 5.581,
         "tdi_pic50": 6.291,
         "pic50_shift": 0.71,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "substituent_active": "FC(F)(F)[*:1]",
@@ -1533,7 +1533,7 @@
         "direct_pic50": 6.17,
         "tdi_pic50": 6.394,
         "pic50_shift": 0.224,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "mol_active": {
@@ -1550,7 +1550,7 @@
         "direct_pic50": 5.738,
         "tdi_pic50": 6.427,
         "pic50_shift": 0.689,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "substituent_active": "FC(F)(F)[*:1]",
@@ -1580,7 +1580,7 @@
         "direct_pic50": 5.638,
         "tdi_pic50": 5.884,
         "pic50_shift": 0.246,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "mol_active": {
@@ -1597,7 +1597,7 @@
         "direct_pic50": 5.581,
         "tdi_pic50": 6.291,
         "pic50_shift": 0.71,
-        "replicate_summary": "Mean of duplicate IC50 curves (pIC50 precision \u00b10.15 log units)",
+        "replicate_summary": "Replicate count and measurement precision are not recorded in this curated pair artifact.",
         "uncertainty": "Binary classification (shift ratio >= 1.5 threshold; \u0394pIC50 >= 0.176)"
       },
       "substituent_active": "CN1CCN([*:1])CC1",

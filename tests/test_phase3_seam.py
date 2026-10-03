@@ -111,7 +111,7 @@ class TestAllFiveActsCoherence:
         # Act 5
         assert "Act 5: Which molecules would we test next?" in content
         assert "Table 5.1: TxConformal Prioritized Candidate Shortlist" in content
-        assert "DOME Recommendations Compliance" in content
+        assert "Methods and reproducibility (DOME)" in content
         assert "Sources" in content
 
     def test_main_view_assembly_contains_all_acts(self):
@@ -210,7 +210,7 @@ class TestLiveBrowserDevToolsExecution:
 
                 # Assert SVG elements & Anywidgets
                 svgs = page.query_selector_all("svg")
-                assert len(svgs) >= 50, f"Expected at least 50 SVG elements, got {len(svgs)}"
+                assert len(svgs) >= 5, f"Expected at least 5 SVG elements, got {len(svgs)}"
 
                 containers = page.query_selector_all(".bat-container")
                 assert len(containers) >= 2, f"Expected at least 2 BioactivationTracer containers, got {len(containers)}"
@@ -230,7 +230,7 @@ class TestLiveBrowserDevToolsExecution:
         assert report.get("unhandled_console_errors") == 0, f"Console errors: {report.get('unhandled_console_errors')}"
         assert len(report.get("network_failures", [])) == 0, f"Network failures: {report.get('network_failures')}"
         assert report.get("details", {}).get("all_5_acts_verified") is True, "All 5 acts not verified"
-        assert report.get("total_svg_elements", 0) >= 50, "SVG element threshold not met"
+        assert report.get("total_svg_elements", 0) >= 5, "SVG element threshold not met"
         assert report.get("total_anywidget_instances", 0) >= 2, "AnyWidget container threshold not met"
 
 

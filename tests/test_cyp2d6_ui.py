@@ -75,7 +75,7 @@ def test_cyp2d6_section_mounted_in_main_view():
     # In main_view vstack
     main_view_def = code[code.find("main_view = "):code.find("return (main_view,)")]
     assert "act3_docking_section," in main_view_def
-    assert "act3_cyp2d6_section," in main_view_def
+    assert "act3_cyp2d6_section]" in main_view_def
     # Make sure act3_cyp2d6_section appears directly after act3_docking_section
     docking_idx = main_view_def.find("act3_docking_section")
     cyp2d6_idx = main_view_def.find("act3_cyp2d6_section")
