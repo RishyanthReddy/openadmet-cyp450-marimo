@@ -1562,8 +1562,8 @@ def __(metric_stat, alpha_slider, conformal_fdr_select, csv, io, mo, tx_data, no
         return f"txconformal_candidates_alpha_{float(_target_alpha):.2f}.csv"
 
     candidate_download = mo.download(
-        data=build_candidate_csv,
-        filename=candidate_csv_filename,
+        data=build_candidate_csv(),
+        filename=candidate_csv_filename(),
         mimetype="text/csv",
         disabled=not bool(_selected_indices),
         label="Download Selected Candidates (CSV)",
