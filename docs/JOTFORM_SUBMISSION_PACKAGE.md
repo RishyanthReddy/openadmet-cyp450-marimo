@@ -2,7 +2,7 @@
 
 **Title:** OpenADMET: When Can We Trust a CYP Prediction?
 
-**Status:** Local candidate prepared. Final publication, hosted molab verification, video upload, and form submission are pending.
+**Status:** Published to molab; hosted rendering and core controls checked. Final access/export checks, narrated video upload, and form submission remain.
 
 ## Description to paste
 
@@ -13,8 +13,9 @@ When is a CYP prediction worth trusting? This notebook follows that question fro
 ## Required remaining fields
 
 - Entrant/team names and contact email: confirm with entrant.
-- Public repository revision containing the final standalone file: publish only after approval.
-- Final molab link: populate after publishing and a fresh hosted-session check.
+- Published source revision: `2036788de21c8ab5b44611277c74d02deda4e562` on `codex/submission-readiness`.
+- Live app: https://molab.marimo.io/notebooks/nb_fhAT4HqfpJRRthfvvYWsmo/app
+- Notebook: https://molab.marimo.io/notebooks/nb_fhAT4HqfpJRRthfvvYWsmo
 - Video: planned 4:45 walkthrough; upload the final narrated video to the venue accepted by the form (the reviewed form requested a Google Drive link). Confirm anonymous viewing access.
 - Dataset title and attribution: OpenADMET CYP Challenge data; include the source and challenge tutorial references from the notebook.
 - License: no repository LICENSE file exists; do not claim an MIT license until one has been chosen and added.

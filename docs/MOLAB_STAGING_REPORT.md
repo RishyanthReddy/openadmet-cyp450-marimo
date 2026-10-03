@@ -20,6 +20,6 @@ This report covers **local headless Chrome**, not a deployed molab session. Depe
 
 Median **3.651s**, p95 **4.527s**. The report is bound to the artifact hash above. GPU initialization detection is based on server log messages; the standalone code does not import or run the training/GPU workflows.
 
-## Hosted release still to verify
+## Hosted deployment
 
-After approval, publish the candidate branch and use a GitHub revision-specific molab notebook link. In a fresh hosted session, verify all five sections, molecule/table linkage, model and metric controls, custom-input recovery, chart/table candidate selection, alpha, and CSV download. Record the public revision and final URL. Do not label this notebook deployed or submission-ready until that check and the final video/access checks are complete.
+The candidate has since been published. See [MOLAB_DEPLOYMENT.md](MOLAB_DEPLOYMENT.md) for the saved app URL, hosted checks, and remaining verification limits.
