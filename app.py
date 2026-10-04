@@ -1724,7 +1724,7 @@ A sensible shortlist is the beginning of an experiment. The next checks would be
         act5_limitations_md,
         act5_dome_accordion,
         act5_citations_md,
-        mo.md("**Authorship and AI disclosure:** Rishyanth Reddy developed this scientific exploration with AI assistance for code, review, and presentation. Precomputed artifacts are retained for reproducibility. Assay labels, descriptor estimates, docking hypotheses, and illustrative halos are distinct evidence types."),
+        mo.md("**Authorship and AI disclosure:** I developed this scientific exploration with AI assistance for code, review, and presentation. Precomputed artifacts are retained for reproducibility. Assay labels, descriptor estimates, docking hypotheses, and illustrative halos are distinct evidence types."),
     ])
 
     return (act5_limitations_and_dome,)
