@@ -1,7 +1,7 @@
 # Molab deployment — October 3, 2026
 
-- Live app: https://molab.marimo.io/notebooks/nb_cwmWFFrjMKyWzjSj7iuriG/app
-- Saved notebook: https://molab.marimo.io/notebooks/nb_cwmWFFrjMKyWzjSj7iuriG
+- Live app: https://molab.marimo.io/notebooks/nb_vfMY8LPXrEGMVVsXnQPnWk/app
+- Saved notebook: https://molab.marimo.io/notebooks/nb_vfMY8LPXrEGMVVsXnQPnWk
 - Title: When can we trust a CYP prediction?
 - Source repository: https://github.com/RishyanthReddy/openadmet-cyp450-marimo
 - Source commit: `718eee2e0a48d19e961d63fa4ea87d507ad00536`
@@ -38,3 +38,7 @@ Final full suite: **237 passed, zero skips, exit 0 in 44.80s**. A preceding run 
 ## Entrant confirmation — October 3, 2026
 
 After receiving instructions to open the final app in a private/incognito window and locate the export button, the entrant confirmed: “yes can access and doenload”. Public interactive access and hosted CSV delivery are therefore verified by the entrant. The earlier download-event limitation describes the automation tool, not an outstanding release check. Final narrated video and competition submission remain outstanding.
+
+## First-person disclosure — October 4, 2026
+
+Updated “Rishyanth Reddy developed” to “I developed” and rebuilt the standalone notebook. Strict marimo checks passed. New source commit: `5c251913b32819efdd5e42303e17113637a2982c`. Standalone SHA-256: `9205a9e9dabe987c4a0cabfd909aa932dba0e040c0e7520c4d655c93401cd027`. Earlier full-suite and timing evidence belongs to the preceding artifact; this copy-only change was checked with strict validation and hosted text inspection. The current link above supersedes the previous saved copy.
